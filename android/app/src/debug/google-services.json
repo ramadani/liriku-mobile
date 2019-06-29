@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "359072447015",
+    "firebase_url": "https://liriku-dev.firebaseio.com",
+    "project_id": "liriku-dev",
+    "storage_bucket": "liriku-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:359072447015:android:57ca74ffb5ebfbe1",
+        "android_client_info": {
+          "package_name": "com.lirikuapp.android.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "359072447015-16vfltshu6otk0q7oleqvsgq38tfo9nk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lirikuapp.android.debug",
+            "certificate_hash": "817cfbca86b2de6dbc97ee70b900329747782549"
+          }
+        },
+        {
+          "client_id": "359072447015-k6jkf6jqqg2mkprdb5at4u301n43mr1v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkgn_O75uor4c0-vLqmF3kjEtODm2iDSM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "359072447015-k6jkf6jqqg2mkprdb5at4u301n43mr1v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
