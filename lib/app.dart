@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:liriku/screen/main/main_screen.dart';
+import 'package:liriku/resource/theme.dart';
+import 'package:liriku/screen/routes.dart';
+import 'package:liriku/screen/splash/splash_screen.dart';
 
 class App extends StatelessWidget {
   // This widget is the root of your application.
@@ -7,10 +9,10 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Liriku',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MainScreen(),
+      theme: appTheme(context),
+      initialRoute: SplashScreen.routeName,
+      routes: routes(context),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

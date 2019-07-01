@@ -1,6 +1,4 @@
-package com.example.liriku
-
-import android.os.Bundle
+package com.liriku.app
 
 import io.flutter.app.FlutterActivity
 import io.flutter.plugins.GeneratedPluginRegistrant

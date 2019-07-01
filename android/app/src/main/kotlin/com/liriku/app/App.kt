@@ -1,4 +1,4 @@
-package com.example.liriku
+package com.liriku.app
 
 import io.flutter.app.FlutterApplication
 
