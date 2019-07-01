@@ -1,5 +1,7 @@
 package com.liriku.app
 
+import android.content.Context
+import androidx.multidex.MultiDex
 import io.flutter.app.FlutterApplication
 
 class App : FlutterApplication() {

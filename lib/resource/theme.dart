@@ -3,8 +3,8 @@ import 'package:liriku/resource/colors.dart' as color;
 
 ThemeData appTheme(BuildContext context) {
   return ThemeData(
-    primaryColor: color.primary,
-    accentColor: color.primaryDark,
+    primaryColor: color.primaryDark,
+    accentColor: color.primary,
     fontFamily: 'Montserrat',
     primaryTextTheme: TextTheme(
       title: TextStyle(
