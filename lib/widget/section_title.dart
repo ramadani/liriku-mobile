@@ -38,9 +38,9 @@ class SectionTitle extends StatelessWidget {
             borderRadius: BorderRadius.circular(32.0),
           ),
           child: Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(6.0),
             child: Center(
-              child: Icon(icon, color: Colors.white),
+              child: Icon(icon, color: Colors.white, size: 20.0,),
             ),
           ),
         )

@@ -18,7 +18,7 @@ class ArtistCover extends StatelessWidget {
       borderRadius: BorderRadius.all(Radius.circular(4.0)),
       child: Image.network(
         url,
-        fit: BoxFit.contain,
+        fit: BoxFit.cover,
         width: width,
         height: height,
       ),

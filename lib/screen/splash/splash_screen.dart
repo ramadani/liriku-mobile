@@ -18,7 +18,7 @@ class SplashScreen extends StatelessWidget {
               child: Image.asset('assets/images/bg_splash.png'),
             ),
             Positioned(
-              bottom: 160,
+              bottom: 200,
               left: 100,
               right: 100,
               child: _LoadingIndicator(),
