@@ -6,6 +6,7 @@ class Lyric extends Equatable {
   final String id;
   final String title;
   final String coverUrl;
+  final String content;
   final int readCount;
   final bool bookmarked;
 
@@ -13,9 +14,10 @@ class Lyric extends Equatable {
     this.id,
     this.title,
     this.coverUrl,
+    this.content,
     this.readCount,
     this.bookmarked,
-  }) : super([id, title, coverUrl, readCount, bookmarked]);
+  }) : super([id, title, coverUrl, content, readCount, bookmarked]);
 }
 
 class LyricArtist extends Lyric {
@@ -25,6 +27,7 @@ class LyricArtist extends Lyric {
     String id,
     String title,
     String coverUrl,
+    String content,
     int readCount,
     bool bookmarked,
     this.artist,
@@ -32,6 +35,7 @@ class LyricArtist extends Lyric {
           id: id,
           title: title,
           coverUrl: coverUrl,
+    content: content,
           readCount: readCount,
           bookmarked: bookmarked,
         );
