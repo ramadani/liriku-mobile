@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:liriku/data/model/artist.dart';
 import 'package:liriku/data/model/lyric.dart';
+import 'package:liriku/localizations.dart';
 import 'package:liriku/resource/colors.dart';
 import 'package:liriku/widget/appbar.dart';
 import 'package:liriku/widget/artist_cover.dart';
@@ -80,8 +81,12 @@ class HomeScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
               child: SectionTitle(
                 icon: Icons.trending_up,
-                title: 'Artists',
-                subtitle: 'Top Ten New Artist\'s Lyrics',
+                title: AppLocalizations
+                    .of(context)
+                    .artists,
+                subtitle: AppLocalizations
+                    .of(context)
+                    .artistsDescSection,
               ),
             ),
             SizedBox(
@@ -103,15 +108,17 @@ class HomeScreen extends StatelessWidget {
                   .copyWith(top: 32.0, bottom: 16.0),
               child: SectionTitle(
                 icon: Icons.music_note,
-                title: 'Songs',
-                subtitle: 'Top Ten New Lyrics',
+                title: AppLocalizations
+                    .of(context)
+                    .songs,
+                subtitle: AppLocalizations
+                    .of(context)
+                    .songsDescSection,
               ),
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: Divider(
-                color: Colors.grey,
-              ),
+              child: Divider(color: Colors.grey[400]),
             ),
             Column(
               children: List.generate(lyrics.length, (index) {

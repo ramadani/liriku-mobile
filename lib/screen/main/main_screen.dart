@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:liriku/localizations.dart';
 import 'package:liriku/screen/main/collection_screen.dart';
 import 'package:liriku/screen/main/home_screen.dart';
 import 'package:liriku/screen/main/more_screen.dart';
@@ -48,15 +49,21 @@ class _MainScreenState extends State<MainScreen> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            title: Text('Home'),
+            title: Text(AppLocalizations
+                .of(context)
+                .home),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.view_list),
-            title: Text('Collection'),
+            title: Text(AppLocalizations
+                .of(context)
+                .collection),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.more_vert),
-            title: Text('More'),
+            title: Text(AppLocalizations
+                .of(context)
+                .more),
           ),
         ],
       ),

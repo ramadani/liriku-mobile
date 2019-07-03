@@ -1,0 +1,14 @@
+{
+  "title": "Liriku",
+  "@title": {
+    "description": "Title for the Demo application",
+    "type": "text"
+  },
+  "home": "Home",
+  "collection": "Collection",
+  "more": "More",
+  "artists": "Artists",
+  "artistsDescSection": "Top Ten New Artist's Lyrics",
+  "songs": "Songs",
+  "songsDescSection": "Top Ten New Lyrics"
+}

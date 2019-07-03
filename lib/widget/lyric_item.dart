@@ -17,13 +17,13 @@ class LyricItem extends StatelessWidget {
       style: Theme.of(context)
           .textTheme
           .title
-          .copyWith(fontWeight: FontWeight.w600, fontSize: 18.0),
+          .copyWith(fontWeight: FontWeight.w600, fontSize: 16.0),
     );
     labels.add(title);
 
     if (_lyric is LyricArtist) {
       final artistName = Padding(
-        padding: EdgeInsets.only(top: 4.0),
+        padding: EdgeInsets.only(top: 2.0),
         child: Text(
           (_lyric as LyricArtist).artist.name,
           style: TextStyle(color: Colors.black54),

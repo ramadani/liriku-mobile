@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:liriku/localizations.dart';
 
 class MainAppBar extends StatefulWidget implements PreferredSizeWidget {
   final double padding;
@@ -25,7 +26,12 @@ class _MainAppBarState extends State<MainAppBar> {
             margin: EdgeInsets.only(right: 16.0),
             child: Image.asset('assets/images/ic_appbar.png', height: 22),
           ),
-          Text('Liriku', style: TextStyle(fontWeight: FontWeight.w600)),
+          Text(
+            AppLocalizations
+                .of(context)
+                .title,
+            style: TextStyle(fontWeight: FontWeight.w600),
+          ),
         ],
       ),
       actions: widget.actions,
