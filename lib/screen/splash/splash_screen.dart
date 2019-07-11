@@ -1,6 +1,7 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:liriku/bloc/auth/bloc.dart';
+import 'package:liriku/injector_widget.dart';
 import 'package:liriku/resource/colors.dart' as color;
 import 'package:liriku/screen/main/main_screen.dart';
 
@@ -9,6 +10,8 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authBloc = InjectorWidget.of(context).authBloc();
+
     return Scaffold(
       body: Container(
         color: color.primaryDark,
@@ -19,9 +22,9 @@ class SplashScreen extends StatelessWidget {
             ),
             Positioned(
               bottom: 200,
-              left: 100,
-              right: 100,
-              child: _LoadingIndicator(),
+              left: 120,
+              right: 120,
+              child: _LoadingIndicator(bloc: authBloc),
             ),
           ],
         ),
@@ -31,46 +34,46 @@ class SplashScreen extends StatelessWidget {
 }
 
 class _LoadingIndicator extends StatefulWidget {
+  final AuthBloc bloc;
+
+  const _LoadingIndicator({Key key, this.bloc}) : super(key: key);
+
   @override
   _LoadingIndicatorState createState() => _LoadingIndicatorState();
 }
 
 class _LoadingIndicatorState extends State<_LoadingIndicator>
     with SingleTickerProviderStateMixin {
-  Timer _timer;
-  int _start = 2;
-
-  void _startTimer() {
-    final oneSec = Duration(seconds: 1);
-    _timer = Timer.periodic(oneSec, (timer) {
-      setState(() {
-        if (_start < 1) {
-          timer.cancel();
-          Navigator.pushReplacementNamed(context, MainScreen.routeName);
-        } else {
-          _start = _start - 1;
-        }
-      });
-    });
-  }
+  AuthBloc get _bloc => widget.bloc;
 
   @override
   void initState() {
     super.initState();
-    _startTimer();
-  }
-
-  @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
+    _bloc.dispatch(Check());
   }
 
   @override
   Widget build(BuildContext context) {
-    return LinearProgressIndicator(
-      backgroundColor: Colors.white30,
-      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+    return BlocListener(
+      bloc: _bloc,
+      listener: (BuildContext context, AuthState state) {
+        if (state is Authenticated) {
+          Navigator.pushReplacementNamed(context, MainScreen.routeName);
+        }
+      },
+      child: BlocBuilder<AuthEvent, AuthState>(
+        bloc: _bloc,
+        builder: (BuildContext context, AuthState state) {
+          if (state is Authenticated) {
+            return Container();
+          }
+
+          return LinearProgressIndicator(
+            backgroundColor: Colors.white30,
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+          );
+        },
+      ),
     );
   }
 }

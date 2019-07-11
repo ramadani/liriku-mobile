@@ -1,14 +1,26 @@
+import 'package:liriku/data/model/auth.dart';
+import 'package:liriku/data/provider/auth_data_provider.dart';
 import 'package:liriku/data/provider/auth_provider.dart';
 import 'package:liriku/data/repository/auth_repository.dart';
 
 class AuthRepositoryConcrete implements AuthRepository {
   final AuthProvider _authProvider;
+  final AuthDataProvider _authDataProvider;
 
-  AuthRepositoryConcrete(this._authProvider);
+  AuthRepositoryConcrete(this._authProvider, this._authDataProvider);
 
   @override
-  Future<String> login(String deviceName) async {
+  Future<Auth> login(String deviceName) async {
     final data = await _authProvider.create(deviceName);
-    return data.token;
+    await _authDataProvider.setToken(data.token);
+
+    return data;
+  }
+
+  @override
+  Future<bool> check() async {
+    final token = await _authDataProvider.getToken();
+
+    return token != null;
   }
 }

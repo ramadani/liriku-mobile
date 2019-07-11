@@ -5,7 +5,7 @@ import 'package:liriku/injector_widget.dart';
 import 'app.dart';
 
 void main() async {
-  final app = InjectorWidget(child: App());
+  final app = InjectorWidget(child: App(), envFilename: 'env.json');
   await app.init();
 
   BlocSupervisor.delegate = _SimpleBlocDelegate();
