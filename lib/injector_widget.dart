@@ -6,6 +6,7 @@ import 'package:liriku/data/provider/api/auth_provider_api.dart';
 import 'package:liriku/data/provider/api/http_client.dart';
 import 'package:liriku/data/provider/auth_data_provider.dart';
 import 'package:liriku/data/provider/auth_provider.dart';
+import 'package:liriku/data/provider/db/sqlite_provider.dart';
 import 'package:liriku/data/provider/prefs/auth_data_provider_prefs.dart';
 import 'package:liriku/data/repository/auth_repository.dart';
 import 'package:liriku/data/repository/concrete/auth_repository_concrete.dart';
@@ -42,10 +43,13 @@ class InjectorWidget extends InheritedWidget {
     await _config.loadFromAssets(_envFilename);
 
     final config = _config.data();
-    final httpClient = HttpClient(config.baseApiUrl, config.apiKey);
+    await SQLiteProvider().open();
+
+    _authDataProvider = AuthDataProviderPrefs();
+    final httpClient =
+    HttpClient(config.baseApiUrl, config.apiKey, _authDataProvider);
 
     _authProvider = AuthProviderApi(httpClient);
-    _authDataProvider = AuthDataProviderPrefs();
     _authRepository = AuthRepositoryConcrete(_authProvider, _authDataProvider);
   }
 

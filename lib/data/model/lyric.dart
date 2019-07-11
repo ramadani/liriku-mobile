@@ -8,6 +8,8 @@ class Lyric extends Equatable {
   final String coverUrl;
   final String content;
   final int readCount;
+  final DateTime createdAt;
+  final DateTime updatedAt;
   final bool bookmarked;
 
   Lyric({
@@ -16,8 +18,19 @@ class Lyric extends Equatable {
     this.coverUrl,
     this.content,
     this.readCount,
+    this.createdAt,
+    this.updatedAt,
     this.bookmarked,
-  }) : super([id, title, coverUrl, content, readCount, bookmarked]);
+  }) : super([
+    id,
+    title,
+    coverUrl,
+    content,
+    readCount,
+    createdAt,
+    updatedAt,
+    bookmarked,
+  ]);
 }
 
 class LyricArtist extends Lyric {
@@ -29,6 +42,8 @@ class LyricArtist extends Lyric {
     String coverUrl,
     String content,
     int readCount,
+    DateTime createdAt,
+    DateTime updatedAt,
     bool bookmarked,
     this.artist,
   }) : super(
@@ -37,6 +52,8 @@ class LyricArtist extends Lyric {
           coverUrl: coverUrl,
     content: content,
           readCount: readCount,
+    createdAt: createdAt,
+    updatedAt: updatedAt,
           bookmarked: bookmarked,
         );
 }
