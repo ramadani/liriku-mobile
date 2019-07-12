@@ -25,9 +25,14 @@ class ArtistRepositoryConcrete implements ArtistRepository {
   @override
   Future<bool> syncTopArtist({int limit = 10}) async {
     final artists = await _artistProvider.topByNewLyric(limit);
+    final List<String> listOfId = artists.map((it) => it.id).toList();
+
+    await _topRatedProvider.deleteAllByType('ARTIST');
+    await _topRatedProvider.insertAllByType(listOfId, 'ARTIST');
     await Future.forEach(artists, (Artist it) async {
       await _artistCacheProvider.save(it);
     });
+
     return true;
   }
 }

@@ -15,8 +15,8 @@ class LyricProviderApi implements LyricProvider {
   Future<LyricCollection> fetch(int page, int perPage,
       {String search = ""}) async {
     final uri = Uri(path: '/lyrics', queryParameters: {
-      'page': page,
-      'perPage': perPage,
+      'page': page.toString(),
+      'perPage': perPage.toString(),
       'search': search,
     });
     final response = await _client.auth().get(uri);
@@ -38,7 +38,10 @@ class LyricProviderApi implements LyricProvider {
 
   @override
   Future<List<Lyric>> topNew(int limit) async {
-    final uri = Uri(path: '/lyrics/top', queryParameters: {'limit': limit});
+    final uri = Uri(
+      path: '/lyrics/top',
+      queryParameters: {'limit': limit.toString()},
+    );
     final response = await _client.auth().get(uri);
 
     if (!_client.ok(response.statusCode)) {

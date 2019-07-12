@@ -80,7 +80,8 @@ class LyricCacheProviderDb implements LyricCacheProvider {
     } else {
       // insert
       final insertSql = 'INSERT INTO lyrics (id, title, cover_url, content, '
-          'read_count, artist_id, created_at, updated_at)';
+          'read_count, artist_id, created_at, updated_at) '
+          'VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
       await _db.rawInsert(insertSql, [
         lyric.id,
         lyric.title,
