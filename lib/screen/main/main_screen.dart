@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:liriku/localizations.dart';
-import 'package:liriku/screen/main/collection_screen.dart';
-import 'package:liriku/screen/main/home_screen.dart';
-import 'package:liriku/screen/main/more_screen.dart';
+import 'package:liriku/screen/main/collection/collection_screen.dart';
+import 'package:liriku/screen/main/home/home_screen.dart';
+import 'package:liriku/screen/main/more/more_screen.dart';
 
 class MainScreen extends StatefulWidget {
   static const routeName = '/main';

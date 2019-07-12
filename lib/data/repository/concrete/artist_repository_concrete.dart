@@ -17,9 +17,11 @@ class ArtistRepositoryConcrete implements ArtistRepository {
 
   @override
   Future<List<Artist>> getTopArtist({int limit = 10}) async {
-    final listOfId = await _topRatedProvider.findAllByType('ARTIST');
+    final List<String> listOfId =
+    await _topRatedProvider.findAllByType('ARTIST');
+    final results = await _artistCacheProvider.findWhereInId(listOfId);
 
-    return await _artistCacheProvider.findWhereInId(listOfId);
+    return results;
   }
 
   @override

@@ -44,9 +44,10 @@ class LyricCacheProviderDb implements LyricCacheProvider {
 
   @override
   Future<List<Lyric>> findWhereInId(List<String> listOfId) async {
+    final args = listOfId.map((id) => '?').toList().join(', ');
     final sql = 'SELECT id, title, cover_url, content, bookmarked, read_count, '
-        'artist_id, created_at, updated_at FROM lyrics WHERE id IN (?)';
-    final rows = await _db.rawQuery(sql, [listOfId.join(',')]);
+        'artist_id, created_at, updated_at FROM lyrics WHERE id IN ($args)';
+    final rows = await _db.rawQuery(sql, listOfId);
     final List<Lyric> results = List();
 
     if (rows.isNotEmpty) {
@@ -80,14 +81,15 @@ class LyricCacheProviderDb implements LyricCacheProvider {
     } else {
       // insert
       final insertSql = 'INSERT INTO lyrics (id, title, cover_url, content, '
-          'read_count, artist_id, created_at, updated_at) '
-          'VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+          'read_count, bookmarked, artist_id, created_at, updated_at) '
+          'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
       await _db.rawInsert(insertSql, [
         lyric.id,
         lyric.title,
         lyric.coverUrl,
         lyric.content,
         lyric.readCount,
+        0,
         artistId,
         lyric.createdAt.millisecondsSinceEpoch,
         lyric.updatedAt.millisecondsSinceEpoch,
@@ -118,8 +120,8 @@ class LyricCacheProviderDb implements LyricCacheProvider {
       readCount: raw['read_count'] as num,
       content: raw['content'],
       bookmarked: raw['bookmarked'] as num == 1,
-      createdAt: DateTime.fromMillisecondsSinceEpoch(raw['createdAt'] as num),
-      updatedAt: DateTime.fromMillisecondsSinceEpoch(raw['updatedAt'] as num),
+      createdAt: DateTime.fromMillisecondsSinceEpoch(raw['created_at'] as num),
+      updatedAt: DateTime.fromMillisecondsSinceEpoch(raw['updated_at'] as num),
     );
   }
 }

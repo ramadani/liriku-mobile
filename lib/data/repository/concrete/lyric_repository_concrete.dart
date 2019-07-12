@@ -14,9 +14,13 @@ class LyricRepositoryConcrete implements LyricRepository {
 
   @override
   Future<List<Lyric>> getTopLyric({int limit = 10}) async {
-    final listOfId = await _topRatedProvider.findAllByType('LYRIC');
+    final List<String> listOfId = await _topRatedProvider.findAllByType(
+        'LYRIC');
+    print('lirik ids $listOfId');
+    final results = await _lyricCacheProvider.findWhereInId(listOfId);
+    print('lyric results $results');
 
-    return await _lyricCacheProvider.findWhereInId(listOfId);
+    return results;
   }
 
   @override
@@ -27,7 +31,6 @@ class LyricRepositoryConcrete implements LyricRepository {
     await _topRatedProvider.deleteAllByType('LYRIC');
     await _topRatedProvider.insertAllByType(listOfId, 'LYRIC');
     await Future.forEach(lyrics, (Lyric it) async {
-      print('lyric $it');
       if (it is LyricArtist) {
         await _lyricCacheProvider.save(it, it.artist.id);
       }
