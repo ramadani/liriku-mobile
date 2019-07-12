@@ -12,7 +12,7 @@ class TopRatedProviderDb implements TopRatedProvider {
         'WHERE top_rated_type = ? ORDER BY ranked ASC';
     final rows = await _db.rawQuery(sql, [type]);
     final List<String> results =
-        rows.map((raw) => raw['top_rated_id']).toList();
+    rows.map((raw) => raw['top_rated_id'].toString()).toList();
 
     return results;
   }
@@ -20,11 +20,12 @@ class TopRatedProviderDb implements TopRatedProvider {
   @override
   Future<List<String>> insertAllByType(
       List<String> listOfId, String type) async {
-    for (var i = 0; i < listOfId.length; i++) {
+    int ranked = 0;
+    await Future.forEach(listOfId, (String id) async {
       final sql = 'INSERT INTO top_rated '
           '(top_rated_id, top_rated_type, ranked) VALUES (?, ?, ?)';
-      await _db.rawInsert(sql, [listOfId[0], type, i + 1]);
-    }
+      await _db.rawInsert(sql, [id, type, ++ranked]);
+    });
 
     return listOfId;
   }

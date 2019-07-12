@@ -28,9 +28,10 @@ class ArtistCacheProviderDb implements ArtistCacheProvider {
 
   @override
   Future<List<Artist>> findWhereInId(List<String> listOfId) async {
+    final args = listOfId.map((id) => '?').toList().join(', ');
     final sql = 'SELECT id, name, cover_url, created_at, updated_at '
-        'FROM artists WHERE id IN (?)';
-    final rows = await _db.rawQuery(sql, [listOfId.join(',')]);
+        'FROM artists WHERE id IN ($args)';
+    final rows = await _db.rawQuery(sql, listOfId);
     final List<Artist> results = List();
 
     if (rows.isNotEmpty) {
