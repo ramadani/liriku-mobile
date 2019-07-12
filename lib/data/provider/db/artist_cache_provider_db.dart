@@ -1,35 +1,82 @@
 import 'package:liriku/data/collection/artist_collection.dart';
 import 'package:liriku/data/model/artist.dart';
 import 'package:liriku/data/provider/artist_cache_provider.dart';
+import 'package:sqflite/sqflite.dart';
 
 class ArtistCacheProviderDb implements ArtistCacheProvider {
+  final Database _db;
+
+  ArtistCacheProviderDb(this._db);
+
   @override
-  Future<ArtistCollection> fetch(int page, int perPage, {String search = ""}) {
-    // TODO: implement fetch
-    return null;
+  Future<ArtistCollection> fetch(int page, int perPage,
+      {String search = ""}) async {
+    final offset = (page - 1) * perPage;
+    final sql = 'SELECT id, name, cover_url, created_at, updated_at '
+        'FROM artists LIMIT ?,?';
+    final rows = await _db.rawQuery(sql, [offset, perPage]);
+    final List<Artist> artists = List();
+
+    if (rows.isNotEmpty) {
+      rows.toList().forEach((raw) {
+        artists.add(_artistMapper(raw));
+      });
+    }
+
+    return ArtistCollection(artists, page, perPage);
   }
 
   @override
-  Future<List<Artist>> topByNewLyric(int limit) {
-    // TODO: implement topByNewLyric
-    return null;
+  Future<List<Artist>> findWhereInId(List<String> listOfId) async {
+    final sql = 'SELECT id, name, cover_url, created_at, updated_at '
+        'FROM artists WHERE id IN (?)';
+    final rows = await _db.rawQuery(sql, [listOfId.join(',')]);
+    final List<Artist> results = List();
+
+    if (rows.isNotEmpty) {
+      rows.toList().forEach((raw) {
+        results.add(_artistMapper(raw));
+      });
+    }
+
+    return results;
   }
 
   @override
-  Future<Artist> save(Artist artist) {
-    // TODO: implement save
-    return null;
+  Future<Artist> save(Artist artist) async {
+    final sql = 'REPLACE INTO artists (id, name, cover_url, created_at, '
+        'updated_at) VALUES (?, ?, ?, ?, ?)';
+    await _db.execute(sql, [
+      artist.id,
+      artist.name,
+      artist.coverUrl,
+      artist.createdAt.millisecondsSinceEpoch,
+      artist.updatedAt.millisecondsSinceEpoch,
+    ]);
+
+    return artist;
   }
 
   @override
-  Future<ArtistLyrics> detail(String id) {
-    // TODO: implement detail
-    return null;
+  Future<Artist> detail(String id) async {
+    final sql = 'SELECT id, name, cover_url, created_at, updated_at '
+        'FROM artists WHERE id = ?';
+    final rows = await _db.rawQuery(sql, [id]);
+
+    if (rows.isEmpty) {
+      throw Exception('Artist by id $id is not found');
+    }
+
+    return _artistMapper(rows[0]);
   }
 
-  @override
-  Future<bool> delete(String id) {
-    // TODO: implement delete
-    return null;
+  Artist _artistMapper(dynamic raw) {
+    return Artist(
+      id: raw['id'],
+      name: raw['name'],
+      coverUrl: raw['cover_url'],
+      createdAt: DateTime.fromMillisecondsSinceEpoch(raw['created_at'] as num),
+      updatedAt: DateTime.fromMillisecondsSinceEpoch(raw['updated_at'] as num),
+    );
   }
 }

@@ -4,11 +4,9 @@ import 'package:liriku/data/model/artist.dart';
 abstract class ArtistCacheProvider {
   Future<ArtistCollection> fetch(int page, int perPage, {String search = ""});
 
-  Future<List<Artist>> topByNewLyric(int limit);
+  Future<List<Artist>> findWhereInId(List<String> listOfId);
 
-  Future<ArtistLyrics> detail(String id);
+  Future<Artist> detail(String id);
 
   Future<Artist> save(Artist artist);
-
-  Future<bool> delete(String id);
 }
