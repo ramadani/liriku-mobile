@@ -1,4 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+
+import 'image_placeholder.dart';
 
 class ArtistCover extends StatelessWidget {
   final String url;
@@ -16,11 +19,13 @@ class ArtistCover extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.all(Radius.circular(4.0)),
-      child: Image.network(
-        url,
+      child: CachedNetworkImage(
+        imageUrl: url,
         fit: BoxFit.cover,
         width: width,
         height: height,
+        placeholder: (context, url) =>
+            ImagePlaceholder(width: width, height: height),
       ),
     );
   }

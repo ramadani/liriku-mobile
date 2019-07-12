@@ -18,7 +18,7 @@ class SplashScreen extends StatelessWidget {
         child: Stack(
           children: <Widget>[
             Center(
-              child: Image.asset('assets/images/bg_splash.png'),
+              child: Image.asset('assets/images/ic_logo.png'),
             ),
             Positioned(
               bottom: 200,
