@@ -55,9 +55,15 @@ class _ArtistListState extends State<ArtistList> {
 
 class _ArtistItem extends StatelessWidget {
   final Artist _artist;
+  final double width;
   final double height;
 
-  const _ArtistItem({Key key, Artist artist, this.height})
+  const _ArtistItem({
+    Key key,
+    Artist artist,
+    this.width = 150,
+    this.height = 180,
+  })
       : _artist = artist,
         super(key: key);
 
@@ -69,7 +75,8 @@ class _ArtistItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           ArtistCover(url: _artist.coverUrl),
-          Padding(
+          Container(
+            width: width,
             padding: EdgeInsets.only(top: 8.0),
             child: Text(
               _artist.name,

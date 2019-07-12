@@ -39,7 +39,7 @@ class _LyricListState extends State<LyricList> {
                 onTap: () {},
                 child: Padding(
                   padding:
-                      EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+                  EdgeInsets.symmetric(vertical: 8.0).copyWith(left: 16.0),
                   child: LyricItem(lyric: lyrics[index]),
                 ),
               );

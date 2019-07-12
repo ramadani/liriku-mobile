@@ -120,6 +120,7 @@ class LyricCacheProviderDb implements LyricCacheProvider {
       readCount: raw['read_count'] as num,
       content: raw['content'],
       bookmarked: raw['bookmarked'] as num == 1,
+      artistId: raw['artist_id'],
       createdAt: DateTime.fromMillisecondsSinceEpoch(raw['created_at'] as num),
       updatedAt: DateTime.fromMillisecondsSinceEpoch(raw['updated_at'] as num),
     );

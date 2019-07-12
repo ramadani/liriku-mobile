@@ -42,9 +42,12 @@ class LyricItem extends StatelessWidget {
             children: labels,
           ),
         ),
-        Icon(
-          Icons.bookmark,
-          color: _lyric.bookmarked ? primaryDark : Colors.grey,
+        IconButton(
+          icon: Icon(
+            Icons.bookmark,
+            color: _lyric.bookmarked ? primaryDark : Colors.grey,
+          ),
+          onPressed: () {},
         ),
       ],
     );

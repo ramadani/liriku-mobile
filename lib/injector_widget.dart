@@ -67,8 +67,8 @@ class InjectorWidget extends InheritedWidget {
     _authRepository = AuthRepositoryConcrete(authProvider, authDataProvider);
     _artistRepository = ArtistRepositoryConcrete(
         artistProvider, artistCacheProvider, topRatedProvider);
-    _lyricRepository = LyricRepositoryConcrete(
-        lyricProvider, lyricCacheProvider, topRatedProvider);
+    _lyricRepository = LyricRepositoryConcrete(lyricProvider,
+        lyricCacheProvider, artistCacheProvider, topRatedProvider);
   }
 
   AuthBloc authBloc({bool forceCreate = false}) {
