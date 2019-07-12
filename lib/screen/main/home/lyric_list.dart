@@ -29,7 +29,12 @@ class _LyricListState extends State<LyricList> {
       bloc: _bloc,
       builder: (BuildContext context, LyricState state) {
         if (state is LyricLoading) {
-          return Center(child: CircularProgressIndicator());
+          return Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: CircularProgressIndicator(),
+            ),
+          );
         } else if (state is LyricLoaded) {
           final lyrics = state.lyrics;
 

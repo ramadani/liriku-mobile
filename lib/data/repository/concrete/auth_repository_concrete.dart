@@ -1,11 +1,11 @@
 import 'package:liriku/data/model/auth.dart';
-import 'package:liriku/data/provider/auth_data_provider.dart';
+import 'package:liriku/data/provider/app_data_provider.dart';
 import 'package:liriku/data/provider/auth_provider.dart';
 import 'package:liriku/data/repository/auth_repository.dart';
 
 class AuthRepositoryConcrete implements AuthRepository {
   final AuthProvider _authProvider;
-  final AuthDataProvider _authDataProvider;
+  final AppDataProvider _authDataProvider;
 
   AuthRepositoryConcrete(this._authProvider, this._authDataProvider);
 

@@ -6,11 +6,12 @@ import 'package:liriku/data/provider/api/artist_provider_api.dart';
 import 'package:liriku/data/provider/api/auth_provider_api.dart';
 import 'package:liriku/data/provider/api/http_client.dart';
 import 'package:liriku/data/provider/api/lyric_provider_api.dart';
+import 'package:liriku/data/provider/app_data_provider.dart';
 import 'package:liriku/data/provider/db/artist_cache_provider_db.dart';
 import 'package:liriku/data/provider/db/lyric_cache_provider_db.dart';
 import 'package:liriku/data/provider/db/sqlite_provider.dart';
 import 'package:liriku/data/provider/db/top_rated_provider_db.dart';
-import 'package:liriku/data/provider/prefs/auth_data_provider_prefs.dart';
+import 'package:liriku/data/provider/prefs/app_data_provider_prefs.dart';
 import 'package:liriku/data/repository/artist_repository.dart';
 import 'package:liriku/data/repository/auth_repository.dart';
 import 'package:liriku/data/repository/concrete/artist_repository_concrete.dart';
@@ -21,6 +22,8 @@ import 'package:meta/meta.dart';
 
 class InjectorWidget extends InheritedWidget {
   String _envFilename;
+
+  AppDataProvider _appDataProvider;
   AuthRepository _authRepository;
   ArtistRepository _artistRepository;
   LyricRepository _lyricRepository;
@@ -51,12 +54,11 @@ class InjectorWidget extends InheritedWidget {
     await config.loadFromAssets(_envFilename);
 
     final configData = config.data();
+    _appDataProvider = AppDataProviderPrefs();
+
     final db = await SQLiteProvider().open();
-
-    final authDataProvider = AuthDataProviderPrefs();
     final httpClient =
-    HttpClient(configData.baseApiUrl, configData.apiKey, authDataProvider);
-
+    HttpClient(configData.baseApiUrl, configData.apiKey, _appDataProvider);
     final authProvider = AuthProviderApi(httpClient);
     final artistProvider = ArtistProviderApi(httpClient);
     final lyricProvider = LyricProviderApi(httpClient);
@@ -64,7 +66,7 @@ class InjectorWidget extends InheritedWidget {
     final lyricCacheProvider = LyricCacheProviderDb(db);
     final topRatedProvider = TopRatedProviderDb(db);
 
-    _authRepository = AuthRepositoryConcrete(authProvider, authDataProvider);
+    _authRepository = AuthRepositoryConcrete(authProvider, _appDataProvider);
     _artistRepository = ArtistRepositoryConcrete(
         artistProvider, artistCacheProvider, topRatedProvider);
     _lyricRepository = LyricRepositoryConcrete(lyricProvider,
@@ -73,8 +75,8 @@ class InjectorWidget extends InheritedWidget {
 
   AuthBloc authBloc({bool forceCreate = false}) {
     if (_authBloc == null || forceCreate) {
-      _authBloc =
-          AuthBloc(_authRepository, _artistRepository, _lyricRepository);
+      _authBloc = AuthBloc(_appDataProvider, _authRepository, _artistRepository,
+          _lyricRepository);
     }
 
     return _authBloc;

@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:liriku/data/provider/auth_data_provider.dart';
+import 'package:liriku/data/provider/app_data_provider.dart';
 
 class HttpClient extends http.BaseClient {
   final http.Client _inner = http.Client();
-  final AuthDataProvider _authDataProvider;
+  final AppDataProvider _authDataProvider;
   final String _baseUrl;
   final String _apiKey;
   bool _isAuth = false;
