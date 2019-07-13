@@ -7,14 +7,26 @@ ThemeData appTheme(BuildContext context) {
     accentColor: color.primary,
     fontFamily: 'Montserrat',
     primaryTextTheme: TextTheme(
-      title: TextStyle(
-        color: Colors.black87,
-      ),
+      title: TextStyle(color: Colors.black87),
     ),
     appBarTheme: AppBarTheme(
       brightness: Brightness.light,
       color: Colors.white,
       elevation: 0,
+      textTheme: Theme
+          .of(context)
+          .textTheme
+          .copyWith(
+        title: Theme
+            .of(context)
+            .textTheme
+            .title
+            .copyWith(
+          fontWeight: FontWeight.w600,
+          fontFamily: 'Montserrat',
+        ),
+      ),
+      iconTheme: IconThemeData(color: color.primary),
     ),
     scaffoldBackgroundColor: Colors.white,
   );

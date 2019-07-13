@@ -22,16 +22,18 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
 
-  static _notInlinedMessages(_) => <String, Function>{
+  static _notInlinedMessages(_) =>
+      <String, Function>{
         "artists": MessageLookupByLibrary.simpleMessage("Artists"),
         "artistsDescSection": MessageLookupByLibrary.simpleMessage(
             "Top Ten New Artist\'s Lyrics"),
         "collection": MessageLookupByLibrary.simpleMessage("Collection"),
         "home": MessageLookupByLibrary.simpleMessage("Home"),
         "more": MessageLookupByLibrary.simpleMessage("More"),
+        "playlist": MessageLookupByLibrary.simpleMessage("Playlist"),
         "songs": MessageLookupByLibrary.simpleMessage("Songs"),
-        "songsDescSection":
-            MessageLookupByLibrary.simpleMessage("Top Ten New Lyrics"),
+        "songsDescSection": MessageLookupByLibrary.simpleMessage(
+            "Top Ten New Lyrics"),
         "title": MessageLookupByLibrary.simpleMessage("Liriku")
       };
 }

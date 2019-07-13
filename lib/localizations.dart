@@ -50,6 +50,10 @@ class AppLocalizations {
   String get songsDescSection {
     return Intl.message('Top Ten New Lyrics', name: 'songsDescSection');
   }
+
+  String get playlist {
+    return Intl.message('Playlist', name: 'playlist');
+  }
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

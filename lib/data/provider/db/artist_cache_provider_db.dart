@@ -52,7 +52,9 @@ class ArtistCacheProviderDb implements ArtistCacheProvider {
       artist.name,
       artist.coverUrl,
       artist.createdAt.millisecondsSinceEpoch,
-      artist.updatedAt.millisecondsSinceEpoch,
+      DateTime
+          .now()
+          .millisecondsSinceEpoch,
     ]);
 
     return artist;
