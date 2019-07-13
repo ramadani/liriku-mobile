@@ -75,7 +75,9 @@ class LyricCacheProviderDb implements LyricCacheProvider {
         lyric.coverUrl,
         lyric.content,
         lyric.readCount,
-        lyric.updatedAt.millisecondsSinceEpoch,
+        DateTime
+            .now()
+            .millisecondsSinceEpoch,
         lyric.id,
       ]);
     } else {
@@ -92,7 +94,9 @@ class LyricCacheProviderDb implements LyricCacheProvider {
         0,
         artistId,
         lyric.createdAt.millisecondsSinceEpoch,
-        lyric.updatedAt.millisecondsSinceEpoch,
+        DateTime
+            .now()
+            .millisecondsSinceEpoch,
       ]);
     }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:liriku/bloc/home/bloc.dart';
 import 'package:liriku/data/model/artist.dart';
+import 'package:liriku/screen/playlist/playlist_screen.dart';
 import 'package:liriku/widget/artist_cover.dart';
 
 class ArtistList extends StatefulWidget {
@@ -38,10 +39,21 @@ class _ArtistListState extends State<ArtistList> {
             itemCount: artists.length,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
+              final artist = artists[index];
               return Padding(
                 padding:
-                    EdgeInsets.only(left: index > 0 ? 0 : 16.0, right: 16.0),
-                child: _ArtistItem(artist: artists[index], height: 180),
+                EdgeInsets.only(left: index > 0 ? 0 : 16.0, right: 16.0),
+                child: GestureDetector(
+                  child: _ArtistItem(artist: artist, height: 180),
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      PlaylistScreen.routeName,
+                      arguments:
+                      PlaylistScreenArgs(id: artist.id, name: artist.name),
+                    );
+                  },
+                ),
               );
             },
           );

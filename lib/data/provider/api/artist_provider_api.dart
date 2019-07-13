@@ -65,8 +65,9 @@ class ArtistProviderApi implements ArtistProvider {
 
     final body = json.decode(response.body) as Map<String, dynamic>;
     final data = body['data'] as Map<String, dynamic>;
-    final List<Lyric> lyrics =
-        (data['lyrics'] as List).map((raw) => _lyricMapper(raw)).toList();
+    final List<Lyric> lyrics = (data['lyrics'] as List)
+        .map((raw) => _lyricMapper(raw, data['id']))
+        .toList();
 
     return ArtistLyrics(
       id: data['id'],
@@ -88,13 +89,14 @@ class ArtistProviderApi implements ArtistProvider {
     );
   }
 
-  Lyric _lyricMapper(dynamic raw) {
+  Lyric _lyricMapper(dynamic raw, String artistId) {
     return Lyric(
       id: raw['id'],
       title: raw['title'],
       coverUrl: raw['coverImgUrl'],
       readCount: raw['readCount'] as num,
       content: raw['content'],
+      artistId: artistId,
       createdAt: DateTime.parse(raw['createdAt']),
       updatedAt: DateTime.parse(raw['updatedAt']),
     );
