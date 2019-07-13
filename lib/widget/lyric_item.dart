@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:liriku/data/model/lyric.dart';
 import 'package:liriku/resource/colors.dart';
 
+typedef ItemTapCallback = void Function(BuildContext context, Lyric lyric);
+
 class LyricItem extends StatelessWidget {
   final Lyric _lyric;
+  final ItemTapCallback onBookmarkTap;
 
-  const LyricItem({Key key, Lyric lyric})
+  const LyricItem({Key key, Lyric lyric, this.onBookmarkTap})
       : _lyric = lyric,
         super(key: key);
 
@@ -47,7 +50,11 @@ class LyricItem extends StatelessWidget {
             Icons.bookmark,
             color: _lyric.bookmarked ? primaryDark : Colors.grey,
           ),
-          onPressed: () {},
+          onPressed: () {
+            if (onBookmarkTap != null) {
+              onBookmarkTap(context, _lyric);
+            }
+          },
         ),
       ],
     );

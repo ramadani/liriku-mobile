@@ -38,10 +38,13 @@ class _LyricListState extends State<LyricList> {
         } else if (state is LyricLoaded) {
           final lyrics = state.lyrics;
 
-          return Column(
-            children: List.generate(lyrics.length, (index) {
+          return ListView.builder(
+            itemCount: lyrics.length,
+            itemBuilder: (context, index) {
               return LyricTile(lyric: lyrics[index]);
-            }),
+            },
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
           );
         }
 

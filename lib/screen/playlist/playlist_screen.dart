@@ -77,10 +77,13 @@ class _PlaylistContentState extends State<_PlaylistContent> {
                   height: 10,
                 ),
               ),
-              Column(
-                children: List.generate(lyrics.length, (index) {
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: lyrics.length,
+                itemBuilder: (context, index) {
                   return LyricTile(lyric: lyrics[index]);
-                }),
+                },
+                physics: NeverScrollableScrollPhysics(),
               ),
             ],
           );
