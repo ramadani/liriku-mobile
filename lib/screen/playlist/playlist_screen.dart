@@ -66,7 +66,7 @@ class _PlaylistContentState extends State<_PlaylistContent> {
           return Column(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.all(16.0),
+                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
                 child: _PlaylistArtist(artist: state.artist),
               ),
               Padding(
