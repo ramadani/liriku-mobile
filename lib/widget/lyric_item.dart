@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:liriku/data/model/lyric.dart';
-import 'package:liriku/resource/colors.dart';
+import 'package:liriku/widget/bookmark_action.dart';
 
 typedef ItemTapCallback = void Function(BuildContext context, Lyric lyric);
 
@@ -45,11 +45,8 @@ class LyricItem extends StatelessWidget {
             children: labels,
           ),
         ),
-        IconButton(
-          icon: Icon(
-            Icons.bookmark,
-            color: _lyric.bookmarked ? primaryDark : Colors.grey,
-          ),
+        BookmarkAction(
+          bookmarked: _lyric.bookmarked,
           onPressed: () {
             if (onBookmarkTap != null) {
               onBookmarkTap(context, _lyric);

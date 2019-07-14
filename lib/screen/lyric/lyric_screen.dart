@@ -5,11 +5,13 @@ import 'package:html2md/html2md.dart' as html2md;
 import 'package:liriku/bloc/lyric/bloc.dart';
 import 'package:liriku/injector_widget.dart';
 import 'package:liriku/screen/playlist/playlist_screen.dart';
+import 'package:liriku/widget/bookmark_action.dart';
 
 class LyricScreenArgs {
   final String id;
+  final bool bookmarked;
 
-  LyricScreenArgs({this.id});
+  LyricScreenArgs({this.id, this.bookmarked = false});
 }
 
 class LyricScreen extends StatelessWidget {
@@ -21,7 +23,14 @@ class LyricScreen extends StatelessWidget {
     final bloc = InjectorWidget.of(context).lyricBloc();
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: <Widget>[
+          BookmarkAction(
+            bookmarked: args.bookmarked,
+            onPressed: () {},
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: _LyricContent(id: args.id, bloc: bloc),
       ),
