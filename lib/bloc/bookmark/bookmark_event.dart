@@ -4,14 +4,14 @@ abstract class BookmarkEvent extends Equatable {
   BookmarkEvent([List props = const []]) : super(props);
 }
 
-class SetBookmark extends BookmarkEvent {
+class InitBookmark extends BookmarkEvent {
   final String id;
   final bool bookmarked;
 
-  SetBookmark({this.id, this.bookmarked}) : super([id, bookmarked]);
+  InitBookmark({this.id, this.bookmarked}) : super([id, bookmarked]);
 
   @override
-  String toString() => 'SetBookmark { id: $id, bookmarked: $bookmarked }';
+  String toString() => 'InitBookmark { id: $id, bookmarked: $bookmarked }';
 }
 
 class BookmarkPressed extends BookmarkEvent {

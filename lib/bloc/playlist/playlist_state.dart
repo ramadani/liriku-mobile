@@ -31,6 +31,24 @@ class PlaylistLoaded extends PlaylistState {
   @override
   String toString() =>
       'PlaylistLoaded { artist: ${artist.name}, lyric_size: ${lyrics.length} }';
+
+  void updateBookmark(String id, bool bookmarked) {
+    final index = lyrics.indexWhere((Lyric it) => it.id == id);
+    if (index >= 0) {
+      final lyric = lyrics[index];
+      lyrics[index] = Lyric(
+        id: lyric.id,
+        title: lyric.title,
+        content: lyric.content,
+        coverUrl: lyric.coverUrl,
+        bookmarked: bookmarked,
+        readCount: lyric.readCount,
+        artistId: lyric.artistId,
+        createdAt: lyric.createdAt,
+        updatedAt: lyric.updatedAt,
+      );
+    }
+  }
 }
 
 class PlaylistError extends PlaylistState {

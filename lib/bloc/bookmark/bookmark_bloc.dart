@@ -9,16 +9,16 @@ class BookmarkBloc extends Bloc<BookmarkEvent, BookmarkState> {
   BookmarkBloc(this._lyricRepository);
 
   @override
-  BookmarkState get initialState => UnchangedBookmark();
+  BookmarkState get initialState => BookmarkUninitialized();
 
   @override
   Stream<BookmarkState> mapEventToState(BookmarkEvent event) async* {
     try {
-      if (event is BookmarkPressed) {
+      if (event is InitBookmark) {
+        yield BookmarkInitialized(id: event.id, bookmarked: event.bookmarked);
+      } else if (event is BookmarkPressed) {
         await _lyricRepository.setBookmark(event.id, event.bookmarked);
-        yield ChangedBookmark(id: event.id, bookmarked: event.bookmarked);
-      } else if (event is SetBookmark) {
-        yield ChangedBookmark(id: event.id, bookmarked: event.bookmarked);
+        yield BookmarkChanged(id: event.id, bookmarked: event.bookmarked);
       }
     } on Exception catch (_) {
       yield BookmarkError();

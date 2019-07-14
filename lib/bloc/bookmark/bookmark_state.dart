@@ -4,19 +4,30 @@ abstract class BookmarkState extends Equatable {
   BookmarkState([List props = const []]) : super(props);
 }
 
-class UnchangedBookmark extends BookmarkState {
+class BookmarkUninitialized extends BookmarkState {
   @override
-  String toString() => 'UnchangedBookmark';
+  String toString() => 'BookmarkUninitialized';
 }
 
-class ChangedBookmark extends BookmarkState {
+class BookmarkInitialized extends BookmarkState {
   final String id;
   final bool bookmarked;
 
-  ChangedBookmark({this.id, this.bookmarked}) : super([id, bookmarked]);
+  BookmarkInitialized({this.id, this.bookmarked}) : super([id, bookmarked]);
 
   @override
-  String toString() => 'ChangedBookmark { id: $id, bookmarked: $bookmarked }';
+  String toString() =>
+      'BookmarkInitialized { id: $id, bookmarked: $bookmarked }';
+}
+
+class BookmarkChanged extends BookmarkState {
+  final String id;
+  final bool bookmarked;
+
+  BookmarkChanged({this.id, this.bookmarked}) : super([id, bookmarked]);
+
+  @override
+  String toString() => 'BookmarkChanged { id: $id, bookmarked: $bookmarked }';
 }
 
 class BookmarkError extends BookmarkState {

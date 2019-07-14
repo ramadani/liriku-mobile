@@ -30,7 +30,9 @@ class LyricScreen extends StatelessWidget {
             bloc: bookmarkBloc,
             builder: (BuildContext context, BookmarkState state) {
               bool bookmarked = false;
-              if (state is ChangedBookmark) {
+              if (state is BookmarkInitialized) {
+                bookmarked = state.bookmarked;
+              } else if (state is BookmarkChanged) {
                 bookmarked = state.bookmarked;
               }
 

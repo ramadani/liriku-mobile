@@ -106,7 +106,7 @@ class InjectorWidget extends InheritedWidget {
 
   PlaylistBloc playlistBloc({bool forceCreate = false}) {
     if (_playlistBloc == null || forceCreate) {
-      _playlistBloc = PlaylistBloc(_artistRepository);
+      _playlistBloc = PlaylistBloc(_artistRepository, bookmarkBloc());
     }
 
     return _playlistBloc;

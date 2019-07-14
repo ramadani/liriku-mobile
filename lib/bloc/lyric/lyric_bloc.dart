@@ -18,7 +18,7 @@ class LyricBloc extends Bloc<LyricEvent, LyricState> {
     try {
       if (event is GetLyric) {
         final lyric = await _lyricRepository.getDetail(event.id);
-        _bookmarkBloc.dispatch(SetBookmark(
+        _bookmarkBloc.dispatch(InitBookmark(
           id: lyric.id,
           bookmarked: lyric.bookmarked,
         ));
