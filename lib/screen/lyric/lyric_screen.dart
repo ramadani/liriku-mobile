@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:html2md/html2md.dart' as html2md;
 import 'package:liriku/bloc/lyric/bloc.dart';
 import 'package:liriku/injector_widget.dart';
+import 'package:liriku/screen/playlist/playlist_screen.dart';
 
 class LyricScreenArgs {
   final String id;
@@ -56,10 +59,13 @@ class _LyricContentState extends State<_LyricContent> {
           return Center(child: CircularProgressIndicator());
         } else if (state is LyricLoaded) {
           final lyric = state.lyric;
+          final artist = lyric.artist;
+          final content = html2md.convert(lyric.content);
 
           return Padding(
             padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
                   lyric.title,
@@ -74,9 +80,31 @@ class _LyricContentState extends State<_LyricContent> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 4.0),
-                  child: Text(
-                    lyric.artist.name,
-                    style: TextStyle(color: Colors.black54),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, PlaylistScreen.routeName,
+                          arguments: PlaylistScreenArgs(
+                            id: artist.id,
+                            name: artist.name,
+                          ));
+                    },
+                    child: Text(
+                      lyric.artist.name,
+                      style: TextStyle(color: Colors.black54),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 20.0),
+                  child: MarkdownBody(
+                    data: content,
+                    styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context))
+                        .copyWith(
+                        p: Theme
+                            .of(context)
+                            .textTheme
+                            .body1
+                            .copyWith(height: 1.2)),
                   ),
                 ),
               ],

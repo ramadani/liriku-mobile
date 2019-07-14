@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:liriku/bloc/playlist/bloc.dart';
 import 'package:liriku/data/model/artist.dart';
+import 'package:liriku/data/model/lyric.dart';
 import 'package:liriku/injector_widget.dart';
 import 'package:liriku/localizations.dart';
+import 'package:liriku/screen/lyric/lyric_screen.dart';
 import 'package:liriku/widget/artist_cover.dart';
 import 'package:liriku/widget/lyric_tile.dart';
 
@@ -81,7 +83,13 @@ class _PlaylistContentState extends State<_PlaylistContent> {
                 shrinkWrap: true,
                 itemCount: lyrics.length,
                 itemBuilder: (context, index) {
-                  return LyricTile(lyric: lyrics[index]);
+                  return LyricTile(
+                    lyric: lyrics[index],
+                    onTap: (BuildContext context, Lyric lyric) {
+                      Navigator.pushNamed(context, LyricScreen.routeName,
+                          arguments: LyricScreenArgs(id: lyric.id));
+                    },
+                  );
                 },
                 physics: NeverScrollableScrollPhysics(),
               ),

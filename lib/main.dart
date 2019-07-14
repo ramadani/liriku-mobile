@@ -8,7 +8,7 @@ import 'package:liriku/injector_widget.dart';
 import 'app.dart';
 
 void main() async {
-  bool isInDebugMode = false;
+  bool isInDebugMode = true;
 
   FlutterError.onError = (FlutterErrorDetails details) {
     if (isInDebugMode) {
