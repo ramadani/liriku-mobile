@@ -56,4 +56,27 @@ class LyricRepositoryConcrete implements LyricRepository {
 
     return true;
   }
+
+  @override
+  Future<LyricArtist> getDetail(String id) async {
+    final lyric = await _lyricCacheProvider.detail(id);
+    final artist = await _artistCacheProvider.detail(lyric.artistId);
+
+    return LyricArtist(
+      id: lyric.id,
+      title: lyric.title,
+      content: lyric.content,
+      coverUrl: lyric.coverUrl,
+      bookmarked: lyric.bookmarked,
+      readCount: lyric.readCount,
+      createdAt: lyric.createdAt,
+      updatedAt: lyric.updatedAt,
+      artist: artist,
+    );
+  }
+
+  @override
+  Future<bool> setBookmark(String id, bool bookmarked) async {
+    return await _lyricCacheProvider.setBookmark(id, bookmarked);
+  }
 }

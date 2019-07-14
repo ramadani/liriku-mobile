@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:liriku/bloc/auth/auth_bloc.dart';
+import 'package:liriku/bloc/bookmark/bloc.dart';
 import 'package:liriku/bloc/home/bloc.dart' as home;
+import 'package:liriku/bloc/lyric/bloc.dart';
 import 'package:liriku/bloc/playlist/playlist_bloc.dart';
 import 'package:liriku/config/json_config.dart';
 import 'package:liriku/data/provider/api/artist_provider_api.dart';
@@ -33,6 +35,8 @@ class InjectorWidget extends InheritedWidget {
   home.ArtistBloc _homeArtistBloc;
   home.LyricBloc _homeLyricBloc;
   PlaylistBloc _playlistBloc;
+  LyricBloc _lyricBloc;
+  BookmarkBloc _bookmarkBloc;
 
   InjectorWidget({
     Key key,
@@ -94,7 +98,7 @@ class InjectorWidget extends InheritedWidget {
 
   home.LyricBloc homeLyricBloc({bool forceCreate = false}) {
     if (_homeLyricBloc == null || forceCreate) {
-      _homeLyricBloc = home.LyricBloc(_lyricRepository);
+      _homeLyricBloc = home.LyricBloc(_lyricRepository, bookmarkBloc());
     }
 
     return _homeLyricBloc;
@@ -102,9 +106,25 @@ class InjectorWidget extends InheritedWidget {
 
   PlaylistBloc playlistBloc({bool forceCreate = false}) {
     if (_playlistBloc == null || forceCreate) {
-      _playlistBloc = PlaylistBloc(_artistRepository);
+      _playlistBloc = PlaylistBloc(_artistRepository, bookmarkBloc());
     }
 
     return _playlistBloc;
+  }
+
+  LyricBloc lyricBloc({bool forceCreate = false}) {
+    if (_lyricBloc == null || forceCreate) {
+      _lyricBloc = LyricBloc(_lyricRepository, bookmarkBloc());
+    }
+
+    return _lyricBloc;
+  }
+
+  BookmarkBloc bookmarkBloc({bool forceCreate = false}) {
+    if (_bookmarkBloc == null || forceCreate) {
+      _bookmarkBloc = BookmarkBloc(_lyricRepository);
+    }
+
+    return _bookmarkBloc;
   }
 }

@@ -18,3 +18,8 @@ class Authenticated extends AuthState {
   @override
   String toString() => 'Authenticated';
 }
+
+class AuthError extends AuthState {
+  @override
+  String toString() => 'AuthError';
+}

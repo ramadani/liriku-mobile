@@ -11,4 +11,6 @@ abstract class LyricCacheProvider {
   Future<Lyric> save(Lyric lyric, String artistId);
 
   Future<Lyric> detail(String id);
+
+  Future<bool> setBookmark(String id, bool bookmarked);
 }

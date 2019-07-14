@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:device_info/device_info.dart';
 import 'package:liriku/bloc/auth/auth_events.dart';
 import 'package:liriku/bloc/auth/auth_states.dart';
+import 'package:liriku/bloc/auth/bloc.dart';
 import 'package:liriku/data/provider/app_data_provider.dart';
 import 'package:liriku/data/repository/artist_repository.dart';
 import 'package:liriku/data/repository/auth_repository.dart';
@@ -23,22 +24,32 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   @override
   Stream<AuthState> mapEventToState(AuthEvent event) async* {
-    if (event is Check) {
-      final isAuth = await _authRepository.check();
-      if (isAuth) {
-        await _syncTopRated();
-        yield Authenticated();
-      } else {
-        dispatch(Login());
-        yield Unauthenticated();
-      }
-    } else if (event is Login) {
-      final deviceInfo = DeviceInfoPlugin();
-      final androidInfo = await deviceInfo.androidInfo;
+    try {
+      if (event is Check) {
+        final isAuth = await _authRepository.check();
+        if (isAuth) {
+          await _syncTopRated();
+          yield Authenticated();
+        } else {
+          dispatch(Login());
+          yield Unauthenticated();
+        }
+      } else if (event is Login) {
+        String deviceName = '';
 
-      await _authRepository.login(androidInfo.model);
-      await _syncTopRated();
-      yield Authenticated();
+        try {
+          final deviceInfo = DeviceInfoPlugin();
+          final androidInfo = await deviceInfo.androidInfo;
+          deviceName = '${androidInfo.brand} - ${androidInfo.model}';
+        } catch (e) {
+          deviceName = 'Unknown';
+        }
+
+        await _authRepository.login(deviceName);
+        dispatch(Check());
+      }
+    } on Exception catch (_) {
+      yield AuthError();
     }
   }
 

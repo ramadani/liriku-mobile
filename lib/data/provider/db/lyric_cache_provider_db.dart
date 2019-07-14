@@ -129,4 +129,11 @@ class LyricCacheProviderDb implements LyricCacheProvider {
       updatedAt: DateTime.fromMillisecondsSinceEpoch(raw['updated_at'] as num),
     );
   }
+
+  @override
+  Future<bool> setBookmark(String id, bool bookmarked) async {
+    final sql = 'UPDATE lyrics SET bookmarked = ? WHERE id = ?';
+    await _db.rawUpdate(sql, [bookmarked ? 1 : 0, id]);
+    return true;
+  }
 }

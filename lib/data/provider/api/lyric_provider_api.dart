@@ -27,7 +27,9 @@ class LyricProviderApi implements LyricProvider {
 
     final body = json.decode(response.body) as Map<String, dynamic>;
     final data = body['data'] as List;
-    final List<Lyric> lyrics = data.map((raw) => _lyricMapper(raw)).toList();
+    final List<Lyric> lyrics = List();
+
+    lyrics.addAll(data.map((raw) => _lyricMapper(raw)).toList());
 
     return LyricCollection(
       lyrics,
@@ -50,7 +52,9 @@ class LyricProviderApi implements LyricProvider {
 
     final body = json.decode(response.body) as Map<String, dynamic>;
     final data = body['data'] as List;
-    final List<Lyric> results = data.map((raw) => _lyricMapper(raw)).toList();
+    final List<Lyric> results = List();
+
+    results.addAll(data.map((raw) => _lyricMapper(raw)).toList());
 
     return results;
   }

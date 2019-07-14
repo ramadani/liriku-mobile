@@ -33,4 +33,15 @@ class ArtistLyrics extends Equatable {
     this.updatedAt,
     this.lyrics,
   }) : super([id, name, coverUrl, createdAt, updatedAt, lyrics]);
+
+  ArtistLyrics copyWith({List<Lyric> lyrics}) {
+    return ArtistLyrics(
+      id: this.id,
+      name: this.name,
+      coverUrl: this.coverUrl,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+      lyrics: lyrics,
+    );
+  }
 }

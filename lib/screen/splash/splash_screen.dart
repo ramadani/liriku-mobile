@@ -66,6 +66,18 @@ class _LoadingIndicatorState extends State<_LoadingIndicator>
         builder: (BuildContext context, AuthState state) {
           if (state is Authenticated) {
             return Container();
+          } else if (state is AuthError) {
+            return Center(
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    'Sorry, something goes wrong',
+                    style: TextStyle(color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            );
           }
 
           return LinearProgressIndicator(
