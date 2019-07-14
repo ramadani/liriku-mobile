@@ -48,7 +48,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await _authRepository.login(deviceName);
         yield Checking();
       }
-    } catch (e) {
+    } on Exception catch (_) {
       yield AuthError();
     }
   }
