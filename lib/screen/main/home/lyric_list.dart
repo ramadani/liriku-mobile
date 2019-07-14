@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:liriku/bloc/bookmark/bloc.dart';
 import 'package:liriku/bloc/home/bloc.dart';
 import 'package:liriku/data/model/lyric.dart';
+import 'package:liriku/injector_widget.dart';
 import 'package:liriku/screen/lyric/lyric_screen.dart';
 import 'package:liriku/widget/lyric_tile.dart';
 
@@ -27,6 +29,8 @@ class _LyricListState extends State<LyricList> {
 
   @override
   Widget build(BuildContext context) {
+    final bookmarkBloc = InjectorWidget.of(context).bookmarkBloc();
+
     return BlocBuilder(
       bloc: _bloc,
       builder: (BuildContext context, LyricState state) {
@@ -48,6 +52,12 @@ class _LyricListState extends State<LyricList> {
                 onTap: (BuildContext context, Lyric lyric) {
                   Navigator.pushNamed(context, LyricScreen.routeName,
                       arguments: LyricScreenArgs(id: lyric.id));
+                },
+                onBookmarkTap: (BuildContext context, Lyric lyric) {
+                  bookmarkBloc.dispatch(BookmarkPressed(
+                    id: lyric.id,
+                    bookmarked: !lyric.bookmarked,
+                  ));
                 },
               );
             },

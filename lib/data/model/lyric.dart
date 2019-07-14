@@ -74,4 +74,18 @@ class LyricArtist extends Lyric {
           bookmarked: bookmarked,
     artistId: artist.id,
         );
+
+  LyricArtist copyWith({bool bookmarked = false}) {
+    return LyricArtist(
+      id: this.id,
+      title: this.title,
+      coverUrl: this.coverUrl,
+      content: this.content,
+      readCount: this.readCount,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+      bookmarked: bookmarked,
+      artist: this.artist,
+    );
+  }
 }

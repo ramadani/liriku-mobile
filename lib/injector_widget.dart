@@ -98,7 +98,7 @@ class InjectorWidget extends InheritedWidget {
 
   home.LyricBloc homeLyricBloc({bool forceCreate = false}) {
     if (_homeLyricBloc == null || forceCreate) {
-      _homeLyricBloc = home.LyricBloc(_lyricRepository);
+      _homeLyricBloc = home.LyricBloc(_lyricRepository, bookmarkBloc());
     }
 
     return _homeLyricBloc;
