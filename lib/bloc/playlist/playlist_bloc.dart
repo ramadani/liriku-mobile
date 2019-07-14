@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:liriku/bloc/bookmark/bloc.dart';
 import 'package:liriku/bloc/playlist/playlist_event.dart';
 import 'package:liriku/bloc/playlist/playlist_state.dart';
+import 'package:liriku/data/model/lyric.dart';
 import 'package:liriku/data/repository/artist_repository.dart';
 
 class PlaylistBloc extends Bloc<PlaylistEvent, PlaylistState> {
@@ -59,8 +60,14 @@ class PlaylistBloc extends Bloc<PlaylistEvent, PlaylistState> {
   Stream<PlaylistState> _mapChangeBookmarkToState(
       ChangeBookmarkInPlaylist event, PlaylistLoaded state) async* {
     if (state.lyrics.length > 0) {
-      state.updateBookmark(event.lyricId, event.bookmarked);
-      yield state;
+      final lyrics = state.lyrics.map((Lyric it) {
+        return it.id == event.lyricId
+            ? it.copyWith(bookmarked: event.bookmarked)
+            : it.copyWith(bookmarked: it.bookmarked);
+      }).toList();
+
+      final artistLyrics = state.artistLyrics.copyWith(lyrics: lyrics);
+      yield PlaylistLoaded(artistLyrics: artistLyrics);
     }
   }
 

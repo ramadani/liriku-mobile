@@ -34,6 +34,20 @@ class Lyric extends Equatable {
     bookmarked,
     artistId,
   ]);
+
+  Lyric copyWith({bool bookmarked = false}) {
+    return Lyric(
+      id: this.id,
+      title: this.title,
+      coverUrl: this.coverUrl,
+      content: this.content,
+      readCount: this.readCount,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+      bookmarked: bookmarked,
+      artistId: this.artistId,
+    );
+  }
 }
 
 class LyricArtist extends Lyric {
