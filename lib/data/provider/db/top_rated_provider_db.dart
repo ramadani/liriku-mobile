@@ -11,8 +11,9 @@ class TopRatedProviderDb implements TopRatedProvider {
     final sql = 'SELECT top_rated_id FROM top_rated '
         'WHERE top_rated_type = ? ORDER BY ranked ASC';
     final rows = await _db.rawQuery(sql, [type]);
-    final List<String> results =
-    rows.map((raw) => raw['top_rated_id'].toString()).toList();
+    final List<String> results = List();
+
+    results.addAll(rows.map((raw) => raw['top_rated_id'].toString()).toList());
 
     return results;
   }

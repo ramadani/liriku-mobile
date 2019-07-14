@@ -33,10 +33,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         yield Unauthenticated();
       }
     } else if (event is Login) {
-      final deviceInfo = DeviceInfoPlugin();
-      final androidInfo = await deviceInfo.androidInfo;
+      String deviceName = '';
 
-      await _authRepository.login(androidInfo.model);
+      try {
+        final deviceInfo = DeviceInfoPlugin();
+        final androidInfo = await deviceInfo.androidInfo;
+        deviceName = '${androidInfo.brand} - ${androidInfo.model}';
+      } catch (e) {
+        deviceName = 'Unknown';
+      }
+
+      await _authRepository.login(deviceName);
       await _syncTopRated();
       yield Authenticated();
     }
