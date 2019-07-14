@@ -74,4 +74,9 @@ class LyricRepositoryConcrete implements LyricRepository {
       artist: artist,
     );
   }
+
+  @override
+  Future<bool> setBookmark(String id, bool bookmarked) async {
+    return await _lyricCacheProvider.setBookmark(id, bookmarked);
+  }
 }

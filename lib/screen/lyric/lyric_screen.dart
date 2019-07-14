@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:html2md/html2md.dart' as html2md;
+import 'package:liriku/bloc/bookmark/bloc.dart';
 import 'package:liriku/bloc/lyric/bloc.dart';
 import 'package:liriku/injector_widget.dart';
 import 'package:liriku/screen/playlist/playlist_screen.dart';
@@ -9,9 +10,8 @@ import 'package:liriku/widget/bookmark_action.dart';
 
 class LyricScreenArgs {
   final String id;
-  final bool bookmarked;
 
-  LyricScreenArgs({this.id, this.bookmarked = false});
+  LyricScreenArgs({this.id});
 }
 
 class LyricScreen extends StatelessWidget {
@@ -20,19 +20,35 @@ class LyricScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final LyricScreenArgs args = ModalRoute.of(context).settings.arguments;
-    final bloc = InjectorWidget.of(context).lyricBloc();
+    final lyricBloc = InjectorWidget.of(context).lyricBloc();
+    final bookmarkBloc = InjectorWidget.of(context).bookmarkBloc();
 
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
-          BookmarkAction(
-            bookmarked: args.bookmarked,
-            onPressed: () {},
+          BlocBuilder(
+            bloc: bookmarkBloc,
+            builder: (BuildContext context, BookmarkState state) {
+              bool bookmarked = false;
+              if (state is ChangedBookmark) {
+                bookmarked = state.bookmarked;
+              }
+
+              return BookmarkAction(
+                bookmarked: bookmarked,
+                onPressed: () {
+                  bookmarkBloc.dispatch(BookmarkPressed(
+                    id: args.id,
+                    bookmarked: !bookmarked,
+                  ));
+                },
+              );
+            },
           ),
         ],
       ),
       body: SingleChildScrollView(
-        child: _LyricContent(id: args.id, bloc: bloc),
+        child: _LyricContent(id: args.id, bloc: lyricBloc),
       ),
     );
   }

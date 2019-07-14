@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:liriku/bloc/auth/auth_bloc.dart';
+import 'package:liriku/bloc/bookmark/bloc.dart';
 import 'package:liriku/bloc/home/bloc.dart' as home;
 import 'package:liriku/bloc/lyric/bloc.dart';
 import 'package:liriku/bloc/playlist/playlist_bloc.dart';
@@ -35,6 +36,7 @@ class InjectorWidget extends InheritedWidget {
   home.LyricBloc _homeLyricBloc;
   PlaylistBloc _playlistBloc;
   LyricBloc _lyricBloc;
+  BookmarkBloc _bookmarkBloc;
 
   InjectorWidget({
     Key key,
@@ -112,9 +114,17 @@ class InjectorWidget extends InheritedWidget {
 
   LyricBloc lyricBloc({bool forceCreate = false}) {
     if (_lyricBloc == null || forceCreate) {
-      return _lyricBloc = LyricBloc(_lyricRepository);
+      _lyricBloc = LyricBloc(_lyricRepository, bookmarkBloc());
     }
 
     return _lyricBloc;
+  }
+
+  BookmarkBloc bookmarkBloc({bool forceCreate = false}) {
+    if (_bookmarkBloc == null || forceCreate) {
+      _bookmarkBloc = BookmarkBloc(_lyricRepository);
+    }
+
+    return _bookmarkBloc;
   }
 }
