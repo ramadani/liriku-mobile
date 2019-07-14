@@ -54,6 +54,10 @@ class AppLocalizations {
   String get playlist {
     return Intl.message('Playlist', name: 'playlist');
   }
+
+  String get search {
+    return Intl.message('Search Song or Artist', name: 'search');
+  }
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

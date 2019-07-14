@@ -102,7 +102,7 @@ class _LyricContentState extends State<_LyricContent> {
                       .title
                       .copyWith(
                     fontSize: 22,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 Padding(

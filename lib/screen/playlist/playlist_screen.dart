@@ -131,7 +131,7 @@ class _PlaylistArtist extends StatelessWidget {
                   artist.name,
                   style: Theme.of(context).textTheme.title.copyWith(
                         fontSize: 22,
-                        fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.bold,
                       ),
                 ),
                 Padding(

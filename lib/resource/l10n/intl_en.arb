@@ -11,5 +11,6 @@
   "artistsDescSection": "Top Ten New Artist's Lyrics",
   "songs": "Songs",
   "songsDescSection": "Top Ten New Lyrics",
-  "playlist": "Playlist"
+  "playlist": "Playlist",
+  "search": "Search Song or Artist"
 }
