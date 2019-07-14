@@ -125,7 +125,7 @@ class _Tab extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: UnderlineTabIndicator(
-          borderSide: BorderSide(color: color, width: 2.4),
+          borderSide: BorderSide(color: color, width: 3),
         ),
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 12.0),

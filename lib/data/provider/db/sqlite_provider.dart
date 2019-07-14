@@ -12,9 +12,13 @@ class SQLiteProvider {
         await db.execute(_createArtistTable());
         await db.execute(_createLyricTable());
         await db.execute(_createTopRatedTable());
-        await db.execute(_createBookmarkableTable());
       },
-      version: 2,
+      onUpgrade: (db, oldVersion, version) async {
+        if (oldVersion < version) {
+          await db.execute(_createBookmarkableTable());
+        }
+      },
+      version: 4,
     );
   }
 
