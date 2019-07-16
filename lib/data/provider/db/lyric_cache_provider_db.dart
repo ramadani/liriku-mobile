@@ -10,14 +10,20 @@ class LyricCacheProviderDb implements LyricCacheProvider {
 
   @override
   Future<LyricCollection> fetch(int page, int perPage,
-      {String search = ""}) async {
+      {String search = ''}) async {
+    String searchLike = '';
+    if (search != '') {
+      searchLike = "WHERE title LIKE '%$search%'";
+    }
+
     final offset = (page - 1) * perPage;
     final sql = 'SELECT id, title, cover_url, content, bookmarked, read_count, '
-        'artist_id, created_at, updated_at FROM lyrics LIMIT ?,?';
+        'artist_id, created_at, updated_at FROM lyrics '
+        '$searchLike LIMIT ?,?';
     final rows = await _db.rawQuery(sql, [offset, perPage]);
-    final List<Lyric> lyrics = List();
+    final List<Lyric> lyrics = [];
 
-    if (rows.isNotEmpty) {
+    if (rows.length > 0) {
       rows.toList().forEach((raw) {
         lyrics.add(_lyricMapper(raw));
       });

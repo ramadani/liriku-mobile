@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:liriku/bloc/search/bloc.dart';
+import 'package:liriku/bloc/search/search_form_event.dart';
+import 'package:liriku/injector_widget.dart';
 import 'package:liriku/localizations.dart';
 import 'package:liriku/screen/search/artist_page.dart';
 import 'package:liriku/screen/search/songs_page.dart';
@@ -37,9 +40,12 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final searchFormBloc = InjectorWidget.of(context).searchFormBloc();
+    final lyricBloc = InjectorWidget.of(context).lyricListBloc();
+
     return Scaffold(
       appBar: AppBar(
-        title: _SearchForm(),
+        title: _SearchForm(bloc: searchFormBloc),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(56.0),
           child: Padding(
@@ -70,21 +76,28 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
         ),
       ),
-      body: PageView(
-        controller: _pageController,
-        onPageChanged: (page) {
-          _changePage(page);
-        },
-        children: <Widget>[
-          SongPage(),
-          ArtistPage(),
-        ],
+      body: Padding(
+        padding: EdgeInsets.only(top: 16.0),
+        child: PageView(
+          controller: _pageController,
+          onPageChanged: (page) {
+            _changePage(page);
+          },
+          children: <Widget>[
+            SongPage(bloc: lyricBloc),
+            ArtistPage(),
+          ],
+        ),
       ),
     );
   }
 }
 
 class _SearchForm extends StatelessWidget {
+  final SearchFormBloc bloc;
+
+  const _SearchForm({Key key, this.bloc}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -102,7 +115,7 @@ class _SearchForm extends StatelessWidget {
         ),
         textInputAction: TextInputAction.search,
         onSubmitted: (text) {
-          print('search $text');
+          bloc.dispatch(SearchFromSubmitted(keyword: text));
         },
       ),
     );

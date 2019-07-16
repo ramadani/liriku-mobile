@@ -31,7 +31,10 @@ class LyricRepositoryConcrete implements LyricRepository {
     }
 
     final result = await _lyricProvider.fetch(page, perPage, search: search);
-
+    print('dari api provider ${result.lyrics.length}');
+//    await Future.forEach(result.lyrics, (Lyric lyric) async {
+//      await _lyricCacheProvider.save(lyric, lyric.artistId);
+//    });
     return result;
   }
 

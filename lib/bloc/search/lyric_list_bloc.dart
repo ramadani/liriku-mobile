@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:liriku/bloc/search/bloc.dart';
-import 'package:liriku/bloc/search/lyric_list_event.dart';
-import 'package:liriku/bloc/search/lyric_list_state.dart';
 import 'package:liriku/data/repository/lyric_repository.dart';
 
 class LyricListBloc extends Bloc<LyricListEvent, LyricListState> {
@@ -14,7 +12,7 @@ class LyricListBloc extends Bloc<LyricListEvent, LyricListState> {
   LyricListBloc(this._searchFormBloc, this._lyricRepository) {
     _searchSubscription = _searchFormBloc.state.listen((SearchFormState state) {
       if (state is SearchFormChanged) {
-        dispatch(FetchLyricList(page: 1, perPage: 100, keyword: state.keyword));
+        dispatch(FetchLyricList(keyword: state.keyword));
       }
     });
   }
@@ -24,15 +22,10 @@ class LyricListBloc extends Bloc<LyricListEvent, LyricListState> {
 
   @override
   Stream<LyricListState> mapEventToState(LyricListEvent event) async* {
-    try {
-      if (event is FetchLyricList) {
-        yield* _mapFetchToState(event);
-      } else if (event is FetchMoreLyricList &&
-          currentState is LyricListLoaded) {
-        yield* _mapFetchMoreToState(event, currentState as LyricListLoaded);
-      }
-    } on Exception catch (_) {
-      yield LyricListError();
+    if (event is FetchLyricList) {
+      yield* _mapFetchToState(event);
+    } else if (event is FetchMoreLyricList && currentState is LyricListLoaded) {
+      yield* _mapFetchMoreToState(event, currentState as LyricListLoaded);
     }
   }
 
@@ -43,32 +36,37 @@ class LyricListBloc extends Bloc<LyricListEvent, LyricListState> {
   }
 
   Stream<LyricListState> _mapFetchToState(FetchLyricList event) async* {
-    yield LyricListLoading();
+    try {
+      yield LyricListLoading();
 
-    final result = await _lyricRepository.paginate(
-        page: event.page, perPage: event.perPage, search: event.keyword);
+      final result = await _lyricRepository.paginate(
+          page: event.page, perPage: event.perPage, search: event.keyword);
 
-    yield LyricListLoaded(
-      page: result.page,
-      perPage: result.perPage,
-      keyword: event.keyword,
-      lyrics: result.lyrics,
-    );
+      yield LyricListLoaded(
+        page: result.page,
+        perPage: result.perPage,
+        keyword: event.keyword,
+        lyrics: result.lyrics,
+      );
+    } catch (e) {
+      yield LyricListError();
+    }
   }
 
   Stream<LyricListState> _mapFetchMoreToState(
       FetchMoreLyricList event, LyricListLoaded state) async* {
-    yield LyricListLoadingMore(
-        page: state.page + 1, perPage: state.perPage, keyword: state.keyword);
+    try {
+      final result = await _lyricRepository.paginate(
+          page: state.page + 1, perPage: state.perPage, search: state.keyword);
 
-    final result = await _lyricRepository.paginate(
-        page: state.page + 1, perPage: state.perPage, search: state.keyword);
-
-    yield LyricListLoaded(
-      page: result.page,
-      perPage: result.perPage,
-      keyword: state.keyword,
-      lyrics: state.lyrics + result.lyrics,
-    );
+      yield LyricListLoaded(
+        page: result.page,
+        perPage: result.perPage,
+        keyword: state.keyword,
+        lyrics: state.lyrics + result.lyrics,
+      );
+    } catch (e) {
+      yield LyricListError();
+    }
   }
 }
