@@ -1,3 +1,4 @@
+import 'package:liriku/data/collection/lyric_collection.dart';
 import 'package:liriku/data/model/lyric.dart';
 import 'package:liriku/data/provider/artist_cache_provider.dart';
 import 'package:liriku/data/provider/bookmarkable_provider.dart';
@@ -18,6 +19,21 @@ class LyricRepositoryConcrete implements LyricRepository {
       this._artistCacheProvider,
       this._topRatedProvider,
       this._bookmarkableProvider,);
+
+  @override
+  Future<LyricCollection> paginate(
+      {int page = 1, int perPage = 10, String search = ''}) async {
+    final cacheResult =
+    await _lyricCacheProvider.fetch(page, perPage, search: search);
+
+    if (cacheResult.lyrics.length > 0) {
+      return cacheResult;
+    }
+
+    final result = await _lyricProvider.fetch(page, perPage, search: search);
+
+    return result;
+  }
 
   @override
   Future<List<Lyric>> getTopLyric({int limit = 10}) async {
@@ -81,7 +97,14 @@ class LyricRepositoryConcrete implements LyricRepository {
   @override
   Future<bool> setBookmark(String id, bool bookmarked) async {
     await _lyricCacheProvider.setBookmark(id, bookmarked);
-    await _bookmarkableProvider.insert(id, 'LYRIC');
+
+    try {
+      if (bookmarked) {
+        await _bookmarkableProvider.insert(id, 'LYRIC');
+      } else {
+        await _bookmarkableProvider.delete(id, 'LYRIC');
+      }
+    } catch (e) {}
 
     return true;
   }
