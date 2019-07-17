@@ -83,9 +83,9 @@ class InjectorWidget extends InheritedWidget {
     _lyricRepository = LyricRepositoryConcrete(
       lyricProvider,
       lyricCacheProvider,
-      artistCacheProvider,
       topRatedProvider,
       bookmarkableProvider,
+      _artistRepository,
     );
   }
 

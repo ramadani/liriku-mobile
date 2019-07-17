@@ -12,5 +12,6 @@
   "songs": "Songs",
   "songsDescSection": "Top Ten New Lyrics",
   "playlist": "Playlist",
-  "search": "Search Song or Artist"
+  "search": "Search Song or Artist",
+  "searchEmptyResult": "Can't find any data that you're looking for"
 }

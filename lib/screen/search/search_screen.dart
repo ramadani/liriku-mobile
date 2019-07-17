@@ -76,18 +76,15 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.only(top: 16.0),
-        child: PageView(
-          controller: _pageController,
-          onPageChanged: (page) {
-            _changePage(page);
-          },
-          children: <Widget>[
-            SongPage(bloc: lyricBloc),
-            ArtistPage(),
-          ],
-        ),
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (page) {
+          _changePage(page);
+        },
+        children: <Widget>[
+          SongPage(bloc: lyricBloc),
+          ArtistPage(),
+        ],
       ),
     );
   }

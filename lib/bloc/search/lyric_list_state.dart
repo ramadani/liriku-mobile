@@ -42,6 +42,11 @@ class LyricListLoadingMore extends LyricListState {
       'LyricListLoadingMore { page: $page, perPage: $perPage, keyword: $keyword }';
 }
 
+class LyricListEmpty extends LyricListState {
+  @override
+  String toString() => 'LyricListEmpty';
+}
+
 class LyricListError extends LyricListState {
   @override
   String toString() => 'LyricListError';

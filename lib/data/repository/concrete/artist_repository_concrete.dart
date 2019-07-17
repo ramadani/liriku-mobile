@@ -20,6 +20,12 @@ class ArtistRepositoryConcrete implements ArtistRepository {
   );
 
   @override
+  Future<bool> save(Artist artist) async {
+    await _artistCacheProvider.save(artist);
+    return true;
+  }
+
+  @override
   Future<List<Artist>> getTopArtist({int limit = 10}) async {
     final List<String> listOfId =
     await _topRatedProvider.findAllByType('ARTIST');
@@ -44,20 +50,22 @@ class ArtistRepositoryConcrete implements ArtistRepository {
 
   @override
   Future<ArtistLyrics> syncAndGetArtistDetail(String id) async {
-    final result = await _artistProvider.detail(id);
-    final artist = Artist(
-      id: result.id,
-      name: result.name,
-      coverUrl: result.coverUrl,
-      createdAt: result.createdAt,
-      updatedAt: result.updatedAt,
-    );
-    await _artistCacheProvider.save(artist);
-    await Future.forEach(result.lyrics, (Lyric lyric) async {
-      await _lyricCacheProvider.save(lyric, artist.id);
-    });
+    await _syncArtistDetail(id);
 
     return await getArtistDetail(id);
+  }
+
+  @override
+  Future<Artist> getArtist(String id) async {
+    try {
+      final result = await _artistCacheProvider.detail(id);
+      return result;
+    } catch (e) {
+      await _syncArtistDetail(id);
+
+      final result = await _artistCacheProvider.detail(id);
+      return result;
+    }
   }
 
   @override
@@ -73,5 +81,20 @@ class ArtistRepositoryConcrete implements ArtistRepository {
       updatedAt: artist.updatedAt,
       lyrics: lyrics,
     );
+  }
+
+  Future<void> _syncArtistDetail(String id) async {
+    final result = await _artistProvider.detail(id);
+    final artist = Artist(
+      id: result.id,
+      name: result.name,
+      coverUrl: result.coverUrl,
+      createdAt: result.createdAt,
+      updatedAt: result.updatedAt,
+    );
+    await _artistCacheProvider.save(artist);
+    await Future.forEach(result.lyrics, (Lyric lyric) async {
+      await _lyricCacheProvider.save(lyric, artist.id);
+    });
   }
 }

@@ -26,6 +26,8 @@ class LyricListBloc extends Bloc<LyricListEvent, LyricListState> {
       yield* _mapFetchToState(event);
     } else if (event is FetchMoreLyricList && currentState is LyricListLoaded) {
       yield* _mapFetchMoreToState(event, currentState as LyricListLoaded);
+    } else if (event is ResetLyricList) {
+      yield LyricListUninitialized();
     }
   }
 
@@ -42,12 +44,16 @@ class LyricListBloc extends Bloc<LyricListEvent, LyricListState> {
       final result = await _lyricRepository.paginate(
           page: event.page, perPage: event.perPage, search: event.keyword);
 
-      yield LyricListLoaded(
-        page: result.page,
-        perPage: result.perPage,
-        keyword: event.keyword,
-        lyrics: result.lyrics,
-      );
+      if (result.lyrics.length > 0) {
+        yield LyricListLoaded(
+          page: result.page,
+          perPage: result.perPage,
+          keyword: event.keyword,
+          lyrics: result.lyrics,
+        );
+      } else {
+        yield LyricListEmpty();
+      }
     } catch (e) {
       yield LyricListError();
     }

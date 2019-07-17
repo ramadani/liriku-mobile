@@ -6,4 +6,8 @@ class LyricCollection {
   final int perPage;
 
   LyricCollection(this.lyrics, this.page, this.perPage);
+
+  LyricCollection copyWith({List<Lyric> lyrics}) {
+    return LyricCollection(lyrics, this.page, this.perPage);
+  }
 }

@@ -73,6 +73,7 @@ class LyricProviderApi implements LyricProvider {
       artist: Artist(
         id: artistRaw['id'],
         name: artistRaw['name'],
+        coverUrl: artistRaw['coverImgUrl'],
         createdAt: DateTime.parse(artistRaw['createdAt']),
         updatedAt: DateTime.parse(artistRaw['updatedAt']),
       ),

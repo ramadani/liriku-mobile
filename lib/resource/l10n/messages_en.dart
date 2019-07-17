@@ -32,6 +32,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "more": MessageLookupByLibrary.simpleMessage("More"),
         "playlist": MessageLookupByLibrary.simpleMessage("Playlist"),
         "search": MessageLookupByLibrary.simpleMessage("Search Song or Artist"),
+        "searchEmptyResult": MessageLookupByLibrary.simpleMessage(
+            "Can\'t find any data that you\'re looking for"),
         "songs": MessageLookupByLibrary.simpleMessage("Songs"),
         "songsDescSection": MessageLookupByLibrary.simpleMessage(
             "Top Ten New Lyrics"),

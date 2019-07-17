@@ -1,24 +1,24 @@
 import 'package:liriku/data/collection/lyric_collection.dart';
 import 'package:liriku/data/model/lyric.dart';
-import 'package:liriku/data/provider/artist_cache_provider.dart';
 import 'package:liriku/data/provider/bookmarkable_provider.dart';
 import 'package:liriku/data/provider/lyric_cache_provider.dart';
 import 'package:liriku/data/provider/lyric_provider.dart';
 import 'package:liriku/data/provider/top_rated_provider.dart';
+import 'package:liriku/data/repository/artist_repository.dart';
 import 'package:liriku/data/repository/lyric_repository.dart';
 
 class LyricRepositoryConcrete implements LyricRepository {
-  final ArtistCacheProvider _artistCacheProvider;
   final LyricProvider _lyricProvider;
   final LyricCacheProvider _lyricCacheProvider;
   final TopRatedProvider _topRatedProvider;
   final BookmarkableProvider _bookmarkableProvider;
+  final ArtistRepository _artistRepository;
 
   LyricRepositoryConcrete(this._lyricProvider,
       this._lyricCacheProvider,
-      this._artistCacheProvider,
       this._topRatedProvider,
-      this._bookmarkableProvider,);
+      this._bookmarkableProvider,
+      this._artistRepository,);
 
   @override
   Future<LyricCollection> paginate(
@@ -26,15 +26,21 @@ class LyricRepositoryConcrete implements LyricRepository {
     final cacheResult =
     await _lyricCacheProvider.fetch(page, perPage, search: search);
 
-    if (cacheResult.lyrics.length > 0) {
-      return cacheResult;
+    if (cacheResult.lyrics.length >= 3) {
+      final lyrics = await _getLyricArtists(cacheResult.lyrics);
+      return cacheResult.copyWith(lyrics: lyrics);
     }
 
-    final result = await _lyricProvider.fetch(page, perPage, search: search);
-    print('dari api provider ${result.lyrics.length}');
-//    await Future.forEach(result.lyrics, (Lyric lyric) async {
-//      await _lyricCacheProvider.save(lyric, lyric.artistId);
-//    });
+    final result =
+    await _lyricProvider.fetch(page, perPage, search: search.toLowerCase());
+
+    await Future.forEach(result.lyrics, (Lyric lyric) async {
+      if (lyric is LyricArtist) {
+        await _artistRepository.save(lyric.artist);
+      }
+      await _lyricCacheProvider.save(lyric, lyric.artistId);
+    });
+
     return result;
   }
 
@@ -43,24 +49,8 @@ class LyricRepositoryConcrete implements LyricRepository {
     final List<String> listOfId =
     await _topRatedProvider.findAllByType('LYRIC');
     final lyrics = await _lyricCacheProvider.findWhereInId(listOfId);
-    final List<LyricArtist> results = List();
 
-    await Future.forEach(lyrics, (Lyric it) async {
-      final artist = await _artistCacheProvider.detail(it.artistId);
-      results.add(LyricArtist(
-        id: it.id,
-        title: it.title,
-        coverUrl: it.coverUrl,
-        content: it.content,
-        readCount: it.readCount,
-        bookmarked: it.bookmarked,
-        createdAt: it.createdAt,
-        updatedAt: it.updatedAt,
-        artist: artist,
-      ));
-    });
-
-    return results;
+    return await _getLyricArtists(lyrics);
   }
 
   @override
@@ -82,7 +72,7 @@ class LyricRepositoryConcrete implements LyricRepository {
   @override
   Future<LyricArtist> getDetail(String id) async {
     final lyric = await _lyricCacheProvider.detail(id);
-    final artist = await _artistCacheProvider.detail(lyric.artistId);
+    final artist = await _artistRepository.getArtist(lyric.artistId);
 
     return LyricArtist(
       id: lyric.id,
@@ -110,5 +100,27 @@ class LyricRepositoryConcrete implements LyricRepository {
     } catch (e) {}
 
     return true;
+  }
+
+  Future<List<LyricArtist>> _getLyricArtists(List<Lyric> lyrics) async {
+    final List<LyricArtist> results = List();
+
+    await Future.forEach(lyrics, (Lyric it) async {
+      final artist = await _artistRepository.getArtist(it.artistId);
+
+      results.add(LyricArtist(
+        id: it.id,
+        title: it.title,
+        coverUrl: it.coverUrl,
+        content: it.content,
+        readCount: it.readCount,
+        bookmarked: it.bookmarked,
+        createdAt: it.createdAt,
+        updatedAt: it.updatedAt,
+        artist: artist,
+      ));
+    });
+
+    return results;
   }
 }

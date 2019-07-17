@@ -9,7 +9,7 @@ class FetchLyricList extends LyricListEvent {
   final int perPage;
   final String keyword;
 
-  FetchLyricList({this.page = 1, this.perPage = 100, this.keyword = ''})
+  FetchLyricList({this.page = 1, this.perPage = 50, this.keyword = ''})
       : super([page, perPage, keyword]);
 
   @override
@@ -32,4 +32,9 @@ class ChangeBookmarkInList extends LyricListEvent {
 class FetchMoreLyricList extends LyricListEvent {
   @override
   String toString() => 'FetchMoreLyricList';
+}
+
+class ResetLyricList extends LyricListEvent {
+  @override
+  String toString() => 'ResetLyricList';
 }
