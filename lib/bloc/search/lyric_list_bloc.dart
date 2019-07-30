@@ -43,7 +43,7 @@ class LyricListBloc extends Bloc<LyricListEvent, LyricListState> {
     if (event is FetchLyricList) {
       yield* _mapFetchToState(event);
     } else if (event is FetchMoreLyricList && currentState is LyricListLoaded) {
-      yield* _mapFetchMoreToState(event, currentState as LyricListLoaded);
+      yield* _mapFetchMoreToState(currentState as LyricListLoaded);
     } else if (event is ChangeBookmarkInList) {
       if (currentState is LyricListLoaded) {
         yield* _mapChangeBookmarkToState(
@@ -83,19 +83,18 @@ class LyricListBloc extends Bloc<LyricListEvent, LyricListState> {
     }
   }
 
-  Stream<LyricListState> _mapFetchMoreToState(
-      FetchMoreLyricList event, LyricListLoaded state) async* {
+  Stream<LyricListState> _mapFetchMoreToState(LyricListLoaded state) async* {
     try {
+      yield state.setFetchingMore();
+
       final result = await _lyricRepository.paginate(
           page: state.page + 1, perPage: state.perPage, search: state.keyword);
 
-      yield LyricListLoaded(
-        page: result.page,
-        perPage: result.perPage,
-        keyword: state.keyword,
-        lyrics: state.lyrics + result.lyrics,
+      yield state.fetchedMore(
+        newLyrics: result.lyrics,
+        hasMorePages: result.lyrics.length == result.perPage,
       );
-    } catch (e) {
+    } on Exception catch (_) {
       yield LyricListError();
     }
   }

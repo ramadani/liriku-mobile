@@ -21,6 +21,7 @@ class LyricListLoaded extends LyricListState {
   final String keyword;
   final List<Lyric> lyrics;
   final bool hasMorePages;
+  final bool fetchingMore;
 
   LyricListLoaded({
     this.page,
@@ -28,12 +29,36 @@ class LyricListLoaded extends LyricListState {
     this.keyword,
     this.lyrics,
     this.hasMorePages,
-  }) : super([page, perPage, keyword, lyrics, hasMorePages]);
+    this.fetchingMore = false,
+  }) : super([page, perPage, keyword, lyrics, hasMorePages, fetchingMore]);
 
   @override
   String toString() => 'LyricListLoaded { page: $page, '
       'perPage: $perPage, keyword: $keyword, lyricSize: ${lyrics
-      .length}, hasMorePage: $hasMorePages }';
+      .length}, hasMorePage: $hasMorePages, fetchingMore: $fetchingMore }';
+
+  LyricListLoaded setFetchingMore() {
+    return LyricListLoaded(
+      page: this.page,
+      perPage: this.perPage,
+      keyword: this.keyword,
+      lyrics: this.lyrics,
+      hasMorePages: this.hasMorePages,
+      fetchingMore: true,
+    );
+  }
+
+  LyricListLoaded fetchedMore(
+      {List<Lyric> newLyrics, bool hasMorePages = false}) {
+    return LyricListLoaded(
+      page: this.page,
+      perPage: this.perPage,
+      keyword: this.keyword,
+      lyrics: newLyrics.length > 0 ? this.lyrics + newLyrics : this.lyrics,
+      hasMorePages: hasMorePages,
+      fetchingMore: false,
+    );
+  }
 }
 
 class LyricListLoadingMore extends LyricListState {

@@ -54,7 +54,7 @@ class LyricProviderApi implements LyricProvider {
     final data = body['data'] as List;
     final List<Lyric> results = List();
 
-    results.addAll(data.map((raw) => _lyricMapper(raw)).toList());
+    results.addAll(data.toList().map((raw) => _lyricMapper(raw)));
 
     return results;
   }

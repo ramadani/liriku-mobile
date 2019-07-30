@@ -23,25 +23,29 @@ class LyricRepositoryConcrete implements LyricRepository {
   @override
   Future<LyricCollection> paginate(
       {int page = 1, int perPage = 10, String search = ''}) async {
-    final cacheResult =
-    await _lyricCacheProvider.fetch(page, perPage, search: search);
+    try {
+      final cacheResult =
+      await _lyricCacheProvider.fetch(page, perPage, search: search);
 
-    if (cacheResult.lyrics.length >= 3) {
-      final lyrics = await _getLyricArtists(cacheResult.lyrics);
-      return cacheResult.copyWith(lyrics: lyrics);
-    }
-
-    final result =
-    await _lyricProvider.fetch(page, perPage, search: search.toLowerCase());
-
-    await Future.forEach(result.lyrics, (Lyric lyric) async {
-      if (lyric is LyricArtist) {
-        await _artistRepository.save(lyric.artist);
+      if (cacheResult.lyrics.length >= 3) {
+        final lyrics = await _getLyricArtists(cacheResult.lyrics);
+        return cacheResult.copyWith(lyrics: lyrics);
       }
-      await _lyricCacheProvider.save(lyric, lyric.artistId);
-    });
 
-    return result;
+      final result = await _lyricProvider.fetch(page, perPage,
+          search: search.toLowerCase());
+
+      await Future.forEach(result.lyrics, (Lyric lyric) async {
+        if (lyric is LyricArtist) {
+          await _artistRepository.save(lyric.artist);
+        }
+        await _lyricCacheProvider.save(lyric, lyric.artistId);
+      });
+
+      return result;
+    } catch (e) {
+      throw e;
+    }
   }
 
   @override

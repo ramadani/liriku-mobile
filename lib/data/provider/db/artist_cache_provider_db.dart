@@ -50,19 +50,23 @@ class ArtistCacheProviderDb implements ArtistCacheProvider {
 
   @override
   Future<Artist> save(Artist artist) async {
-    final sql = 'REPLACE INTO artists (id, name, cover_url, created_at, '
-        'updated_at) VALUES (?, ?, ?, ?, ?)';
-    await _db.execute(sql, [
-      artist.id,
-      artist.name,
-      artist.coverUrl,
-      artist.createdAt.millisecondsSinceEpoch,
-      DateTime
-          .now()
-          .millisecondsSinceEpoch,
-    ]);
+    try {
+      final sql = 'REPLACE INTO artists (id, name, cover_url, created_at, '
+          'updated_at) VALUES (?, ?, ?, ?, ?)';
+      await _db.execute(sql, [
+        artist.id,
+        artist.name,
+        artist.coverUrl,
+        artist.createdAt.millisecondsSinceEpoch,
+        DateTime
+            .now()
+            .millisecondsSinceEpoch,
+      ]);
 
-    return artist;
+      return artist;
+    } catch (e) {
+      throw e;
+    }
   }
 
   @override
