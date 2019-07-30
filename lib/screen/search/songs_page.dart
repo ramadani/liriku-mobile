@@ -23,12 +23,6 @@ class _SongPageState extends State<SongPage>
   LyricListBloc get bloc => widget.bloc;
 
   @override
-  void initState() {
-    super.initState();
-    bloc.dispatch(FetchLyricList());
-  }
-
-  @override
   Widget build(BuildContext context) {
     super.build(context);
     final bookmarkBloc = InjectorWidget.of(context).bookmarkBloc();

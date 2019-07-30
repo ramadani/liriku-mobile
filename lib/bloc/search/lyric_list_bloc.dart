@@ -72,6 +72,8 @@ class LyricListBloc extends Bloc<LyricListEvent, LyricListState> {
           perPage: result.perPage,
           keyword: event.keyword,
           lyrics: result.lyrics,
+          hasMorePages:
+          result.lyrics.length == result.perPage && event.keyword != '',
         );
       } else {
         yield LyricListEmpty();

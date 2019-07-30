@@ -20,13 +20,20 @@ class LyricListLoaded extends LyricListState {
   final int perPage;
   final String keyword;
   final List<Lyric> lyrics;
+  final bool hasMorePages;
 
-  LyricListLoaded({this.page, this.perPage, this.keyword, this.lyrics})
-      : super([page, perPage, keyword, lyrics]);
+  LyricListLoaded({
+    this.page,
+    this.perPage,
+    this.keyword,
+    this.lyrics,
+    this.hasMorePages,
+  }) : super([page, perPage, keyword, lyrics, hasMorePages]);
 
   @override
   String toString() => 'LyricListLoaded { page: $page, '
-      'perPage: $perPage, keyword: $keyword, lyricSize: ${lyrics.length} }';
+      'perPage: $perPage, keyword: $keyword, lyricSize: ${lyrics
+      .length}, hasMorePage: $hasMorePages }';
 }
 
 class LyricListLoadingMore extends LyricListState {

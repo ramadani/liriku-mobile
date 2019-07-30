@@ -100,6 +100,12 @@ class _SearchForm extends StatefulWidget {
 
 class _SearchFormState extends State<_SearchForm> {
   @override
+  void initState() {
+    super.initState();
+    widget.bloc.dispatch(SearchFromSubmitted(keyword: ''));
+  }
+
+  @override
   void dispose() {
     widget.bloc.dispatch(ResetSearchForm());
     super.dispose();

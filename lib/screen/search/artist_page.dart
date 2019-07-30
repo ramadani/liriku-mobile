@@ -24,12 +24,6 @@ class _ArtistPageState extends State<ArtistPage>
   ArtistListBloc get bloc => widget.bloc;
 
   @override
-  void initState() {
-    super.initState();
-    bloc.dispatch(FetchArtistList());
-  }
-
-  @override
   Widget build(BuildContext context) {
     super.build(context);
     return BlocBuilder<ArtistListEvent, ArtistListState>(
