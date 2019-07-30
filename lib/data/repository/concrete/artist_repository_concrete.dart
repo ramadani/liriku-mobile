@@ -1,3 +1,4 @@
+import 'package:liriku/data/collection/artist_collection.dart';
 import 'package:liriku/data/model/artist.dart';
 import 'package:liriku/data/model/lyric.dart';
 import 'package:liriku/data/provider/artist_cache_provider.dart';
@@ -12,12 +13,23 @@ class ArtistRepositoryConcrete implements ArtistRepository {
   final LyricCacheProvider _lyricCacheProvider;
   final TopRatedProvider _topRatedProvider;
 
-  ArtistRepositoryConcrete(
-    this._artistProvider,
-    this._artistCacheProvider,
+  ArtistRepositoryConcrete(this._artistProvider,
+      this._artistCacheProvider,
       this._lyricCacheProvider,
-    this._topRatedProvider,
-  );
+      this._topRatedProvider,);
+
+  @override
+  Future<ArtistCollection> paginate(
+      {int page = 1, int perPage = 10, String search = ''}) async {
+    final cacheResult =
+    await _artistCacheProvider.fetch(page, perPage, search: search);
+
+    if (cacheResult.artists.length >= 3) {
+      return cacheResult;
+    }
+
+    return await _artistProvider.fetch(page, perPage, search: search);
+  }
 
   @override
   Future<bool> save(Artist artist) async {
