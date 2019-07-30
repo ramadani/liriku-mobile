@@ -33,8 +33,3 @@ class FetchMoreLyricList extends LyricListEvent {
   @override
   String toString() => 'FetchMoreLyricList';
 }
-
-class ResetLyricList extends LyricListEvent {
-  @override
-  String toString() => 'ResetLyricList';
-}

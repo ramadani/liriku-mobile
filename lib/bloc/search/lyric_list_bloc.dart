@@ -49,8 +49,6 @@ class LyricListBloc extends Bloc<LyricListEvent, LyricListState> {
         yield* _mapChangeBookmarkToState(
             event, currentState as LyricListLoaded);
       }
-    } else if (event is ResetLyricList) {
-      yield LyricListUninitialized();
     }
   }
 
