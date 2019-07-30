@@ -1,5 +1,4 @@
 import 'package:liriku/data/model/artist.dart';
-import 'package:liriku/data/model/lyric.dart';
 import 'package:liriku/data/provider/artist_cache_provider.dart';
 import 'package:liriku/data/provider/artist_provider.dart';
 import 'package:liriku/data/provider/lyric_cache_provider.dart';
@@ -93,8 +92,5 @@ class ArtistRepositoryConcrete implements ArtistRepository {
       updatedAt: result.updatedAt,
     );
     await _artistCacheProvider.save(artist);
-    await Future.forEach(result.lyrics, (Lyric lyric) async {
-      await _lyricCacheProvider.save(lyric, artist.id);
-    });
   }
 }
