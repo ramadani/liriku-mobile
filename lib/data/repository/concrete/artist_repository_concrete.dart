@@ -1,4 +1,5 @@
 import 'package:liriku/data/model/artist.dart';
+import 'package:liriku/data/model/lyric.dart';
 import 'package:liriku/data/provider/artist_cache_provider.dart';
 import 'package:liriku/data/provider/artist_provider.dart';
 import 'package:liriku/data/provider/lyric_cache_provider.dart';
@@ -48,10 +49,19 @@ class ArtistRepositoryConcrete implements ArtistRepository {
   }
 
   @override
-  Future<ArtistLyrics> syncAndGetArtistDetail(String id) async {
-    await _syncArtistDetail(id);
+  Future<bool> syncArtist(String id) async {
+    await _syncArtist(id);
 
-    return await getArtistDetail(id);
+    return true;
+  }
+
+  Future<bool> syncLyrics(String artistId) async {
+    final lyrics = await _artistProvider.lyrics(artistId);
+    await Future.forEach(lyrics, (Lyric it) async {
+      await _lyricCacheProvider.save(it, artistId);
+    });
+
+    return true;
   }
 
   @override
@@ -60,7 +70,7 @@ class ArtistRepositoryConcrete implements ArtistRepository {
       final result = await _artistCacheProvider.detail(id);
       return result;
     } catch (e) {
-      await _syncArtistDetail(id);
+      await _syncArtist(id);
 
       final result = await _artistCacheProvider.detail(id);
       return result;
@@ -82,7 +92,7 @@ class ArtistRepositoryConcrete implements ArtistRepository {
     );
   }
 
-  Future<void> _syncArtistDetail(String id) async {
+  Future<void> _syncArtist(String id) async {
     final result = await _artistProvider.detail(id);
     final artist = Artist(
       id: result.id,

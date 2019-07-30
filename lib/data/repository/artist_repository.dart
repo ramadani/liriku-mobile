@@ -7,7 +7,9 @@ abstract class ArtistRepository {
 
   Future<List<Artist>> getTopArtist({int limit = 10});
 
-  Future<ArtistLyrics> syncAndGetArtistDetail(String id);
+  Future<bool> syncArtist(String id);
+
+  Future<bool> syncLyrics(String artistId);
 
   Future<Artist> getArtist(String id);
 
