@@ -148,7 +148,11 @@ class InjectorWidget extends InheritedWidget {
 
   LyricListBloc lyricListBloc({bool forceCreate = false}) {
     if (_lyricListBloc == null || forceCreate) {
-      _lyricListBloc = LyricListBloc(searchFormBloc(), _lyricRepository);
+      _lyricListBloc = LyricListBloc(
+        searchFormBloc(),
+        bookmarkBloc(),
+        _lyricRepository,
+      );
     }
 
     return _lyricListBloc;

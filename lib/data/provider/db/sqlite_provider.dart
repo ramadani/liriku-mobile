@@ -6,19 +6,15 @@ import 'package:sqflite/sqflite.dart';
 class SQLiteProvider {
   Future<Database> open() async {
     return openDatabase(
-      join(await getDatabasesPath(), 'liriku.db'),
+      join(await getDatabasesPath(), 'liriku_v0.1.0.db'),
       onCreate: (db, version) async {
         await db.execute(_createActivityTable());
         await db.execute(_createArtistTable());
         await db.execute(_createLyricTable());
         await db.execute(_createTopRatedTable());
+        await db.execute(_createBookmarkableTable());
       },
-      onUpgrade: (db, oldVersion, version) async {
-        if (oldVersion < version) {
-          await db.execute(_createBookmarkableTable());
-        }
-      },
-      version: 4,
+      version: 1,
     );
   }
 

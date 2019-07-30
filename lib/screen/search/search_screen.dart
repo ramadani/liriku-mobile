@@ -90,10 +90,21 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 }
 
-class _SearchForm extends StatelessWidget {
+class _SearchForm extends StatefulWidget {
   final SearchFormBloc bloc;
 
   const _SearchForm({Key key, this.bloc}) : super(key: key);
+
+  @override
+  _SearchFormState createState() => _SearchFormState();
+}
+
+class _SearchFormState extends State<_SearchForm> {
+  @override
+  void dispose() {
+    widget.bloc.dispatch(ResetSearchForm());
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +123,7 @@ class _SearchForm extends StatelessWidget {
         ),
         textInputAction: TextInputAction.search,
         onSubmitted: (text) {
-          bloc.dispatch(SearchFromSubmitted(keyword: text));
+          widget.bloc.dispatch(SearchFromSubmitted(keyword: text));
         },
       ),
     );

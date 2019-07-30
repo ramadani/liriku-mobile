@@ -60,6 +60,7 @@ class _PlaylistContentState extends State<_PlaylistContent> {
   @override
   Widget build(BuildContext context) {
     final bookmarkBloc = InjectorWidget.of(context).bookmarkBloc();
+
     return BlocBuilder(
       bloc: _bloc,
       builder: (BuildContext context, PlaylistState state) {

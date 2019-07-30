@@ -12,3 +12,8 @@ class SearchFromSubmitted extends SearchFormEvent {
   @override
   String toString() => 'SearchFromSubmitted { keyword: $keyword }';
 }
+
+class ResetSearchForm extends SearchFormEvent {
+  @override
+  String toString() => 'ResetSearchForm';
+}
