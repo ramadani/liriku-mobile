@@ -63,6 +63,7 @@ class ArtistListBloc extends Bloc<ArtistListEvent, ArtistListState> {
         yield ArtistListEmpty();
       }
     } catch (e) {
+      print(e);
       yield ArtistListError();
     }
   }

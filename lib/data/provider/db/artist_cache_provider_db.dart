@@ -13,7 +13,7 @@ class ArtistCacheProviderDb implements ArtistCacheProvider {
       {String search = ""}) async {
     String searchLike = '';
     if (search != '') {
-      searchLike = "WHERE title LIKE '%$search%'";
+      searchLike = "WHERE name LIKE '%$search%'";
     }
 
     final offset = (page - 1) * perPage;

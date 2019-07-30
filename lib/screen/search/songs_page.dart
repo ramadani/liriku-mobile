@@ -7,11 +7,12 @@ import 'package:liriku/injector_widget.dart';
 import 'package:liriku/screen/lyric/lyric_screen.dart';
 import 'package:liriku/screen/search/empty_result.dart';
 import 'package:liriku/widget/lyric_tile.dart';
+import 'package:meta/meta.dart';
 
 class SongPage extends StatefulWidget {
   final LyricListBloc bloc;
 
-  const SongPage({Key key, this.bloc}) : super(key: key);
+  const SongPage({Key key, @required this.bloc}) : super(key: key);
 
   @override
   _SongPageState createState() => _SongPageState();

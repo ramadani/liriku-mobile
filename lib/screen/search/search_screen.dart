@@ -42,6 +42,7 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     final searchFormBloc = InjectorWidget.of(context).searchFormBloc();
     final lyricBloc = InjectorWidget.of(context).lyricListBloc();
+    final artistBloc = InjectorWidget.of(context).artistListBloc();
 
     return Scaffold(
       appBar: AppBar(
@@ -78,12 +79,10 @@ class _SearchScreenState extends State<SearchScreen> {
       ),
       body: PageView(
         controller: _pageController,
-        onPageChanged: (page) {
-          _changePage(page);
-        },
+        onPageChanged: (page) => _changePage(page),
         children: <Widget>[
           SongPage(bloc: lyricBloc),
-          ArtistPage(),
+          ArtistPage(bloc: artistBloc),
         ],
       ),
     );

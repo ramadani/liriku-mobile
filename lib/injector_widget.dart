@@ -41,6 +41,7 @@ class InjectorWidget extends InheritedWidget {
   BookmarkBloc _bookmarkBloc;
   SearchFormBloc _searchFormBloc;
   LyricListBloc _lyricListBloc;
+  ArtistListBloc _artistListBloc;
 
   InjectorWidget({
     Key key,
@@ -156,5 +157,13 @@ class InjectorWidget extends InheritedWidget {
     }
 
     return _lyricListBloc;
+  }
+
+  ArtistListBloc artistListBloc({bool forceCreate = false}) {
+    if (_artistListBloc == null || forceCreate) {
+      _artistListBloc = ArtistListBloc(searchFormBloc(), _artistRepository);
+    }
+
+    return _artistListBloc;
   }
 }
