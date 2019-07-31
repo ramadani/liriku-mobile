@@ -60,6 +60,7 @@ class _PlaylistContentState extends State<_PlaylistContent> {
   @override
   Widget build(BuildContext context) {
     final bookmarkBloc = InjectorWidget.of(context).bookmarkBloc();
+
     return BlocBuilder(
       bloc: _bloc,
       builder: (BuildContext context, PlaylistState state) {
@@ -131,7 +132,7 @@ class _PlaylistArtist extends StatelessWidget {
                   artist.name,
                   style: Theme.of(context).textTheme.title.copyWith(
                         fontSize: 22,
-                        fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.bold,
                       ),
                 ),
                 Padding(

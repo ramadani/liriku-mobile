@@ -10,18 +10,22 @@ class LyricCacheProviderDb implements LyricCacheProvider {
 
   @override
   Future<LyricCollection> fetch(int page, int perPage,
-      {String search = ""}) async {
+      {String search = ''}) async {
+    String searchLike = '';
+    if (search != '') {
+      searchLike = "WHERE title LIKE '%$search%'";
+    }
+
     final offset = (page - 1) * perPage;
     final sql = 'SELECT id, title, cover_url, content, bookmarked, read_count, '
-        'artist_id, created_at, updated_at FROM lyrics LIMIT ?,?';
+        'artist_id, created_at, updated_at FROM lyrics '
+        '$searchLike LIMIT ?,?';
     final rows = await _db.rawQuery(sql, [offset, perPage]);
     final List<Lyric> lyrics = List();
 
-    if (rows.isNotEmpty) {
-      rows.toList().forEach((raw) {
-        lyrics.add(_lyricMapper(raw));
-      });
-    }
+    rows.toList().forEach((raw) {
+      lyrics.add(_lyricMapper(raw));
+    });
 
     return LyricCollection(lyrics, page, perPage);
   }
@@ -61,46 +65,50 @@ class LyricCacheProviderDb implements LyricCacheProvider {
 
   @override
   Future<Lyric> save(Lyric lyric, String artistId) async {
-    final countSql = 'SELECT COUNT(id) as total FROM lyrics WHERE id = ?';
-    final countRows = await _db.rawQuery(countSql, [lyric.id]);
+    try {
+      final countSql = 'SELECT COUNT(id) as total FROM lyrics WHERE id = ?';
+      final countRows = await _db.rawQuery(countSql, [lyric.id]);
 
-    if (countRows.isNotEmpty && countRows[0]['total'] > 0) {
-      // update
-      final updateSql = 'UPDATE lyrics '
-          'SET title = ?, cover_url = ?, content = ?, '
-          'read_count = ?, updated_at = ? '
-          'WHERE id = ?';
-      await _db.rawUpdate(updateSql, [
-        lyric.title,
-        lyric.coverUrl,
-        lyric.content,
-        lyric.readCount,
-        DateTime
-            .now()
-            .millisecondsSinceEpoch,
-        lyric.id,
-      ]);
-    } else {
-      // insert
-      final insertSql = 'INSERT INTO lyrics (id, title, cover_url, content, '
-          'read_count, bookmarked, artist_id, created_at, updated_at) '
-          'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
-      await _db.rawInsert(insertSql, [
-        lyric.id,
-        lyric.title,
-        lyric.coverUrl,
-        lyric.content,
-        lyric.readCount,
-        0,
-        artistId,
-        lyric.createdAt.millisecondsSinceEpoch,
-        DateTime
-            .now()
-            .millisecondsSinceEpoch,
-      ]);
+      if (countRows.isNotEmpty && countRows[0]['total'] > 0) {
+        // update
+        final updateSql = 'UPDATE lyrics '
+            'SET title = ?, cover_url = ?, content = ?, '
+            'read_count = ?, updated_at = ? '
+            'WHERE id = ?';
+        await _db.rawUpdate(updateSql, [
+          lyric.title,
+          lyric.coverUrl,
+          lyric.content,
+          lyric.readCount,
+          DateTime
+              .now()
+              .millisecondsSinceEpoch,
+          lyric.id,
+        ]);
+      } else {
+        // insert
+        final insertSql = 'INSERT INTO lyrics (id, title, cover_url, content, '
+            'read_count, bookmarked, artist_id, created_at, updated_at) '
+            'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        await _db.rawInsert(insertSql, [
+          lyric.id,
+          lyric.title,
+          lyric.coverUrl,
+          lyric.content,
+          lyric.readCount,
+          0,
+          artistId,
+          lyric.createdAt.millisecondsSinceEpoch,
+          DateTime
+              .now()
+              .millisecondsSinceEpoch,
+        ]);
+      }
+
+      return lyric;
+    } catch (e) {
+      throw e;
     }
-
-    return lyric;
   }
 
   @override

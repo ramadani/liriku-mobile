@@ -51,8 +51,12 @@ class PlaylistBloc extends Bloc<PlaylistEvent, PlaylistState> {
 
     final expiresAt = artistLyrics.updatedAt.add(Duration(days: 7));
     if (expiresAt.isBefore(DateTime.now()) || artistLyrics.lyrics.length <= 1) {
+      await _artistRepository.syncArtist(event.artistId);
+      await _artistRepository.syncLyrics(event.artistId);
+
       final newArtistLyrics =
-      await _artistRepository.syncAndGetArtistDetail(event.artistId);
+      await _artistRepository.getArtistDetail(event.artistId);
+
       yield PlaylistLoaded(artistLyrics: newArtistLyrics);
     }
   }

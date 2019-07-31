@@ -20,7 +20,8 @@ class BookmarkBloc extends Bloc<BookmarkEvent, BookmarkState> {
         await _lyricRepository.setBookmark(event.id, event.bookmarked);
         yield BookmarkChanged(id: event.id, bookmarked: event.bookmarked);
       }
-    } on Exception catch (_) {
+    } on Exception catch (e) {
+      print('bookmark error $e');
       yield BookmarkError();
     }
   }

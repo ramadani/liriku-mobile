@@ -6,12 +6,13 @@ import 'package:sqflite/sqflite.dart';
 class SQLiteProvider {
   Future<Database> open() async {
     return openDatabase(
-      join(await getDatabasesPath(), 'liriku.db'),
+      join(await getDatabasesPath(), 'liriku_v0.1.0.db'),
       onCreate: (db, version) async {
         await db.execute(_createActivityTable());
         await db.execute(_createArtistTable());
         await db.execute(_createLyricTable());
         await db.execute(_createTopRatedTable());
+        await db.execute(_createBookmarkableTable());
       },
       version: 1,
     );
@@ -36,5 +37,11 @@ class SQLiteProvider {
   String _createTopRatedTable() {
     return 'CREATE TABLE top_rated(id INTEGER PRIMARY KEY, top_rated_id TEXT, '
         'top_rated_type TEXT, ranked INTEGER)';
+  }
+
+  String _createBookmarkableTable() {
+    return 'CREATE TABLE bookmarkables(id INTEGER PRIMARY KEY, '
+        'bookmarkable_id TEXT, bookmarkable_type TEXT, '
+        'created_at INTEGER, updated_at INTEGER)';
   }
 }

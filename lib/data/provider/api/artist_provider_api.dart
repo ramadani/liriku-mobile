@@ -60,7 +60,7 @@ class ArtistProviderApi implements ArtistProvider {
   }
 
   @override
-  Future<ArtistLyrics> detail(String id) async {
+  Future<Artist> detail(String id) async {
     final response = await _client.auth().get('/artists/$id');
 
     if (!_client.ok(response.statusCode)) {
@@ -69,20 +69,32 @@ class ArtistProviderApi implements ArtistProvider {
 
     final body = json.decode(response.body) as Map<String, dynamic>;
     final data = body['data'] as Map<String, dynamic>;
-    final List<Lyric> lyrics = List();
 
-    lyrics.addAll((data['lyrics'] as List)
-        .map((raw) => _lyricMapper(raw, data['id']))
-        .toList());
-
-    return ArtistLyrics(
+    return Artist(
       id: data['id'],
       name: data['name'],
       coverUrl: data['coverImgUrl'],
       createdAt: DateTime.parse(data['createdAt']),
       updatedAt: DateTime.parse(data['updatedAt']),
-      lyrics: lyrics,
     );
+  }
+
+  @override
+  Future<List<Lyric>> lyrics(String id) async {
+    final response = await _client.auth().get('/artists/$id/lyrics');
+
+    if (!_client.ok(response.statusCode)) {
+      throw Exception(response.body);
+    }
+
+    final body = json.decode(response.body) as Map<String, dynamic>;
+    final data = body['data'] as List;
+
+    final List<Lyric> lyrics = List();
+
+    lyrics.addAll((data).map((raw) => _lyricMapper(raw)).toList());
+
+    return lyrics;
   }
 
   Artist _artistMapper(dynamic raw) {
@@ -95,14 +107,14 @@ class ArtistProviderApi implements ArtistProvider {
     );
   }
 
-  Lyric _lyricMapper(dynamic raw, String artistId) {
+  Lyric _lyricMapper(dynamic raw) {
     return Lyric(
       id: raw['id'],
       title: raw['title'],
       coverUrl: raw['coverImgUrl'],
       readCount: raw['readCount'] as num,
       content: raw['content'],
-      artistId: artistId,
+      artistId: raw['artistId'],
       createdAt: DateTime.parse(raw['createdAt']),
       updatedAt: DateTime.parse(raw['updatedAt']),
     );

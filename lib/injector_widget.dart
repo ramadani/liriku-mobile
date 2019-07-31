@@ -4,6 +4,7 @@ import 'package:liriku/bloc/bookmark/bloc.dart';
 import 'package:liriku/bloc/home/bloc.dart' as home;
 import 'package:liriku/bloc/lyric/bloc.dart';
 import 'package:liriku/bloc/playlist/playlist_bloc.dart';
+import 'package:liriku/bloc/search/bloc.dart';
 import 'package:liriku/config/json_config.dart';
 import 'package:liriku/data/provider/api/artist_provider_api.dart';
 import 'package:liriku/data/provider/api/auth_provider_api.dart';
@@ -11,6 +12,7 @@ import 'package:liriku/data/provider/api/http_client.dart';
 import 'package:liriku/data/provider/api/lyric_provider_api.dart';
 import 'package:liriku/data/provider/app_data_provider.dart';
 import 'package:liriku/data/provider/db/artist_cache_provider_db.dart';
+import 'package:liriku/data/provider/db/bookmarkable_provider_db.dart';
 import 'package:liriku/data/provider/db/lyric_cache_provider_db.dart';
 import 'package:liriku/data/provider/db/sqlite_provider.dart';
 import 'package:liriku/data/provider/db/top_rated_provider_db.dart';
@@ -37,6 +39,9 @@ class InjectorWidget extends InheritedWidget {
   PlaylistBloc _playlistBloc;
   LyricBloc _lyricBloc;
   BookmarkBloc _bookmarkBloc;
+  SearchFormBloc _searchFormBloc;
+  LyricListBloc _lyricListBloc;
+  ArtistListBloc _artistListBloc;
 
   InjectorWidget({
     Key key,
@@ -71,12 +76,18 @@ class InjectorWidget extends InheritedWidget {
     final artistCacheProvider = ArtistCacheProviderDb(db);
     final lyricCacheProvider = LyricCacheProviderDb(db);
     final topRatedProvider = TopRatedProviderDb(db);
+    final bookmarkableProvider = BookmarkableProviderDb(db);
 
     _authRepository = AuthRepositoryConcrete(authProvider, _appDataProvider);
     _artistRepository = ArtistRepositoryConcrete(artistProvider,
         artistCacheProvider, lyricCacheProvider, topRatedProvider);
-    _lyricRepository = LyricRepositoryConcrete(lyricProvider,
-        lyricCacheProvider, artistCacheProvider, topRatedProvider);
+    _lyricRepository = LyricRepositoryConcrete(
+      lyricProvider,
+      lyricCacheProvider,
+      topRatedProvider,
+      bookmarkableProvider,
+      _artistRepository,
+    );
   }
 
   AuthBloc authBloc({bool forceCreate = false}) {
@@ -126,5 +137,33 @@ class InjectorWidget extends InheritedWidget {
     }
 
     return _bookmarkBloc;
+  }
+
+  SearchFormBloc searchFormBloc({bool forceCreate = false}) {
+    if (_searchFormBloc == null || forceCreate) {
+      _searchFormBloc = SearchFormBloc();
+    }
+
+    return _searchFormBloc;
+  }
+
+  LyricListBloc lyricListBloc({bool forceCreate = false}) {
+    if (_lyricListBloc == null || forceCreate) {
+      _lyricListBloc = LyricListBloc(
+        searchFormBloc(),
+        bookmarkBloc(),
+        _lyricRepository,
+      );
+    }
+
+    return _lyricListBloc;
+  }
+
+  ArtistListBloc artistListBloc({bool forceCreate = false}) {
+    if (_artistListBloc == null || forceCreate) {
+      _artistListBloc = ArtistListBloc(searchFormBloc(), _artistRepository);
+    }
+
+    return _artistListBloc;
   }
 }

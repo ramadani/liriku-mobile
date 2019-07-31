@@ -4,6 +4,7 @@ import 'package:liriku/localizations.dart';
 import 'package:liriku/resource/colors.dart';
 import 'package:liriku/screen/main/home/artist_list.dart';
 import 'package:liriku/screen/main/home/lyric_list.dart';
+import 'package:liriku/screen/search/search_screen.dart';
 import 'package:liriku/widget/appbar.dart';
 import 'package:liriku/widget/section_title.dart';
 
@@ -37,7 +38,9 @@ class HomeScreen extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search, color: primaryDark),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, SearchScreen.routeName);
+            },
           )
         ],
       ),

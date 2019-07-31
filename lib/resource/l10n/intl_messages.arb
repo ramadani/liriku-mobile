@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-07-12T21:10:44.618804",
+  "@@last_modified": "2019-07-17T21:54:36.032429",
   "title": "Liriku",
   "@title": {
     "description": "The application title",
@@ -43,6 +43,16 @@
   },
   "playlist": "Playlist",
   "@playlist": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "search": "Search Song or Artist",
+  "@search": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchEmptyResult": "Can't find any data that you're looking for",
+  "@searchEmptyResult": {
     "type": "text",
     "placeholders": {}
   }
