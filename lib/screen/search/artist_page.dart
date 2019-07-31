@@ -9,6 +9,7 @@ import 'package:liriku/widget/artist_tile.dart';
 import 'package:meta/meta.dart';
 
 import 'empty_result.dart';
+import 'loading.dart';
 
 class ArtistPage extends StatefulWidget {
   final ArtistListBloc bloc;
@@ -21,55 +22,100 @@ class ArtistPage extends StatefulWidget {
 
 class _ArtistPageState extends State<ArtistPage>
     with AutomaticKeepAliveClientMixin<ArtistPage> {
+  final _scrollController = ScrollController();
+  final _scrollThreshold = 200.0;
+
+  bool _isFetchingMore = false;
+
+  @override
+  bool get wantKeepAlive => true;
+
   ArtistListBloc get bloc => widget.bloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return BlocBuilder<ArtistListEvent, ArtistListState>(
+    return BlocListener(
       bloc: bloc,
-      builder: (BuildContext context, ArtistListState state) {
+      listener: (BuildContext context, ArtistListState state) {
         if (state is ArtistListLoaded) {
-          final artists = state.artists;
-
-          return ListView.builder(
-            itemCount: artists.length,
-            itemBuilder: (context, index) {
-              final onTap = (BuildContext context, Artist artist) {
-                Navigator.pushNamed(context, PlaylistScreen.routeName,
-                    arguments: PlaylistScreenArgs(
-                      id: artist.id,
-                      name: artist.name,
-                    ));
-              };
-
-              if (index == 0) {
-                return Container(
-                  margin: EdgeInsets.only(top: 16.0),
-                  child: ArtistTile(
-                    artist: artists[index],
-                    onTap: onTap,
-                  ),
-                );
-              }
-
-              return ArtistTile(
-                artist: artists[index],
-                onTap: onTap,
-              );
-            },
+          setState(
+                () =>
+            _isFetchingMore = state.fetchingMore || !(state.hasMorePages),
           );
-        } else if (state is ArtistListLoading) {
-          return Center(child: CircularProgressIndicator());
-        } else if (state is ArtistListEmpty) {
-          return EmptyResult();
         }
-
-        return Container();
       },
+      child: BlocBuilder<ArtistListEvent, ArtistListState>(
+        bloc: bloc,
+        builder: (BuildContext context, ArtistListState state) {
+          if (state is ArtistListLoaded) {
+            final artists = state.artists;
+
+            return ListView.builder(
+              itemCount: artists.length,
+              controller: _scrollController,
+              itemBuilder: (context, index) {
+                final artistItem = ArtistTile(
+                  artist: artists[index],
+                  onTap: (BuildContext context, Artist artist) {
+                    Navigator.pushNamed(context, PlaylistScreen.routeName,
+                        arguments: PlaylistScreenArgs(
+                          id: artist.id,
+                          name: artist.name,
+                        ));
+                  },
+                );
+
+                if (index == 0) {
+                  return Container(
+                    margin: EdgeInsets.only(top: 16.0),
+                    child: artistItem,
+                  );
+                } else if (index == artists.length - 1 && state.fetchingMore) {
+                  return Column(
+                    children: <Widget>[
+                      artistItem,
+                      LoadingSmall(),
+                    ],
+                  );
+                }
+
+                return artistItem;
+              },
+            );
+          } else if (state is ArtistListLoading) {
+            return Center(child: CircularProgressIndicator());
+          } else if (state is ArtistListEmpty) {
+            return EmptyResult();
+          }
+
+          return Container();
+        },
+      ),
     );
   }
 
   @override
-  bool get wantKeepAlive => true;
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.position.pixels;
+
+    if (maxScroll - currentScroll <= _scrollThreshold) {
+      if (!_isFetchingMore) {
+        setState(() => _isFetchingMore = true);
+        bloc.dispatch(FetchMoreArtistList());
+      }
+    }
+  }
 }

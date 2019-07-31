@@ -28,12 +28,11 @@ class ArtistListBloc extends Bloc<ArtistListEvent, ArtistListState> {
 
   @override
   Stream<ArtistListState> mapEventToState(ArtistListEvent event) async* {
-    try {
-      if (event is FetchArtistList) {
-        yield* _mapFetchToState(event);
-      }
-    } catch (e) {
-      yield ArtistListError();
+    if (event is FetchArtistList) {
+      yield* _mapFetchToState(event);
+    } else if (event is FetchMoreArtistList &&
+        currentState is ArtistListLoaded) {
+      yield* _mapFetchMoreToState(currentState as ArtistListLoaded);
     }
   }
 
@@ -57,13 +56,31 @@ class ArtistListBloc extends Bloc<ArtistListEvent, ArtistListState> {
         yield ArtistListLoaded(
           page: result.page,
           perPage: result.perPage,
+          keyword: event.keyword,
           artists: result.artists,
+          hasMorePages:
+          result.artists.length == event.perPage && event.keyword != '',
         );
       } else {
         yield ArtistListEmpty();
       }
     } catch (e) {
-      print(e);
+      yield ArtistListError();
+    }
+  }
+
+  Stream<ArtistListState> _mapFetchMoreToState(ArtistListLoaded state) async* {
+    try {
+      yield state.setFetchingMore();
+
+      final result = await _artistRepository.paginate(
+          page: state.page + 1, perPage: state.perPage, search: state.keyword);
+
+      yield state.fetchedMore(
+        newArtists: result.artists,
+        hasMorePages: result.artists.length == state.perPage,
+      );
+    } catch (e) {
       yield ArtistListError();
     }
   }

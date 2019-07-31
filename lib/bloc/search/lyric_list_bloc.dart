@@ -73,7 +73,7 @@ class LyricListBloc extends Bloc<LyricListEvent, LyricListState> {
           keyword: event.keyword,
           lyrics: result.lyrics,
           hasMorePages:
-          result.lyrics.length == result.perPage && event.keyword != '',
+          result.lyrics.length == event.perPage && event.keyword != '',
         );
       } else {
         yield LyricListEmpty();
@@ -92,7 +92,7 @@ class LyricListBloc extends Bloc<LyricListEvent, LyricListState> {
 
       yield state.fetchedMore(
         newLyrics: result.lyrics,
-        hasMorePages: result.lyrics.length == result.perPage,
+        hasMorePages: result.lyrics.length == state.perPage,
       );
     } on Exception catch (_) {
       yield LyricListError();

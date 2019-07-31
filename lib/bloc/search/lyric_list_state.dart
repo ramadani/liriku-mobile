@@ -28,7 +28,7 @@ class LyricListLoaded extends LyricListState {
     this.perPage,
     this.keyword,
     this.lyrics,
-    this.hasMorePages,
+    this.hasMorePages = false,
     this.fetchingMore = false,
   }) : super([page, perPage, keyword, lyrics, hasMorePages, fetchingMore]);
 

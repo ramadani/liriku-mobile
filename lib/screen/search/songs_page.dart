@@ -82,9 +82,7 @@ class _SongPageState extends State<SongPage>
                     margin: EdgeInsets.only(top: 16.0),
                     child: lyricItem,
                   );
-                }
-
-                if (index == lyrics.length - 1 && state.fetchingMore) {
+                } else if (index == lyrics.length - 1 && state.fetchingMore) {
                   return Column(
                     children: <Widget>[
                       lyricItem,
@@ -117,7 +115,6 @@ class _SongPageState extends State<SongPage>
     if (maxScroll - currentScroll <= _scrollThreshold) {
       if (!_isFetchingMore) {
         setState(() => _isFetchingMore = true);
-        print('fetch more lyrics');
         bloc.dispatch(FetchMoreLyricList());
       }
     }

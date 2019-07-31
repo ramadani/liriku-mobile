@@ -16,3 +16,8 @@ class FetchArtistList extends ArtistListEvent {
   String toString() =>
       'FetchArtistList { page: $page, perPage: $perPage, keyword: $keyword }';
 }
+
+class FetchMoreArtistList extends ArtistListEvent {
+  @override
+  String toString() => 'FetchMoreArtistList';
+}
