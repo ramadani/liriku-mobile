@@ -4,6 +4,9 @@ import 'package:liriku/data/model/lyric.dart';
 abstract class LyricCacheProvider {
   Future<LyricCollection> fetch(int page, int perPage, {String search = ''});
 
+  Future<LyricCollection> fetchBookmarks(int page, int perPage,
+      {String search = ''});
+
   Future<List<Lyric>> findWhereInId(List<String> listOfId);
 
   Future<List<Lyric>> findByArtistId(String artistId);

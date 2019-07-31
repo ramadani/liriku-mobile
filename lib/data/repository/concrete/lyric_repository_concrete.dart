@@ -49,6 +49,16 @@ class LyricRepositoryConcrete implements LyricRepository {
   }
 
   @override
+  Future<LyricCollection> paginateBookmarks(
+      {int page = 1, int perPage = 10, String search = ''}) async {
+    final result =
+    await _lyricCacheProvider.fetchBookmarks(page, perPage, search: search);
+    final lyrics = await _getLyricArtists(result.lyrics);
+
+    return result.copyWith(lyrics: lyrics);
+  }
+
+  @override
   Future<List<Lyric>> getTopLyric({int limit = 10}) async {
     final List<String> listOfId =
     await _topRatedProvider.findAllByType('LYRIC');

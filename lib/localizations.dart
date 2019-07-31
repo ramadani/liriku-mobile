@@ -80,7 +80,7 @@ class AppLocalizations {
   }
 
   String get bookmarkSubtitle {
-    return Intl.message("You're bank lyrics", name: 'bookmarkSubtitle');
+    return Intl.message("Your bank lyrics", name: 'bookmarkSubtitle');
   }
 
   String get recentlyRead {

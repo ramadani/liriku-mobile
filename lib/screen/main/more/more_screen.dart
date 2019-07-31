@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:liriku/localizations.dart';
+import 'package:liriku/screen/main/more/bookmark_list_screen.dart';
 
 enum MenuType { Bookmark, RecentlyRead, About }
 
@@ -8,8 +9,9 @@ class Menu {
   final String title;
   final String subtitle;
   final IconData icon;
+  final String routeName;
 
-  Menu(this.type, this.title, this.subtitle, this.icon);
+  Menu(this.type, this.title, this.subtitle, this.icon, this.routeName);
 }
 
 class MoreScreen extends StatelessWidget {
@@ -26,6 +28,7 @@ class MoreScreen extends StatelessWidget {
           .of(context)
           .bookmarkSubtitle,
       Icons.collections_bookmark,
+      BookmarkListScreen.routeName,
     ));
     menus.add(Menu(
       MenuType.RecentlyRead,
@@ -36,6 +39,7 @@ class MoreScreen extends StatelessWidget {
           .of(context)
           .recentlyReadSubtitle,
       Icons.history,
+      BookmarkListScreen.routeName,
     ));
     menus.add(Menu(
       MenuType.About,
@@ -46,6 +50,7 @@ class MoreScreen extends StatelessWidget {
           .of(context)
           .aboutSubtitle,
       Icons.info,
+      BookmarkListScreen.routeName,
     ));
 
     return Scaffold(
@@ -57,11 +62,12 @@ class MoreScreen extends StatelessWidget {
       body: ListView.builder(
         itemCount: menus.length,
         itemBuilder: (context, index) {
+          final menu = menus[index];
           return InkWell(
-            onTap: () {},
+            onTap: () => Navigator.pushNamed(context, menu.routeName),
             child: Column(
               children: <Widget>[
-                _MenuItem(menu: menus[index]),
+                _MenuItem(menu: menu),
                 Divider(height: 0),
               ],
             ),

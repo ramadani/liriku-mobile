@@ -31,6 +31,36 @@ class LyricCacheProviderDb implements LyricCacheProvider {
   }
 
   @override
+  Future<LyricCollection> fetchBookmarks(int page, int perPage,
+      {String search = ''}) async {
+    try {
+      String searchLike = '';
+      if (search != '') {
+        searchLike = "AND l.title LIKE '%$search%'";
+      }
+
+      final offset = (page - 1) * perPage;
+      final sql =
+          'SELECT l.id, l.title, l.cover_url, l.content, l.bookmarked, l.read_count, '
+          'l.artist_id, l.created_at, l.updated_at '
+          'FROM lyrics AS l '
+          'JOIN bookmarkables AS b '
+          'ON l.id = b.bookmarkable_id '
+          'WHERE b.bookmarkable_type = ? $searchLike'
+          'ORDER BY b.created_at DESC '
+          'LIMIT ?,?';
+      final rows = await _db.rawQuery(sql, ['LYRIC', offset, perPage]);
+      final List<Lyric> lyrics = List();
+
+      rows.toList().forEach((raw) => lyrics.add(_lyricMapper(raw)));
+
+      return LyricCollection(lyrics, page, perPage);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  @override
   Future<List<Lyric>> findByArtistId(String artistId) async {
     final sql = 'SELECT id, title, cover_url, content, bookmarked, read_count, '
         'artist_id, created_at, updated_at FROM lyrics WHERE artist_id = ?';

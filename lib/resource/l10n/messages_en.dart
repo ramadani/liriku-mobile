@@ -34,7 +34,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Top Ten New Artist\'s Lyrics"),
         "bookmark": MessageLookupByLibrary.simpleMessage("Bookmark"),
         "bookmarkSubtitle": MessageLookupByLibrary.simpleMessage(
-            "You\'re bank lyrics"),
+            "Your bank lyrics"),
         "collection": MessageLookupByLibrary.simpleMessage("Collection"),
         "exploreMore": MessageLookupByLibrary.simpleMessage("Explore More"),
         "home": MessageLookupByLibrary.simpleMessage("Home"),

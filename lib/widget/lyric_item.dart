@@ -33,6 +33,8 @@ class LyricItem extends StatelessWidget {
         ),
       );
       labels.add(artistName);
+
+      print('LyricArtist $artistName');
     }
 
     return Row(

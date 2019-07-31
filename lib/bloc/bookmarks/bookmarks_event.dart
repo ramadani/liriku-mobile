@@ -21,3 +21,20 @@ class FetchMoreBookmarks extends BookmarksEvent {
   @override
   String toString() => 'FetchMoreBookmarks';
 }
+
+class ChangeBookmarkInList extends BookmarksEvent {
+  final String lyricId;
+  final bool bookmarked;
+
+  ChangeBookmarkInList({this.lyricId, this.bookmarked})
+      : super([lyricId, bookmarked]);
+
+  @override
+  String toString() =>
+      'ChangeBookmarkInList { lyricId: $lyricId, bookmarked: $bookmarked }';
+}
+
+class ResetBookmarks extends BookmarksEvent {
+  @override
+  String toString() => 'ResetBookmarks';
+}
