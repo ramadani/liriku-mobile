@@ -4,7 +4,7 @@
     "description": "Title for the Demo application",
     "type": "text"
   },
-  "appDescription": "Get your favourite music's lyrics",
+  "appDescription": "Get your favourite music lyrics",
   "home": "Home",
   "collection": "Collection",
   "more": "More",

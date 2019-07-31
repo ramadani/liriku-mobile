@@ -24,7 +24,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static _notInlinedMessages(_) => <String, Function> {
     "about" : MessageLookupByLibrary.simpleMessage("About"),
     "aboutSubtitle" : MessageLookupByLibrary.simpleMessage("About Liriku Application"),
-    "appDescription" : MessageLookupByLibrary.simpleMessage("Get your favourite music\'s lyrics"),
+    "appDescription" : MessageLookupByLibrary.simpleMessage("Get your favourite music lyrics"),
     "artists" : MessageLookupByLibrary.simpleMessage("Artists"),
     "artistsDescSection" : MessageLookupByLibrary.simpleMessage("Top Ten New Artist\'s Lyrics"),
     "bookmark" : MessageLookupByLibrary.simpleMessage("Bookmark"),

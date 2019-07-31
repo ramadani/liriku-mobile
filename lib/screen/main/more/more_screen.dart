@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:liriku/localizations.dart';
+import 'package:liriku/screen/main/more/about_screen.dart';
 import 'package:liriku/screen/main/more/bookmark_list_screen.dart';
 import 'package:liriku/screen/main/more/recently_read_screen.dart';
 
@@ -39,7 +40,7 @@ class MoreScreen extends StatelessWidget {
       AppLocalizations.of(context).about,
       AppLocalizations.of(context).aboutSubtitle,
       Icons.info,
-      BookmarkListScreen.routeName,
+      AboutScreen.routeName,
     ));
 
     return Scaffold(
