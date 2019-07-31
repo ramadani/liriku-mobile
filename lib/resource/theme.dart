@@ -12,7 +12,7 @@ ThemeData appTheme(BuildContext context) {
     appBarTheme: AppBarTheme(
       brightness: Brightness.light,
       color: Colors.white,
-      elevation: 0,
+      elevation: 2,
       textTheme: Theme
           .of(context)
           .textTheme

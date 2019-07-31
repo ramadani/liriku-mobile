@@ -4,6 +4,7 @@
     "description": "Title for the Demo application",
     "type": "text"
   },
+  "appDescription": "Get your favourite music's lyrics",
   "home": "Home",
   "collection": "Collection",
   "more": "More",
@@ -13,5 +14,12 @@
   "songsDescSection": "Top Ten New Lyrics",
   "playlist": "Playlist",
   "search": "Search Song or Artist",
-  "searchEmptyResult": "Can't find any data that you're looking for"
+  "searchEmptyResult": "Can't find any data that you're looking for",
+  "exploreMore": "Explore More",
+  "bookmark": "Bookmark",
+  "bookmarkSubtitle": "You're bank lyrics",
+  "recentlyRead": "Recently Read",
+  "recentlyReadSubtitle": "The lyrics that you've read",
+  "about": "About",
+  "aboutSubtitle": "About Liriku Application"
 }

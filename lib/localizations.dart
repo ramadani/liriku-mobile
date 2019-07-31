@@ -22,6 +22,13 @@ class AppLocalizations {
     return Intl.message('Liriku', name: 'title', desc: 'The application title');
   }
 
+  String get appDescription {
+    return Intl.message(
+      "Get your favourite music's lyrics",
+      name: 'appDescription',
+    );
+  }
+
   String get home {
     return Intl.message('Home', name: 'home');
   }
@@ -63,6 +70,37 @@ class AppLocalizations {
     return Intl.message("Can't find any data that you're looking for",
         name: 'searchEmptyResult');
   }
+
+  String get exploreMore {
+    return Intl.message('Explore More', name: 'exploreMore');
+  }
+
+  String get bookmark {
+    return Intl.message('Bookmark', name: 'bookmark');
+  }
+
+  String get bookmarkSubtitle {
+    return Intl.message("You're bank lyrics", name: 'bookmarkSubtitle');
+  }
+
+  String get recentlyRead {
+    return Intl.message('Recently Read', name: 'recentlyRead');
+  }
+
+  String get recentlyReadSubtitle {
+    return Intl.message(
+      "The lyrics that you've read",
+      name: 'recentlyReadSubtitle',
+    );
+  }
+
+  String get about {
+    return Intl.message('About', name: 'about');
+  }
+
+  String get aboutSubtitle {
+    return Intl.message("About Liriku Application", name: 'aboutSubtitle');
+  }
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
@@ -70,7 +108,7 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
 
   @override
   bool isSupported(Locale locale) {
-    return ['en', 'es', 'pt'].contains(locale.languageCode);
+    return ['en', 'id'].contains(locale.languageCode);
   }
 
   @override

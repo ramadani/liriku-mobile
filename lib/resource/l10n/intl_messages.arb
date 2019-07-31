@@ -1,8 +1,13 @@
 {
-  "@@last_modified": "2019-07-17T21:54:36.032429",
+  "@@last_modified": "2019-07-31T13:37:45.319716",
   "title": "Liriku",
   "@title": {
     "description": "The application title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "appDescription": "Get your favourite music's lyrics",
+  "@appDescription": {
     "type": "text",
     "placeholders": {}
   },
@@ -53,6 +58,41 @@
   },
   "searchEmptyResult": "Can't find any data that you're looking for",
   "@searchEmptyResult": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "exploreMore": "Explore More",
+  "@exploreMore": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "bookmark": "Bookmark",
+  "@bookmark": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "bookmarkSubtitle": "You're bank lyrics",
+  "@bookmarkSubtitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "recentlyRead": "Recently Read",
+  "@recentlyRead": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "recentlyReadSubtitle": "The lyrics that you've read",
+  "@recentlyReadSubtitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "about": "About",
+  "@about": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutSubtitle": "About Liriku Application",
+  "@aboutSubtitle": {
     "type": "text",
     "placeholders": {}
   }
