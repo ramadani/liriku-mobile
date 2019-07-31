@@ -28,7 +28,12 @@ class ArtistRepositoryConcrete implements ArtistRepository {
       return cacheResult;
     }
 
-    return await _artistProvider.fetch(page, perPage, search: search);
+    final result = await _artistProvider.fetch(page, perPage, search: search);
+    await Future.forEach(result.artists, (Artist it) async {
+      await _artistCacheProvider.save(it);
+    });
+
+    return result;
   }
 
   @override

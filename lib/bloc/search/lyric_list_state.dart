@@ -49,9 +49,9 @@ class LyricListLoaded extends LyricListState {
   }
 
   LyricListLoaded fetchedMore(
-      {List<Lyric> newLyrics, bool hasMorePages = false}) {
+      {int page, List<Lyric> newLyrics, bool hasMorePages = false}) {
     return LyricListLoaded(
-      page: this.page,
+      page: page,
       perPage: this.perPage,
       keyword: this.keyword,
       lyrics: newLyrics.length > 0 ? this.lyrics + newLyrics : this.lyrics,
@@ -59,19 +59,6 @@ class LyricListLoaded extends LyricListState {
       fetchingMore: false,
     );
   }
-}
-
-class LyricListLoadingMore extends LyricListState {
-  final int page;
-  final int perPage;
-  final String keyword;
-
-  LyricListLoadingMore({this.page, this.perPage, this.keyword})
-      : super([page, perPage, keyword]);
-
-  @override
-  String toString() =>
-      'LyricListLoadingMore { page: $page, perPage: $perPage, keyword: $keyword }';
 }
 
 class LyricListEmpty extends LyricListState {

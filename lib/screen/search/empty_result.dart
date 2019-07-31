@@ -11,7 +11,7 @@ class EmptyResult extends StatelessWidget {
         children: <Widget>[
           Image.asset(
             'assets/images/ic_sad.png',
-            width: 150,
+            width: 130,
           ),
           Container(
             margin: EdgeInsets.only(top: 20),

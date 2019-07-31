@@ -25,6 +25,7 @@ class _ArtistPageState extends State<ArtistPage>
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
 
+  bool _hasInit = false;
   bool _isFetchingMore = false;
 
   @override
@@ -45,10 +46,13 @@ class _ArtistPageState extends State<ArtistPage>
       bloc: bloc,
       listener: (BuildContext context, ArtistListState state) {
         if (state is ArtistListLoaded) {
-          setState(
-                () =>
-            _isFetchingMore = state.fetchingMore || !(state.hasMorePages),
-          );
+          print(
+              'artist fetch more ${state.fetchingMore ||
+                  !(state.hasMorePages)}');
+          setState(() {
+            _hasInit = true;
+            _isFetchingMore = state.fetchingMore || !(state.hasMorePages);
+          });
         }
       },
       child: BlocBuilder<ArtistListEvent, ArtistListState>(
@@ -77,7 +81,9 @@ class _ArtistPageState extends State<ArtistPage>
                     margin: EdgeInsets.only(top: 16.0),
                     child: artistItem,
                   );
-                } else if (index == artists.length - 1 && state.fetchingMore) {
+                }
+
+                if (index == artists.length - 1 && state.fetchingMore) {
                   return Column(
                     children: <Widget>[
                       artistItem,
@@ -112,7 +118,7 @@ class _ArtistPageState extends State<ArtistPage>
     final currentScroll = _scrollController.position.pixels;
 
     if (maxScroll - currentScroll <= _scrollThreshold) {
-      if (!_isFetchingMore) {
+      if (!_isFetchingMore && _hasInit) {
         setState(() => _isFetchingMore = true);
         bloc.dispatch(FetchMoreArtistList());
       }

@@ -49,13 +49,13 @@ class ArtistListLoaded extends ArtistListState {
   }
 
   ArtistListLoaded fetchedMore(
-      {List<Artist> newArtists, bool hasMorePages = false}) {
+      {int page, List<Artist> newArtists, bool hasMorePages = false}) {
     return ArtistListLoaded(
-      page: this.page,
+      page: page,
       perPage: this.perPage,
       keyword: this.keyword,
       artists: newArtists.length > 0 ? this.artists + newArtists : this.artists,
-      hasMorePages: this.hasMorePages,
+      hasMorePages: hasMorePages,
       fetchingMore: false,
     );
   }

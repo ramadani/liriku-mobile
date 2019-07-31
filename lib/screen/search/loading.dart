@@ -9,7 +9,9 @@ class LoadingSmall extends StatelessWidget {
         child: SizedBox(
           width: 28,
           height: 28,
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator(
+            strokeWidth: 2.4,
+          ),
         ),
       ),
     );

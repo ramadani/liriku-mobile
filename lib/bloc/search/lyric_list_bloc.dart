@@ -91,6 +91,7 @@ class LyricListBloc extends Bloc<LyricListEvent, LyricListState> {
           page: state.page + 1, perPage: state.perPage, search: state.keyword);
 
       yield state.fetchedMore(
+        page: result.page,
         newLyrics: result.lyrics,
         hasMorePages: result.lyrics.length == state.perPage,
       );

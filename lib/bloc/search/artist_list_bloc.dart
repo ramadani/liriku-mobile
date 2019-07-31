@@ -77,10 +77,11 @@ class ArtistListBloc extends Bloc<ArtistListEvent, ArtistListState> {
           page: state.page + 1, perPage: state.perPage, search: state.keyword);
 
       yield state.fetchedMore(
+        page: result.page,
         newArtists: result.artists,
         hasMorePages: result.artists.length == state.perPage,
       );
-    } catch (e) {
+    } catch (_) {
       yield ArtistListError();
     }
   }

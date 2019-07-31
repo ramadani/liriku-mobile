@@ -43,6 +43,9 @@ class _SongPageState extends State<SongPage>
       bloc: bloc,
       listener: (BuildContext context, LyricListState state) {
         if (state is LyricListLoaded) {
+          print(
+              'lyric fetch more ${state.fetchingMore ||
+                  !(state.hasMorePages)}');
           setState(
                 () =>
             _isFetchingMore = state.fetchingMore || !(state.hasMorePages),
@@ -82,7 +85,9 @@ class _SongPageState extends State<SongPage>
                     margin: EdgeInsets.only(top: 16.0),
                     child: lyricItem,
                   );
-                } else if (index == lyrics.length - 1 && state.fetchingMore) {
+                }
+
+                if (index == lyrics.length - 1 && state.fetchingMore) {
                   return Column(
                     children: <Widget>[
                       lyricItem,
