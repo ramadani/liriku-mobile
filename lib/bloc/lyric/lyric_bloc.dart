@@ -23,6 +23,8 @@ class LyricBloc extends Bloc<LyricEvent, LyricState> {
           bookmarked: lyric.bookmarked,
         ));
         yield LyricLoaded(lyric: lyric);
+
+        await _lyricRepository.read(event.id);
       }
     } catch (e) {
       yield LyricError();

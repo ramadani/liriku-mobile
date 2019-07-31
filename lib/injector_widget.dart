@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:liriku/bloc/auth/auth_bloc.dart';
 import 'package:liriku/bloc/bookmark/bloc.dart';
+import 'package:liriku/bloc/bookmarks/bloc.dart';
 import 'package:liriku/bloc/home/bloc.dart' as home;
 import 'package:liriku/bloc/lyric/bloc.dart';
 import 'package:liriku/bloc/playlist/playlist_bloc.dart';
+import 'package:liriku/bloc/recentlyread/bloc.dart';
 import 'package:liriku/bloc/search/bloc.dart';
 import 'package:liriku/config/json_config.dart';
 import 'package:liriku/data/provider/api/artist_provider_api.dart';
@@ -42,19 +44,20 @@ class InjectorWidget extends InheritedWidget {
   SearchFormBloc _searchFormBloc;
   LyricListBloc _lyricListBloc;
   ArtistListBloc _artistListBloc;
+  BookmarksBloc _bookmarksBloc;
+  RecentlyReadBloc _recentlyReadBloc;
 
   InjectorWidget({
     Key key,
     @required Widget child,
     @required String envFilename,
-  })
-      : assert(child != null),
+  })  : assert(child != null),
         _envFilename = envFilename,
         super(key: key, child: child);
 
   static InjectorWidget of(BuildContext context) {
     return context.inheritFromWidgetOfExactType(InjectorWidget)
-    as InjectorWidget;
+        as InjectorWidget;
   }
 
   @override
@@ -69,7 +72,7 @@ class InjectorWidget extends InheritedWidget {
 
     final db = await SQLiteProvider().open();
     final httpClient =
-    HttpClient(configData.baseApiUrl, configData.apiKey, _appDataProvider);
+        HttpClient(configData.baseApiUrl, configData.apiKey, _appDataProvider);
     final authProvider = AuthProviderApi(httpClient);
     final artistProvider = ArtistProviderApi(httpClient);
     final lyricProvider = LyricProviderApi(httpClient);
@@ -165,5 +168,21 @@ class InjectorWidget extends InheritedWidget {
     }
 
     return _artistListBloc;
+  }
+
+  BookmarksBloc bookmarksBloc({bool forceCreate = false}) {
+    if (_bookmarksBloc == null || forceCreate) {
+      _bookmarksBloc = BookmarksBloc(bookmarkBloc(), _lyricRepository);
+    }
+
+    return _bookmarksBloc;
+  }
+
+  RecentlyReadBloc recentlyReadBloc({bool forceCreate = false}) {
+    if (_recentlyReadBloc == null || forceCreate) {
+      _recentlyReadBloc = RecentlyReadBloc(bookmarkBloc(), _lyricRepository);
+    }
+
+    return _recentlyReadBloc;
   }
 }

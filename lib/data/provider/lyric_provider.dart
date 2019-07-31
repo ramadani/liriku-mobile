@@ -5,4 +5,6 @@ abstract class LyricProvider {
   Future<LyricCollection> fetch(int page, int perPage, {String search = ""});
 
   Future<List<Lyric>> topNew(int limit);
+
+  Future<bool> read(String id);
 }

@@ -9,7 +9,7 @@ class FetchArtistList extends ArtistListEvent {
   final int perPage;
   final String keyword;
 
-  FetchArtistList({this.page = 1, this.perPage = 15, this.keyword = ''})
+  FetchArtistList({this.page = 1, this.perPage = 50, this.keyword = ''})
       : super([page, perPage, keyword]);
 
   @override

@@ -31,6 +31,58 @@ class LyricCacheProviderDb implements LyricCacheProvider {
   }
 
   @override
+  Future<LyricCollection> fetchBookmarks(int page, int perPage,
+      {String search = ''}) async {
+    try {
+      String searchLike = '';
+      if (search != '') {
+        searchLike = "AND l.title LIKE '%$search%'";
+      }
+
+      final offset = (page - 1) * perPage;
+      final sql =
+          'SELECT l.id, l.title, l.cover_url, l.content, l.bookmarked, l.read_count, '
+          'l.artist_id, l.created_at, l.updated_at '
+          'FROM lyrics AS l '
+          'JOIN bookmarkables AS b '
+          'ON l.id = b.bookmarkable_id '
+          'WHERE b.bookmarkable_type = ? $searchLike'
+          'ORDER BY b.created_at DESC '
+          'LIMIT ?,?';
+      final rows = await _db.rawQuery(sql, ['LYRIC', offset, perPage]);
+      final List<Lyric> lyrics = List();
+
+      rows.toList().forEach((raw) => lyrics.add(_lyricMapper(raw)));
+
+      return LyricCollection(lyrics, page, perPage);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  @override
+  Future<List<Lyric>> fetchUpdatedLastSeen({int limit = 100}) async {
+    try {
+      final sql =
+          'SELECT id, title, cover_url, content, bookmarked, read_count, '
+          'artist_id, created_at, updated_at FROM lyrics '
+          'WHERE last_seen NOT NULL '
+          'ORDER BY last_seen DESC '
+          'LIMIT ?,?';
+      final rows = await _db.rawQuery(sql, [0, limit]);
+      final List<Lyric> lyrics = List();
+
+      rows.toList().forEach((raw) {
+        lyrics.add(_lyricMapper(raw));
+      });
+
+      return lyrics;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  @override
   Future<List<Lyric>> findByArtistId(String artistId) async {
     final sql = 'SELECT id, title, cover_url, content, bookmarked, read_count, '
         'artist_id, created_at, updated_at FROM lyrics WHERE artist_id = ?';
@@ -80,9 +132,7 @@ class LyricCacheProviderDb implements LyricCacheProvider {
           lyric.coverUrl,
           lyric.content,
           lyric.readCount,
-          DateTime
-              .now()
-              .millisecondsSinceEpoch,
+          DateTime.now().millisecondsSinceEpoch,
           lyric.id,
         ]);
       } else {
@@ -99,9 +149,7 @@ class LyricCacheProviderDb implements LyricCacheProvider {
           0,
           artistId,
           lyric.createdAt.millisecondsSinceEpoch,
-          DateTime
-              .now()
-              .millisecondsSinceEpoch,
+          DateTime.now().millisecondsSinceEpoch,
         ]);
       }
 
@@ -122,6 +170,18 @@ class LyricCacheProviderDb implements LyricCacheProvider {
     }
 
     return _lyricMapper(rows[0]);
+  }
+
+  @override
+  Future<bool> read(String id) async {
+    try {
+      final sql = 'UPDATE lyrics SET last_seen = ? WHERE id = ?';
+      await _db.rawUpdate(sql, [DateTime.now().millisecondsSinceEpoch, id]);
+
+      return true;
+    } catch (e) {
+      throw e;
+    }
   }
 
   Lyric _lyricMapper(dynamic raw) {
