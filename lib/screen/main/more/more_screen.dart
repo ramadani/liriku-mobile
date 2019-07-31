@@ -99,7 +99,7 @@ class _MenuItem extends StatelessWidget {
                       .title
                       .copyWith(
                       fontWeight: FontWeight.w600,
-                      fontSize: 18.0,
+                      fontSize: 16.0,
                       color: Theme
                           .of(context)
                           .primaryColor),

@@ -9,7 +9,7 @@ class FetchLyricList extends LyricListEvent {
   final int perPage;
   final String keyword;
 
-  FetchLyricList({this.page = 1, this.perPage = 15, this.keyword = ''})
+  FetchLyricList({this.page = 1, this.perPage = 50, this.keyword = ''})
       : super([page, perPage, keyword]);
 
   @override
