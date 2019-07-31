@@ -14,18 +14,20 @@ class LyricRepositoryConcrete implements LyricRepository {
   final BookmarkableProvider _bookmarkableProvider;
   final ArtistRepository _artistRepository;
 
-  LyricRepositoryConcrete(this._lyricProvider,
-      this._lyricCacheProvider,
-      this._topRatedProvider,
-      this._bookmarkableProvider,
-      this._artistRepository,);
+  LyricRepositoryConcrete(
+    this._lyricProvider,
+    this._lyricCacheProvider,
+    this._topRatedProvider,
+    this._bookmarkableProvider,
+    this._artistRepository,
+  );
 
   @override
   Future<LyricCollection> paginate(
       {int page = 1, int perPage = 10, String search = ''}) async {
     try {
       final cacheResult =
-      await _lyricCacheProvider.fetch(page, perPage, search: search);
+          await _lyricCacheProvider.fetch(page, perPage, search: search);
 
       if (cacheResult.lyrics.length >= 3) {
         final lyrics = await _getLyricArtists(cacheResult.lyrics);
@@ -52,7 +54,7 @@ class LyricRepositoryConcrete implements LyricRepository {
   Future<LyricCollection> paginateBookmarks(
       {int page = 1, int perPage = 10, String search = ''}) async {
     final result =
-    await _lyricCacheProvider.fetchBookmarks(page, perPage, search: search);
+        await _lyricCacheProvider.fetchBookmarks(page, perPage, search: search);
     final lyrics = await _getLyricArtists(result.lyrics);
 
     return result.copyWith(lyrics: lyrics);
@@ -61,7 +63,7 @@ class LyricRepositoryConcrete implements LyricRepository {
   @override
   Future<List<Lyric>> getTopLyric({int limit = 10}) async {
     final List<String> listOfId =
-    await _topRatedProvider.findAllByType('LYRIC');
+        await _topRatedProvider.findAllByType('LYRIC');
     final lyrics = await _lyricCacheProvider.findWhereInId(listOfId);
 
     return await _getLyricArtists(lyrics);
@@ -81,6 +83,13 @@ class LyricRepositoryConcrete implements LyricRepository {
     });
 
     return true;
+  }
+
+  @override
+  Future<List<Lyric>> getRecentlyRead({int limit = 100}) async {
+    final result = await _lyricCacheProvider.fetchUpdated(limit: limit);
+
+    return await _getLyricArtists(result);
   }
 
   @override

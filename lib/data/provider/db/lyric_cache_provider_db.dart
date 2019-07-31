@@ -61,6 +61,27 @@ class LyricCacheProviderDb implements LyricCacheProvider {
   }
 
   @override
+  Future<List<Lyric>> fetchUpdated({int limit = 100}) async {
+    try {
+      final sql =
+          'SELECT id, title, cover_url, content, bookmarked, read_count, '
+          'artist_id, created_at, updated_at FROM lyrics '
+          'ORDER BY updated_at DESC '
+          'LIMIT ?,?';
+      final rows = await _db.rawQuery(sql, [0, limit]);
+      final List<Lyric> lyrics = List();
+
+      rows.toList().forEach((raw) {
+        lyrics.add(_lyricMapper(raw));
+      });
+
+      return lyrics;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  @override
   Future<List<Lyric>> findByArtistId(String artistId) async {
     final sql = 'SELECT id, title, cover_url, content, bookmarked, read_count, '
         'artist_id, created_at, updated_at FROM lyrics WHERE artist_id = ?';
@@ -110,9 +131,7 @@ class LyricCacheProviderDb implements LyricCacheProvider {
           lyric.coverUrl,
           lyric.content,
           lyric.readCount,
-          DateTime
-              .now()
-              .millisecondsSinceEpoch,
+          DateTime.now().millisecondsSinceEpoch,
           lyric.id,
         ]);
       } else {
@@ -129,9 +148,7 @@ class LyricCacheProviderDb implements LyricCacheProvider {
           0,
           artistId,
           lyric.createdAt.millisecondsSinceEpoch,
-          DateTime
-              .now()
-              .millisecondsSinceEpoch,
+          DateTime.now().millisecondsSinceEpoch,
         ]);
       }
 

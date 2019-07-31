@@ -7,6 +7,8 @@ abstract class LyricCacheProvider {
   Future<LyricCollection> fetchBookmarks(int page, int perPage,
       {String search = ''});
 
+  Future<List<Lyric>> fetchUpdated({int limit = 100});
+
   Future<List<Lyric>> findWhereInId(List<String> listOfId);
 
   Future<List<Lyric>> findByArtistId(String artistId);

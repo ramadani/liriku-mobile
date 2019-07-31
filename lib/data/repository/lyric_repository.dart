@@ -14,6 +14,8 @@ abstract class LyricRepository {
 
   Future<List<Lyric>> getTopLyric({int limit = 10});
 
+  Future<List<Lyric>> getRecentlyRead({int limit = 100});
+
   Future<LyricArtist> getDetail(String id);
 
   Future<bool> setBookmark(String id, bool bookmarked);

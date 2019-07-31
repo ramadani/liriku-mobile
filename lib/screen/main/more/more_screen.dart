@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:liriku/localizations.dart';
 import 'package:liriku/screen/main/more/bookmark_list_screen.dart';
+import 'package:liriku/screen/main/more/recently_read_screen.dart';
 
 enum MenuType { Bookmark, RecentlyRead, About }
 
@@ -21,43 +22,29 @@ class MoreScreen extends StatelessWidget {
 
     menus.add(Menu(
       MenuType.Bookmark,
-      AppLocalizations
-          .of(context)
-          .bookmark,
-      AppLocalizations
-          .of(context)
-          .bookmarkSubtitle,
+      AppLocalizations.of(context).bookmark,
+      AppLocalizations.of(context).bookmarkSubtitle,
       Icons.collections_bookmark,
       BookmarkListScreen.routeName,
     ));
     menus.add(Menu(
       MenuType.RecentlyRead,
-      AppLocalizations
-          .of(context)
-          .recentlyRead,
-      AppLocalizations
-          .of(context)
-          .recentlyReadSubtitle,
+      AppLocalizations.of(context).recentlyRead,
+      AppLocalizations.of(context).recentlyReadSubtitle,
       Icons.history,
-      BookmarkListScreen.routeName,
+      RecentlyReadScreen.routeName,
     ));
     menus.add(Menu(
       MenuType.About,
-      AppLocalizations
-          .of(context)
-          .about,
-      AppLocalizations
-          .of(context)
-          .aboutSubtitle,
+      AppLocalizations.of(context).about,
+      AppLocalizations.of(context).aboutSubtitle,
       Icons.info,
       BookmarkListScreen.routeName,
     ));
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations
-            .of(context)
-            .exploreMore),
+        title: Text(AppLocalizations.of(context).exploreMore),
       ),
       body: ListView.builder(
         itemCount: menus.length,
@@ -89,9 +76,7 @@ class _MenuItem extends StatelessWidget {
       padding: EdgeInsets.all(16),
       child: Row(
         children: <Widget>[
-          Icon(menu.icon, color: Theme
-              .of(context)
-              .primaryColor),
+          Icon(menu.icon, color: Theme.of(context).primaryColor),
           Padding(
             padding: EdgeInsets.only(left: 16),
             child: Column(
@@ -99,16 +84,10 @@ class _MenuItem extends StatelessWidget {
               children: <Widget>[
                 Text(
                   menu.title,
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .title
-                      .copyWith(
+                  style: Theme.of(context).textTheme.title.copyWith(
                       fontWeight: FontWeight.w600,
                       fontSize: 16.0,
-                      color: Theme
-                          .of(context)
-                          .primaryColor),
+                      color: Theme.of(context).primaryColor),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 4.0),
