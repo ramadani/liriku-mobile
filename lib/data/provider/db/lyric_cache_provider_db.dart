@@ -61,12 +61,13 @@ class LyricCacheProviderDb implements LyricCacheProvider {
   }
 
   @override
-  Future<List<Lyric>> fetchUpdated({int limit = 100}) async {
+  Future<List<Lyric>> fetchUpdatedLastSeen({int limit = 100}) async {
     try {
       final sql =
           'SELECT id, title, cover_url, content, bookmarked, read_count, '
           'artist_id, created_at, updated_at FROM lyrics '
-          'ORDER BY updated_at DESC '
+          'WHERE last_seen NOT NULL '
+          'ORDER BY last_seen DESC '
           'LIMIT ?,?';
       final rows = await _db.rawQuery(sql, [0, limit]);
       final List<Lyric> lyrics = List();
@@ -169,6 +170,18 @@ class LyricCacheProviderDb implements LyricCacheProvider {
     }
 
     return _lyricMapper(rows[0]);
+  }
+
+  @override
+  Future<bool> read(String id) async {
+    try {
+      final sql = 'UPDATE lyrics SET last_seen = ? WHERE id = ?';
+      await _db.rawUpdate(sql, [DateTime.now().millisecondsSinceEpoch, id]);
+
+      return true;
+    } catch (e) {
+      throw e;
+    }
   }
 
   Lyric _lyricMapper(dynamic raw) {

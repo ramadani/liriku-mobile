@@ -21,6 +21,7 @@
   "bookmarkEmpty": "Bookmark Empty",
   "recentlyRead": "Recently Read",
   "recentlyReadSubtitle": "The lyrics that you've read",
+  "recentlyReadEmpty": "No History Read",
   "about": "About",
   "aboutSubtitle": "About Liriku Application"
 }

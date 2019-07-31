@@ -91,6 +91,10 @@ class AppLocalizations {
     return Intl.message('Recently Read', name: 'recentlyRead');
   }
 
+  String get recentlyReadEmpty {
+    return Intl.message('No History Read', name: 'recentlyReadEmpty');
+  }
+
   String get recentlyReadSubtitle {
     return Intl.message(
       "The lyrics that you've read",

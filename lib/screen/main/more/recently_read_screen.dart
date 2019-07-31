@@ -79,10 +79,40 @@ class _RecentlyReadListViewState extends State<_RecentlyReadListView> {
               );
             },
           );
+        } else if (state is RecentlyReadEmpty) {
+          return _RecentlyReadEmpty();
         }
 
         return Container();
       },
+    );
+  }
+}
+
+class _RecentlyReadEmpty extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.0),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(
+              Icons.history,
+              size: 80,
+              color: Colors.grey[400],
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 8),
+              child: Text(
+                AppLocalizations.of(context).recentlyReadEmpty,
+                style: TextStyle(color: Colors.black45),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

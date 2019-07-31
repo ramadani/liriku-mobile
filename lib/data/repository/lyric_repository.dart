@@ -18,5 +18,7 @@ abstract class LyricRepository {
 
   Future<LyricArtist> getDetail(String id);
 
+  Future<bool> read(String id);
+
   Future<bool> setBookmark(String id, bool bookmarked);
 }

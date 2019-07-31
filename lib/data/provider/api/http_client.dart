@@ -35,6 +35,13 @@ class HttpClient extends http.BaseClient {
   }
 
   @override
+  Future<http.Response> put(url,
+      {Map<String, String> headers, body, Encoding encoding}) {
+    return super
+        .put('$_baseUrl$url', headers: headers, body: body, encoding: encoding);
+  }
+
+  @override
   Future<http.StreamedResponse> send(http.BaseRequest request) async {
     request.headers['x-api-key'] = _apiKey;
     if (_isAuth) {

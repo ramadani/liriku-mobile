@@ -87,7 +87,7 @@ class LyricRepositoryConcrete implements LyricRepository {
 
   @override
   Future<List<Lyric>> getRecentlyRead({int limit = 100}) async {
-    final result = await _lyricCacheProvider.fetchUpdated(limit: limit);
+    final result = await _lyricCacheProvider.fetchUpdatedLastSeen(limit: limit);
 
     return await _getLyricArtists(result);
   }
@@ -108,6 +108,18 @@ class LyricRepositoryConcrete implements LyricRepository {
       updatedAt: lyric.updatedAt,
       artist: artist,
     );
+  }
+
+  @override
+  Future<bool> read(String id) async {
+    try {
+      await _lyricCacheProvider.read(id);
+      await _lyricProvider.read(id);
+
+      return true;
+    } catch (e) {
+      throw e;
+    }
   }
 
   @override

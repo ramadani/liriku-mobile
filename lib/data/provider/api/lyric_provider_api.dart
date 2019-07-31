@@ -59,6 +59,20 @@ class LyricProviderApi implements LyricProvider {
     return results;
   }
 
+  @override
+  Future<bool> read(String id) async {
+    try {
+      final response = await _client.put('/lyrics/$id/read');
+      if (!_client.ok(response.statusCode)) {
+        throw Exception(response.body);
+      }
+
+      return true;
+    } catch (e) {
+      throw e;
+    }
+  }
+
   Lyric _lyricMapper(dynamic raw) {
     final artistRaw = raw['artist'];
 

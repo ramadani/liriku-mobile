@@ -21,35 +21,27 @@ class MessageLookup extends MessageLookupByLibrary {
   get localeName => 'messages';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
-
-  static _notInlinedMessages(_) =>
-      <String, Function>{
-        "about": MessageLookupByLibrary.simpleMessage("About"),
-        "aboutSubtitle": MessageLookupByLibrary.simpleMessage(
-            "About Liriku Application"),
-        "appDescription": MessageLookupByLibrary.simpleMessage(
-            "Get your favourite music\'s lyrics"),
-        "artists": MessageLookupByLibrary.simpleMessage("Artists"),
-        "artistsDescSection": MessageLookupByLibrary.simpleMessage(
-            "Top Ten New Artist\'s Lyrics"),
-        "bookmark": MessageLookupByLibrary.simpleMessage("Bookmark"),
-        "bookmarkEmpty": MessageLookupByLibrary.simpleMessage("Bookmark Empty"),
-        "bookmarkSubtitle": MessageLookupByLibrary.simpleMessage(
-            "Your bank lyrics"),
-        "collection": MessageLookupByLibrary.simpleMessage("Collection"),
-        "exploreMore": MessageLookupByLibrary.simpleMessage("Explore More"),
-        "home": MessageLookupByLibrary.simpleMessage("Home"),
-        "more": MessageLookupByLibrary.simpleMessage("More"),
-        "playlist": MessageLookupByLibrary.simpleMessage("Playlist"),
-        "recentlyRead": MessageLookupByLibrary.simpleMessage("Recently Read"),
-        "recentlyReadSubtitle": MessageLookupByLibrary.simpleMessage(
-            "The lyrics that you\'ve read"),
-        "search": MessageLookupByLibrary.simpleMessage("Search Song or Artist"),
-        "searchEmptyResult": MessageLookupByLibrary.simpleMessage(
-            "Can\'t find any data that you\'re looking for"),
-        "songs": MessageLookupByLibrary.simpleMessage("Songs"),
-        "songsDescSection": MessageLookupByLibrary.simpleMessage(
-            "Top Ten New Lyrics"),
-        "title": MessageLookupByLibrary.simpleMessage("Liriku")
-      };
+  static _notInlinedMessages(_) => <String, Function> {
+    "about" : MessageLookupByLibrary.simpleMessage("About"),
+    "aboutSubtitle" : MessageLookupByLibrary.simpleMessage("About Liriku Application"),
+    "appDescription" : MessageLookupByLibrary.simpleMessage("Get your favourite music\'s lyrics"),
+    "artists" : MessageLookupByLibrary.simpleMessage("Artists"),
+    "artistsDescSection" : MessageLookupByLibrary.simpleMessage("Top Ten New Artist\'s Lyrics"),
+    "bookmark" : MessageLookupByLibrary.simpleMessage("Bookmark"),
+    "bookmarkEmpty" : MessageLookupByLibrary.simpleMessage("Bookmark Empty"),
+    "bookmarkSubtitle" : MessageLookupByLibrary.simpleMessage("Your bank lyrics"),
+    "collection" : MessageLookupByLibrary.simpleMessage("Collection"),
+    "exploreMore" : MessageLookupByLibrary.simpleMessage("Explore More"),
+    "home" : MessageLookupByLibrary.simpleMessage("Home"),
+    "more" : MessageLookupByLibrary.simpleMessage("More"),
+    "playlist" : MessageLookupByLibrary.simpleMessage("Playlist"),
+    "recentlyRead" : MessageLookupByLibrary.simpleMessage("Recently Read"),
+    "recentlyReadEmpty" : MessageLookupByLibrary.simpleMessage("No History Read"),
+    "recentlyReadSubtitle" : MessageLookupByLibrary.simpleMessage("The lyrics that you\'ve read"),
+    "search" : MessageLookupByLibrary.simpleMessage("Search Song or Artist"),
+    "searchEmptyResult" : MessageLookupByLibrary.simpleMessage("Can\'t find any data that you\'re looking for"),
+    "songs" : MessageLookupByLibrary.simpleMessage("Songs"),
+    "songsDescSection" : MessageLookupByLibrary.simpleMessage("Top Ten New Lyrics"),
+    "title" : MessageLookupByLibrary.simpleMessage("Liriku")
+  };
 }
