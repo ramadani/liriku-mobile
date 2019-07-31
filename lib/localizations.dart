@@ -83,6 +83,10 @@ class AppLocalizations {
     return Intl.message("Your bank lyrics", name: 'bookmarkSubtitle');
   }
 
+  String get bookmarkEmpty {
+    return Intl.message("Bookmark Empty", name: 'bookmarkEmpty');
+  }
+
   String get recentlyRead {
     return Intl.message('Recently Read', name: 'recentlyRead');
   }

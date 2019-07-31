@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-07-31T15:07:14.958549",
+  "@@last_modified": "2019-07-31T20:41:50.775114",
   "title": "Liriku",
   "@title": {
     "description": "The application title",
@@ -71,8 +71,13 @@
     "type": "text",
     "placeholders": {}
   },
-  "bookmarkSubtitle": "You're bank lyrics",
+  "bookmarkSubtitle": "Your bank lyrics",
   "@bookmarkSubtitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "bookmarkEmpty": "Bookmark Empty",
+  "@bookmarkEmpty": {
     "type": "text",
     "placeholders": {}
   },

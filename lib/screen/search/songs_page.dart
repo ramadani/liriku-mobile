@@ -43,13 +43,9 @@ class _SongPageState extends State<SongPage>
       bloc: bloc,
       listener: (BuildContext context, LyricListState state) {
         if (state is LyricListLoaded) {
-          print(
-              'lyric fetch more ${state.fetchingMore ||
-                  !(state.hasMorePages)}');
-          setState(
-                () =>
-            _isFetchingMore = state.fetchingMore || !(state.hasMorePages),
-          );
+          setState(() {
+            _isFetchingMore = state.fetchingMore || !(state.hasMorePages);
+          });
         }
       },
       child: BlocBuilder(

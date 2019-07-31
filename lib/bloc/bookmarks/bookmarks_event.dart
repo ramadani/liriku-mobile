@@ -9,7 +9,7 @@ class FetchBookmarks extends BookmarksEvent {
   final int perPage;
   final String keyword;
 
-  FetchBookmarks({this.page = 1, this.perPage = 15, this.keyword = ''})
+  FetchBookmarks({this.page = 1, this.perPage = 100, this.keyword = ''})
       : super([page, perPage, keyword]);
 
   @override
@@ -22,16 +22,16 @@ class FetchMoreBookmarks extends BookmarksEvent {
   String toString() => 'FetchMoreBookmarks';
 }
 
-class ChangeBookmarkInList extends BookmarksEvent {
+class RemoveBookmarkInList extends BookmarksEvent {
   final String lyricId;
   final bool bookmarked;
 
-  ChangeBookmarkInList({this.lyricId, this.bookmarked})
+  RemoveBookmarkInList({this.lyricId, this.bookmarked})
       : super([lyricId, bookmarked]);
 
   @override
   String toString() =>
-      'ChangeBookmarkInList { lyricId: $lyricId, bookmarked: $bookmarked }';
+      'RemoveBookmarkInList { lyricId: $lyricId, bookmarked: $bookmarked }';
 }
 
 class ResetBookmarks extends BookmarksEvent {
