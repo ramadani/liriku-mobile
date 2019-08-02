@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:liriku/bloc/auth/auth_bloc.dart';
 import 'package:liriku/bloc/bookmark/bloc.dart';
 import 'package:liriku/bloc/bookmarks/bloc.dart';
+import 'package:liriku/bloc/collection/bloc.dart';
 import 'package:liriku/bloc/home/bloc.dart' as home;
 import 'package:liriku/bloc/lyric/bloc.dart';
 import 'package:liriku/bloc/playlist/playlist_bloc.dart';
@@ -44,6 +45,7 @@ class InjectorWidget extends InheritedWidget {
   SearchFormBloc _searchFormBloc;
   LyricListBloc _lyricListBloc;
   ArtistListBloc _artistListBloc;
+  CollectionBloc _collectionBloc;
   BookmarksBloc _bookmarksBloc;
   RecentlyReadBloc _recentlyReadBloc;
 
@@ -184,5 +186,13 @@ class InjectorWidget extends InheritedWidget {
     }
 
     return _recentlyReadBloc;
+  }
+
+  CollectionBloc collectionBloc({bool forceCreate = false}) {
+    if (_collectionBloc == null || forceCreate) {
+      _collectionBloc = CollectionBloc(_artistRepository);
+    }
+
+    return _collectionBloc;
   }
 }
