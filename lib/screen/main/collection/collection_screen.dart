@@ -12,13 +12,11 @@ class CollectionScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).collection),
-//        elevation: 2,
       ),
       body: Row(
         children: <Widget>[
           Container(
             width: 52,
-//            color: Colors.grey[100],
             child: SelectorList(),
           ),
           Expanded(
