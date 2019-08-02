@@ -46,9 +46,6 @@ class _ArtistPageState extends State<ArtistPage>
       bloc: bloc,
       listener: (BuildContext context, ArtistListState state) {
         if (state is ArtistListLoaded) {
-          print(
-              'artist fetch more ${state.fetchingMore ||
-                  !(state.hasMorePages)}');
           setState(() {
             _hasInit = true;
             _isFetchingMore = state.fetchingMore || !(state.hasMorePages);

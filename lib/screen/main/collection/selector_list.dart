@@ -15,13 +15,15 @@ class SelectorList extends StatefulWidget {
 class _SelectorListState extends State<SelectorList> {
   @override
   Widget build(BuildContext context) {
+    final verticalPad = 6.0;
+
     return ListView.builder(
       itemCount: 26,
       itemBuilder: (context, index) {
         final padding =
-            EdgeInsets.symmetric(vertical: 4, horizontal: 8).copyWith(
-          top: index == 0 ? 8 : 4,
-          bottom: index == (26 - 1) ? 8 : 4,
+            EdgeInsets.symmetric(vertical: verticalPad, horizontal: 8).copyWith(
+          top: index == 0 ? (verticalPad * 2) + 2 : verticalPad,
+          bottom: index == (26 - 1) ? (verticalPad * 2) + 2 : verticalPad,
         );
 
         return Padding(

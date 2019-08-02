@@ -28,15 +28,15 @@ class CollectionLoaded extends CollectionState {
     this.artists,
     this.page,
     this.perPage,
-    this.hasMorePages,
-    this.fetchingMore,
+    this.hasMorePages = false,
+    this.fetchingMore = false,
   }) : super([
           id,
           artists,
           page,
           perPage,
-          hasMorePages = false,
-          fetchingMore = false,
+          hasMorePages,
+          fetchingMore,
         ]);
 
   @override
