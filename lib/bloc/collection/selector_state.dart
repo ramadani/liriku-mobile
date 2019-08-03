@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:liriku/data/model/collection.dart';
+import 'package:liriku/bloc/collection/bloc.dart';
 
 abstract class SelectorState extends Equatable {
   SelectorState([List props = const []]) : super(props);
@@ -16,12 +16,12 @@ class SelectorLoading extends SelectorState {
 }
 
 class SelectorLoaded extends SelectorState {
-  final List<Collection> collections;
+  final List<SelectorItem> items;
 
-  SelectorLoaded({this.collections}) : super([collections]);
+  SelectorLoaded({this.items}) : super([items]);
 
   @override
-  String toString() => 'SelectorLoaded { collectionSize: ${collections.length} }';
+  String toString() => 'SelectorLoaded { itemSize: ${items.length} }';
 }
 
 class SelectorError extends SelectorState {

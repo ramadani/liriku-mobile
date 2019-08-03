@@ -4,3 +4,4 @@ export 'collection_state.dart';
 export 'selector_bloc.dart';
 export 'selector_event.dart';
 export 'selector_state.dart';
+export 'selector_item.dart';

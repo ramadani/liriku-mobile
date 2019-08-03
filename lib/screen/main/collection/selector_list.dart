@@ -1,37 +1,57 @@
 import 'package:flutter/material.dart';
-
-class SelectorItem {
-  final String label;
-  final bool selected;
-
-  SelectorItem(this.label, this.selected);
-}
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:liriku/bloc/collection/bloc.dart';
+import 'package:liriku/bloc/collection/selector_bloc.dart';
 
 class SelectorList extends StatefulWidget {
+  final SelectorBLoc bloc;
+
+  const SelectorList({Key key, this.bloc}) : super(key: key);
+
   @override
   _SelectorListState createState() => _SelectorListState();
 }
 
 class _SelectorListState extends State<SelectorList> {
+  SelectorBLoc get bloc => widget.bloc;
+
+  @override
+  void initState() {
+    super.initState();
+    bloc.dispatch(FetchSelector());
+  }
+
   @override
   Widget build(BuildContext context) {
     final verticalPad = 6.0;
 
-    return ListView.builder(
-      itemCount: 26,
-      itemBuilder: (context, index) {
-        final padding =
-            EdgeInsets.symmetric(vertical: verticalPad, horizontal: 8).copyWith(
-          top: index == 0 ? (verticalPad * 2) + 2 : verticalPad,
-          bottom: index == (26 - 1) ? (verticalPad * 2) + 2 : verticalPad,
-        );
+    return BlocBuilder<SelectorEvent, SelectorState>(
+      bloc: bloc,
+      builder: (BuildContext context, SelectorState state) {
+        if (state is SelectorLoaded) {
+          final items = state.items;
 
-        return Padding(
-          padding: padding,
-          child: _SelectorItemView(
-            item: SelectorItem('A', index == 3),
-          ),
-        );
+          return ListView.builder(
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              final padding =
+                  EdgeInsets.symmetric(vertical: verticalPad, horizontal: 8)
+                      .copyWith(
+                top: index == 0 ? (verticalPad * 2) + 2 : verticalPad,
+                bottom: index == (26 - 1) ? (verticalPad * 2) + 2 : verticalPad,
+              );
+
+              return Padding(
+                padding: padding,
+                child: _SelectorItemView(
+                  item: items[index],
+                ),
+              );
+            },
+          );
+        }
+
+        return Container();
       },
     );
   }
@@ -56,7 +76,7 @@ class _SelectorItemView extends StatelessWidget {
         child: Align(
           alignment: Alignment.center,
           child: Text(
-            item.label,
+            item.collection.label,
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,

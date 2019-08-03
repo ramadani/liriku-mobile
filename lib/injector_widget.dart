@@ -11,6 +11,7 @@ import 'package:liriku/bloc/search/bloc.dart';
 import 'package:liriku/config/json_config.dart';
 import 'package:liriku/data/provider/api/artist_provider_api.dart';
 import 'package:liriku/data/provider/api/auth_provider_api.dart';
+import 'package:liriku/data/provider/api/collection_provider_api.dart';
 import 'package:liriku/data/provider/api/http_client.dart';
 import 'package:liriku/data/provider/api/lyric_provider_api.dart';
 import 'package:liriku/data/provider/app_data_provider.dart';
@@ -22,8 +23,10 @@ import 'package:liriku/data/provider/db/top_rated_provider_db.dart';
 import 'package:liriku/data/provider/prefs/app_data_provider_prefs.dart';
 import 'package:liriku/data/repository/artist_repository.dart';
 import 'package:liriku/data/repository/auth_repository.dart';
+import 'package:liriku/data/repository/collection_repository.dart';
 import 'package:liriku/data/repository/concrete/artist_repository_concrete.dart';
 import 'package:liriku/data/repository/concrete/auth_repository_concrete.dart';
+import 'package:liriku/data/repository/concrete/collection_repository_concrete.dart';
 import 'package:liriku/data/repository/concrete/lyric_repository_concrete.dart';
 import 'package:liriku/data/repository/lyric_repository.dart';
 import 'package:meta/meta.dart';
@@ -33,6 +36,7 @@ class InjectorWidget extends InheritedWidget {
 
   AppDataProvider _appDataProvider;
   AuthRepository _authRepository;
+  CollectionRepository _collectionRepository;
   ArtistRepository _artistRepository;
   LyricRepository _lyricRepository;
 
@@ -45,6 +49,7 @@ class InjectorWidget extends InheritedWidget {
   SearchFormBloc _searchFormBloc;
   LyricListBloc _lyricListBloc;
   ArtistListBloc _artistListBloc;
+  SelectorBLoc _selectorBLoc;
   CollectionBloc _collectionBloc;
   BookmarksBloc _bookmarksBloc;
   RecentlyReadBloc _recentlyReadBloc;
@@ -76,6 +81,7 @@ class InjectorWidget extends InheritedWidget {
     final httpClient =
         HttpClient(configData.baseApiUrl, configData.apiKey, _appDataProvider);
     final authProvider = AuthProviderApi(httpClient);
+    final collectionProvider = CollectionProviderApi(httpClient);
     final artistProvider = ArtistProviderApi(httpClient);
     final lyricProvider = LyricProviderApi(httpClient);
     final artistCacheProvider = ArtistCacheProviderDb(db);
@@ -84,6 +90,7 @@ class InjectorWidget extends InheritedWidget {
     final bookmarkableProvider = BookmarkableProviderDb(db);
 
     _authRepository = AuthRepositoryConcrete(authProvider, _appDataProvider);
+    _collectionRepository = CollectionRepositoryConcrete(collectionProvider);
     _artistRepository = ArtistRepositoryConcrete(artistProvider,
         artistCacheProvider, lyricCacheProvider, topRatedProvider);
     _lyricRepository = LyricRepositoryConcrete(
@@ -186,6 +193,14 @@ class InjectorWidget extends InheritedWidget {
     }
 
     return _recentlyReadBloc;
+  }
+
+  SelectorBLoc selectorBLoc({bool forceCreate = false}) {
+    if (_selectorBLoc == null || forceCreate) {
+      _selectorBLoc = SelectorBLoc(_collectionRepository);
+    }
+
+    return _selectorBLoc;
   }
 
   CollectionBloc collectionBloc({bool forceCreate = false}) {

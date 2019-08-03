@@ -20,13 +20,13 @@ class CollectionProviderApi implements CollectionProvider {
 
       final body = json.decode(response.body);
       final data = body['data'] as List;
-      final List<Collection> results = data.toList().map((raw) {
+      final List<Collection> results = data.map((raw) {
         return Collection(
           id: raw['id'],
           label: raw['label'],
           createdAt: DateTime.parse(raw['createdAt']),
         );
-      });
+      }).toList();
 
       return results;
     } catch (e) {

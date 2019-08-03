@@ -7,7 +7,8 @@ import 'package:liriku/screen/main/collection/selector_list.dart';
 class CollectionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final bloc = InjectorWidget.of(context).collectionBloc();
+    final selectorBloc = InjectorWidget.of(context).selectorBLoc();
+    final collectionBloc = InjectorWidget.of(context).collectionBloc();
 
     return Scaffold(
       appBar: AppBar(
@@ -17,11 +18,13 @@ class CollectionScreen extends StatelessWidget {
         children: <Widget>[
           Container(
             width: 52,
-            child: SelectorList(),
+            child: SelectorList(
+              bloc: selectorBloc,
+            ),
           ),
           Expanded(
             child: CollectionList(
-              bloc: bloc,
+              bloc: collectionBloc,
             ),
           ),
         ],
