@@ -62,6 +62,13 @@ class _CollectionListState extends State<CollectionList> {
                   },
                 );
 
+                if (index == 0) {
+                  return Padding(
+                    padding: EdgeInsets.only(top: 8),
+                    child: artistItem,
+                  );
+                }
+
                 if (index == artists.length - 1 && state.fetchingMore) {
                   return Column(
                     children: <Widget>[

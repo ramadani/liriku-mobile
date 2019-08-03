@@ -25,6 +25,17 @@ class SelectorBLoc extends Bloc<SelectorEvent, SelectorState> {
         }).toList();
 
         yield SelectorLoaded(items: items);
+
+        final firstItems =
+            collections.where((Collection it) => it.id == 'a').toList();
+        if (firstItems.length > 0) {
+          dispatch(SelectSelector(id: firstItems.first.id));
+        } else {
+          dispatch(SelectSelector(id: collections.first.id));
+        }
+      } else if (event is SelectSelector && currentState is SelectorLoaded) {
+        final state = currentState as SelectorLoaded;
+        yield state.setSelected(event.id);
       }
     } catch (e) {
       print('selector err $e');

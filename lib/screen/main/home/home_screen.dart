@@ -16,21 +16,13 @@ class HomeScreen extends StatelessWidget {
 
     final artistSection = SectionTitle(
       icon: Icons.trending_up,
-      title: AppLocalizations
-          .of(context)
-          .artists,
-      subtitle: AppLocalizations
-          .of(context)
-          .artistsDescSection,
+      title: AppLocalizations.of(context).artists,
+      subtitle: AppLocalizations.of(context).artistsDescSection,
     );
     final lyricSection = SectionTitle(
       icon: Icons.music_note,
-      title: AppLocalizations
-          .of(context)
-          .songs,
-      subtitle: AppLocalizations
-          .of(context)
-          .songsDescSection,
+      title: AppLocalizations.of(context).songs,
+      subtitle: AppLocalizations.of(context).songsDescSection,
     );
 
     return Scaffold(

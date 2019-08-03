@@ -34,6 +34,7 @@ class _SelectorListState extends State<SelectorList> {
           return ListView.builder(
             itemCount: items.length,
             itemBuilder: (context, index) {
+              final item = items[index];
               final padding =
                   EdgeInsets.symmetric(vertical: verticalPad, horizontal: 8)
                       .copyWith(
@@ -42,9 +43,14 @@ class _SelectorListState extends State<SelectorList> {
               );
 
               return Padding(
-                padding: padding,
-                child: _SelectorItemView(
-                  item: items[index],
+                padding: index == 0 ? padding.copyWith(top: 24) : padding,
+                child: InkWell(
+                  onTap: () {
+                    bloc.dispatch(SelectSelector(id: item.collection.id));
+                  },
+                  child: _SelectorItemView(
+                    item: item,
+                  ),
                 ),
               );
             },

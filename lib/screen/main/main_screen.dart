@@ -40,7 +40,10 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _children[_currentIndex],
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _children,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
         currentIndex: _currentIndex,
@@ -49,21 +52,15 @@ class _MainScreenState extends State<MainScreen> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            title: Text(AppLocalizations
-                .of(context)
-                .home),
+            title: Text(AppLocalizations.of(context).home),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.view_list),
-            title: Text(AppLocalizations
-                .of(context)
-                .collection),
+            title: Text(AppLocalizations.of(context).collection),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.more_vert),
-            title: Text(AppLocalizations
-                .of(context)
-                .more),
+            title: Text(AppLocalizations.of(context).more),
           ),
         ],
       ),

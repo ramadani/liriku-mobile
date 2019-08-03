@@ -8,3 +8,12 @@ class FetchSelector extends SelectorEvent {
   @override
   String toString() => 'FetchSelector';
 }
+
+class SelectSelector extends SelectorEvent {
+  final String id;
+
+  SelectSelector({this.id}) : super([id]);
+
+  @override
+  String toString() => 'SelectSelector { id: $id }';
+}
