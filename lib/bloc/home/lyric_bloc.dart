@@ -31,11 +31,18 @@ class LyricBloc extends Bloc<LyricEvent, LyricState> {
     try {
       if (event is FetchTopLyric) {
         final lyrics = await _lyricRepository.getTopLyric();
-        yield LyricLoaded(lyrics: lyrics);
+        if (lyrics.length > 0) {
+          yield LyricLoaded(lyrics: lyrics);
+        } else {
+          await _lyricRepository.syncTopLyric();
+
+          final lyrics = await _lyricRepository.getTopLyric();
+          yield LyricLoaded(lyrics: lyrics);
+        }
       } else if (event is ChangeBookmarkInLyrics) {
         if (currentState is LyricLoaded) {
           final List<Lyric> lyrics =
-          (currentState as LyricLoaded).lyrics.map((Lyric it) {
+              (currentState as LyricLoaded).lyrics.map((Lyric it) {
             return it.id == event.lyricId
                 ? it.copyWith(bookmarked: event.bookmarked)
                 : it.copyWith(bookmarked: it.bookmarked);

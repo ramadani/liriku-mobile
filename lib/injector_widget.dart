@@ -17,6 +17,7 @@ import 'package:liriku/data/provider/api/lyric_provider_api.dart';
 import 'package:liriku/data/provider/app_data_provider.dart';
 import 'package:liriku/data/provider/db/artist_cache_provider_db.dart';
 import 'package:liriku/data/provider/db/bookmarkable_provider_db.dart';
+import 'package:liriku/data/provider/db/collection_cache_provider_db.dart';
 import 'package:liriku/data/provider/db/lyric_cache_provider_db.dart';
 import 'package:liriku/data/provider/db/sqlite_provider.dart';
 import 'package:liriku/data/provider/db/top_rated_provider_db.dart';
@@ -84,13 +85,16 @@ class InjectorWidget extends InheritedWidget {
     final collectionProvider = CollectionProviderApi(httpClient);
     final artistProvider = ArtistProviderApi(httpClient);
     final lyricProvider = LyricProviderApi(httpClient);
+
+    final collectionCacheProvider = CollectionCacheProviderDb(db);
     final artistCacheProvider = ArtistCacheProviderDb(db);
     final lyricCacheProvider = LyricCacheProviderDb(db);
     final topRatedProvider = TopRatedProviderDb(db);
     final bookmarkableProvider = BookmarkableProviderDb(db);
 
     _authRepository = AuthRepositoryConcrete(authProvider, _appDataProvider);
-    _collectionRepository = CollectionRepositoryConcrete(collectionProvider);
+    _collectionRepository = CollectionRepositoryConcrete(
+        collectionProvider, collectionCacheProvider);
     _artistRepository = ArtistRepositoryConcrete(artistProvider,
         artistCacheProvider, lyricCacheProvider, topRatedProvider);
     _lyricRepository = LyricRepositoryConcrete(
@@ -104,8 +108,13 @@ class InjectorWidget extends InheritedWidget {
 
   AuthBloc authBloc({bool forceCreate = false}) {
     if (_authBloc == null || forceCreate) {
-      _authBloc = AuthBloc(_appDataProvider, _authRepository, _artistRepository,
-          _lyricRepository);
+      _authBloc = AuthBloc(
+        _appDataProvider,
+        _authRepository,
+        _artistRepository,
+        _lyricRepository,
+        _collectionRepository,
+      );
     }
 
     return _authBloc;

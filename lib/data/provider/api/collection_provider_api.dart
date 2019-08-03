@@ -12,7 +12,7 @@ class CollectionProviderApi implements CollectionProvider {
   @override
   Future<List<Collection>> all() async {
     try {
-      final response = await _client.get('/collections');
+      final response = await _client.auth().get('/collections');
 
       if (!_client.ok(response.statusCode)) {
         throw Exception(response.body);

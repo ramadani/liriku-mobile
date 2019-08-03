@@ -5,5 +5,6 @@ class Collection extends Equatable {
   final String label;
   final DateTime createdAt;
 
-  Collection({this.id, this.label, this.createdAt}) : super([id, label, createdAt]);
+  Collection({this.id, this.label, this.createdAt})
+      : super([id, label, createdAt]);
 }

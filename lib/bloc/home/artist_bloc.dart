@@ -16,7 +16,14 @@ class ArtistBloc extends Bloc<ArtistEvent, ArtistState> {
     try {
       if (event is FetchTopArtist) {
         final artists = await _artistRepository.getTopArtist();
-        yield ArtistLoaded(artists: artists);
+        if (artists.length > 0) {
+          yield ArtistLoaded(artists: artists);
+        } else {
+          await _artistRepository.syncTopArtist();
+
+          final artists = await _artistRepository.getTopArtist();
+          yield ArtistLoaded(artists: artists);
+        }
       }
     } catch (e) {
       yield ArtistError();

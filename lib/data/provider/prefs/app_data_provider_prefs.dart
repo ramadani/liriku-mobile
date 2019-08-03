@@ -19,9 +19,7 @@ class AppDataProviderPrefs implements AppDataProvider {
   Future<bool> setLastSyncTopRated() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.setInt(
-        'LAST_SYNC_TOP_RATED', DateTime
-        .now()
-        .millisecondsSinceEpoch);
+        'LAST_SYNC_TOP_RATED', DateTime.now().millisecondsSinceEpoch);
   }
 
   @override
@@ -33,8 +31,31 @@ class AppDataProviderPrefs implements AppDataProvider {
     }
 
     final DateTime lastSync =
-    DateTime.fromMillisecondsSinceEpoch(lastSyncMills);
+        DateTime.fromMillisecondsSinceEpoch(lastSyncMills);
     final expiresAt = lastSync.add(Duration(hours: 12));
+    final now = DateTime.now();
+
+    return now.isAfter(expiresAt);
+  }
+
+  @override
+  Future<bool> setLastSyncCollection() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.setInt(
+        'LAST_SYNC_COLLECTION', DateTime.now().millisecondsSinceEpoch);
+  }
+
+  @override
+  Future<bool> shouldSyncCollection() async {
+    final prefs = await SharedPreferences.getInstance();
+    final lastSyncMills = prefs.getInt('LAST_SYNC_COLLECTION');
+    if (lastSyncMills == null) {
+      return true;
+    }
+
+    final DateTime lastSync =
+        DateTime.fromMillisecondsSinceEpoch(lastSyncMills);
+    final expiresAt = lastSync.add(Duration(days: 30));
     final now = DateTime.now();
 
     return now.isAfter(expiresAt);
