@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'package:liriku/bloc/collection/selector_event.dart';
 import 'package:liriku/bloc/collection/selector_item.dart';
 import 'package:liriku/bloc/collection/selector_state.dart';
@@ -37,8 +38,8 @@ class SelectorBLoc extends Bloc<SelectorEvent, SelectorState> {
         final state = currentState as SelectorLoaded;
         yield state.setSelected(event.id);
       }
-    } catch (e) {
-      print('selector err $e');
+    } on Exception catch (e, s) {
+      await FlutterCrashlytics().logException(e, s);
       yield SelectorError();
     }
   }

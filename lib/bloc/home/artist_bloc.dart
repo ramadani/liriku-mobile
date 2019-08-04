@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'package:liriku/bloc/home/artist_event.dart';
 import 'package:liriku/bloc/home/artist_state.dart';
 import 'package:liriku/data/repository/artist_repository.dart';
@@ -25,7 +26,8 @@ class ArtistBloc extends Bloc<ArtistEvent, ArtistState> {
           yield ArtistLoaded(artists: artists);
         }
       }
-    } catch (e) {
+    } on Exception catch (e, s) {
+      await FlutterCrashlytics().logException(e, s);
       yield ArtistError();
     }
   }

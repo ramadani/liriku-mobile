@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'package:liriku/bloc/bookmark/bookmark_event.dart';
 import 'package:liriku/bloc/bookmark/bookmark_state.dart';
 import 'package:liriku/data/repository/lyric_repository.dart';
@@ -20,8 +21,8 @@ class BookmarkBloc extends Bloc<BookmarkEvent, BookmarkState> {
         await _lyricRepository.setBookmark(event.id, event.bookmarked);
         yield BookmarkChanged(id: event.id, bookmarked: event.bookmarked);
       }
-    } on Exception catch (e) {
-      print('bookmark error $e');
+    } on Exception catch (e, s) {
+      await FlutterCrashlytics().logException(e, s);
       yield BookmarkError();
     }
   }

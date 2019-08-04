@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'package:liriku/bloc/bookmark/bloc.dart';
 import 'package:liriku/bloc/playlist/playlist_event.dart';
 import 'package:liriku/bloc/playlist/playlist_state.dart';
@@ -37,8 +38,9 @@ class PlaylistBloc extends Bloc<PlaylistEvent, PlaylistState> {
               event, currentState as PlaylistLoaded);
         }
       }
-    } catch (e) {
+    } on Exception catch (e, s) {
       if (currentState is PlaylistLoading) {
+        await FlutterCrashlytics().logException(e, s);
         yield PlaylistError();
       }
     }

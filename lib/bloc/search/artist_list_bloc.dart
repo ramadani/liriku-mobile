@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'package:liriku/bloc/search/artist_list_event.dart';
 import 'package:liriku/bloc/search/artist_list_state.dart';
 import 'package:liriku/bloc/search/bloc.dart';
@@ -59,12 +60,13 @@ class ArtistListBloc extends Bloc<ArtistListEvent, ArtistListState> {
           keyword: event.keyword,
           artists: result.artists,
           hasMorePages:
-          result.artists.length == event.perPage && event.keyword != '',
+              result.artists.length == event.perPage && event.keyword != '',
         );
       } else {
         yield ArtistListEmpty();
       }
-    } catch (e) {
+    } on Exception catch (e, s) {
+      await FlutterCrashlytics().logException(e, s);
       yield ArtistListError();
     }
   }
@@ -81,7 +83,8 @@ class ArtistListBloc extends Bloc<ArtistListEvent, ArtistListState> {
         newArtists: result.artists,
         hasMorePages: result.artists.length == state.perPage,
       );
-    } catch (_) {
+    } on Exception catch (e, s) {
+      await FlutterCrashlytics().logException(e, s);
       yield ArtistListError();
     }
   }

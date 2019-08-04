@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'package:liriku/bloc/collection/collection_event.dart';
 import 'package:liriku/bloc/collection/collection_state.dart';
 import 'package:liriku/data/repository/artist_repository.dart';
@@ -35,7 +36,8 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
         hasMorePages: result.artists.length == event.perPage,
         fetchingMore: false,
       );
-    } catch (_) {
+    } on Exception catch (e, s) {
+      await FlutterCrashlytics().logException(e, s);
       yield CollectionError();
     }
   }
@@ -54,7 +56,8 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
         newArtists: result.artists,
         hasMorePages: result.artists.length == state.perPage,
       );
-    } catch (_) {
+    } on Exception catch (e, s) {
+      await FlutterCrashlytics().logException(e, s);
       yield CollectionError();
     }
   }

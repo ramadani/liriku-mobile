@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'package:liriku/bloc/bookmark/bloc.dart';
 import 'package:liriku/bloc/home/lyric_event.dart';
 import 'package:liriku/bloc/home/lyric_state.dart';
@@ -51,7 +52,8 @@ class LyricBloc extends Bloc<LyricEvent, LyricState> {
           yield LyricLoaded(lyrics: lyrics);
         }
       }
-    } on Exception catch (_) {
+    } on Exception catch (e, s) {
+      await FlutterCrashlytics().logException(e, s);
       yield LyricError();
     }
   }

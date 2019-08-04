@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:device_info/device_info.dart';
+import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'package:liriku/bloc/auth/auth_events.dart';
 import 'package:liriku/bloc/auth/auth_states.dart';
 import 'package:liriku/bloc/auth/bloc.dart';
@@ -54,8 +55,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await _authRepository.login(deviceName);
         dispatch(Check());
       }
-    } on Exception catch (e) {
-      print(e);
+    } on Exception catch (e, s) {
+      await FlutterCrashlytics().logException(e, s);
       yield AuthError();
     }
   }

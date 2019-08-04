@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'package:liriku/bloc/bookmark/bloc.dart';
 import 'package:liriku/bloc/bookmark/bookmark_bloc.dart';
 import 'package:liriku/bloc/search/bloc.dart';
@@ -78,7 +79,8 @@ class LyricListBloc extends Bloc<LyricListEvent, LyricListState> {
       } else {
         yield LyricListEmpty();
       }
-    } catch (e) {
+    } on Exception catch (e, s) {
+      await FlutterCrashlytics().logException(e, s);
       yield LyricListError();
     }
   }
@@ -95,7 +97,8 @@ class LyricListBloc extends Bloc<LyricListEvent, LyricListState> {
         newLyrics: result.lyrics,
         hasMorePages: result.lyrics.length == state.perPage,
       );
-    } on Exception catch (_) {
+    } on Exception catch (e, s) {
+      await FlutterCrashlytics().logException(e, s);
       yield LyricListError();
     }
   }
