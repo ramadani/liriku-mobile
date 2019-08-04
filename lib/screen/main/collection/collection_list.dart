@@ -26,7 +26,6 @@ class _CollectionListState extends State<CollectionList> {
   @override
   void initState() {
     super.initState();
-    bloc.dispatch(FetchCollection());
     _scrollController.addListener(_onScroll);
   }
 

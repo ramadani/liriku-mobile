@@ -15,13 +15,17 @@ class SQLiteProvider {
         await db.execute(_createBookmarkableTable());
         await db.execute(_addLastSeenColumnToLyricsTable());
         await db.execute(_createCollectionsTable());
+        await db.execute(_addCollectionIdToArtistsTable());
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 2) {
           await db.execute(_createCollectionsTable());
         }
+        if (oldVersion < 3) {
+          await db.execute(_addCollectionIdToArtistsTable());
+        }
       },
-      version: 2,
+      version: 3,
     );
   }
 
@@ -58,5 +62,9 @@ class SQLiteProvider {
 
   String _createCollectionsTable() {
     return 'CREATE TABLE collections (id TEXT PRIMARY KEY, label TEXT, createdAt INTEGER, updatedAt INTEGER)';
+  }
+
+  String _addCollectionIdToArtistsTable() {
+    return 'ALTER TABLE artists ADD collection_id TEXT NULL';
   }
 }

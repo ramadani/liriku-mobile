@@ -17,11 +17,13 @@ class SelectorLoading extends SelectorState {
 
 class SelectorLoaded extends SelectorState {
   final List<SelectorItem> items;
+  final String selectedId;
 
-  SelectorLoaded({this.items}) : super([items]);
+  SelectorLoaded({this.items, this.selectedId}) : super([items]);
 
   @override
-  String toString() => 'SelectorLoaded { itemSize: ${items.length} }';
+  String toString() =>
+      'SelectorLoaded { itemSize: ${items.length}, selectedId: $selectedId} }';
 
   SelectorLoaded setSelected(String id) {
     final List<SelectorItem> items = this.items.map((SelectorItem it) {
@@ -31,7 +33,7 @@ class SelectorLoaded extends SelectorState {
       );
     }).toList();
 
-    return SelectorLoaded(items: items);
+    return SelectorLoaded(items: items, selectedId: id);
   }
 }
 

@@ -9,7 +9,7 @@ class FetchCollection extends CollectionEvent {
   final int page;
   final int perPage;
 
-  FetchCollection({this.id, this.page = 1, this.perPage = 20})
+  FetchCollection({this.id, this.page = 1, this.perPage = 50})
       : super([id, page, perPage]);
 
   @override

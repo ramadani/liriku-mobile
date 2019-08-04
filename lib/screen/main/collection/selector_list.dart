@@ -39,7 +39,9 @@ class _SelectorListState extends State<SelectorList> {
                   EdgeInsets.symmetric(vertical: verticalPad, horizontal: 8)
                       .copyWith(
                 top: index == 0 ? (verticalPad * 2) + 2 : verticalPad,
-                bottom: index == (26 - 1) ? (verticalPad * 2) + 2 : verticalPad,
+                bottom: index == (items.length - 1)
+                    ? (verticalPad * 2) + 2
+                    : verticalPad,
               );
 
               return Padding(
@@ -72,7 +74,7 @@ class _SelectorItemView extends StatelessWidget {
   Widget build(BuildContext context) {
     final containerColor =
         item.selected ? Theme.of(context).primaryColor : Colors.grey[100];
-    final fontColor = item.selected ? Colors.white : Colors.grey[400];
+    final fontColor = item.selected ? Colors.white : Colors.grey[500];
 
     return ClipRRect(
       borderRadius: BorderRadius.all(Radius.circular(12)),

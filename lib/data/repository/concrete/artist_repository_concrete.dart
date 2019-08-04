@@ -21,16 +21,22 @@ class ArtistRepositoryConcrete implements ArtistRepository {
   );
 
   @override
-  Future<ArtistCollection> paginate(
-      {int page = 1, int perPage = 10, String search = ''}) async {
-    final cacheResult =
-        await _artistCacheProvider.fetch(page, perPage, search: search);
+  Future<ArtistCollection> paginate({
+    int page = 1,
+    int perPage = 10,
+    String search = '',
+    String collection = '',
+  }) async {
+    final cacheResult = await _artistCacheProvider.fetch(page, perPage,
+        search: search, collection: collection);
 
     if (cacheResult.artists.length >= 3) {
       return cacheResult;
     }
 
-    final result = await _artistProvider.fetch(page, perPage, search: search);
+    final result = await _artistProvider.fetch(page, perPage,
+        search: search, collection: collection);
+
     await Future.forEach(result.artists, (Artist it) async {
       await _artistCacheProvider.save(it);
     });

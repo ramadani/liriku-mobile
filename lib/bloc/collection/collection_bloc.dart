@@ -1,13 +1,27 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter_crashlytics/flutter_crashlytics.dart';
+import 'package:liriku/bloc/collection/bloc.dart';
 import 'package:liriku/bloc/collection/collection_event.dart';
 import 'package:liriku/bloc/collection/collection_state.dart';
 import 'package:liriku/data/repository/artist_repository.dart';
 
 class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
+  final SelectorBLoc _selectorBLoc;
   final ArtistRepository _artistRepository;
 
-  CollectionBloc(this._artistRepository);
+  StreamSubscription _selectorSubscription;
+
+  CollectionBloc(this._selectorBLoc, this._artistRepository) {
+    _selectorSubscription = _selectorBLoc.state.listen((SelectorState state) {
+      if (state is SelectorLoaded) {
+        if (state.selectedId != null) {
+          dispatch(FetchCollection(id: state.selectedId));
+        }
+      }
+    });
+  }
 
   @override
   CollectionState get initialState => CollectionUninitialized();
@@ -27,15 +41,23 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
       yield CollectionLoading();
 
       final result = await _artistRepository.paginate(
-          page: event.page, perPage: event.perPage);
-      yield CollectionLoaded(
-        id: event.id,
-        artists: result.artists,
-        page: result.page,
-        perPage: result.perPage,
-        hasMorePages: result.artists.length == event.perPage,
-        fetchingMore: false,
+        page: event.page,
+        perPage: event.perPage,
+        collection: event.id,
       );
+
+      if (result.artists.length > 0) {
+        yield CollectionLoaded(
+          id: event.id,
+          artists: result.artists,
+          page: result.page,
+          perPage: result.perPage,
+          hasMorePages: result.artists.length == event.perPage,
+          fetchingMore: false,
+        );
+      } else {
+        yield CollectionEmpty();
+      }
     } on Exception catch (e, s) {
       await FlutterCrashlytics().logException(e, s);
       yield CollectionError();
@@ -49,6 +71,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
       final result = await _artistRepository.paginate(
         page: state.page + 1,
         perPage: state.perPage,
+        collection: state.id,
       );
 
       yield state.fetchedMore(
@@ -60,5 +83,11 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
       await FlutterCrashlytics().logException(e, s);
       yield CollectionError();
     }
+  }
+
+  @override
+  void dispose() {
+    _selectorSubscription.cancel();
+    super.dispose();
   }
 }

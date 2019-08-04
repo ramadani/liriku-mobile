@@ -12,12 +12,17 @@ class ArtistProviderApi implements ArtistProvider {
   ArtistProviderApi(this._client);
 
   @override
-  Future<ArtistCollection> fetch(int page, int perPage,
-      {String search = ""}) async {
+  Future<ArtistCollection> fetch(
+    int page,
+    int perPage, {
+    String search = "",
+    String collection = "",
+  }) async {
     final uri = Uri(path: '/artists', queryParameters: {
       'page': page.toString(),
       'perPage': perPage.toString(),
       'search': search,
+      'collection': collection,
     });
     final response = await _client.auth().get(uri);
 
@@ -70,13 +75,7 @@ class ArtistProviderApi implements ArtistProvider {
     final body = json.decode(response.body) as Map<String, dynamic>;
     final data = body['data'] as Map<String, dynamic>;
 
-    return Artist(
-      id: data['id'],
-      name: data['name'],
-      coverUrl: data['coverImgUrl'],
-      createdAt: DateTime.parse(data['createdAt']),
-      updatedAt: DateTime.parse(data['updatedAt']),
-    );
+    return _artistMapper(data);
   }
 
   @override
@@ -102,6 +101,7 @@ class ArtistProviderApi implements ArtistProvider {
       id: raw['id'],
       name: raw['name'],
       coverUrl: raw['coverImgUrl'],
+      collectionId: raw['collection'],
       createdAt: DateTime.parse(raw['createdAt']),
       updatedAt: DateTime.parse(raw['updatedAt']),
     );

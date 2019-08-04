@@ -214,7 +214,7 @@ class InjectorWidget extends InheritedWidget {
 
   CollectionBloc collectionBloc({bool forceCreate = false}) {
     if (_collectionBloc == null || forceCreate) {
-      _collectionBloc = CollectionBloc(_artistRepository);
+      _collectionBloc = CollectionBloc(selectorBLoc(), _artistRepository);
     }
 
     return _collectionBloc;
