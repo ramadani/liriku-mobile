@@ -9,6 +9,20 @@ abstract class ArtistRepository {
     String collection = '',
   });
 
+  Future<ArtistCollection> fetchFromCache({
+    int page = 1,
+    int perPage = 10,
+    String search = '',
+    String collection = '',
+  });
+
+  Future<ArtistCollection> fetchAndSync({
+    int page = 1,
+    int perPage = 10,
+    String search = '',
+    String collection = '',
+  });
+
   Future<bool> save(Artist artist);
 
   Future<bool> syncTopArtist({int limit = 10});

@@ -45,6 +45,36 @@ class ArtistRepositoryConcrete implements ArtistRepository {
   }
 
   @override
+  Future<ArtistCollection> fetchAndSync({
+    int page = 1,
+    int perPage = 10,
+    String search = '',
+    String collection = '',
+  }) async {
+    final result = await _artistProvider.fetch(page, perPage,
+        search: search, collection: collection);
+
+    await Future.forEach(result.artists, (Artist it) async {
+      await _artistCacheProvider.save(it);
+    });
+
+    return result;
+  }
+
+  @override
+  Future<ArtistCollection> fetchFromCache({
+    int page = 1,
+    int perPage = 10,
+    String search = '',
+    String collection = '',
+  }) async {
+    final result = await _artistCacheProvider.fetch(page, perPage,
+        search: search, collection: collection);
+
+    return result;
+  }
+
+  @override
   Future<bool> save(Artist artist) async {
     await _artistCacheProvider.save(artist);
     return true;

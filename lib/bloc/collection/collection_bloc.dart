@@ -40,7 +40,24 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     try {
       yield CollectionLoading();
 
-      final result = await _artistRepository.paginate(
+      final cacheResult = await _artistRepository.fetchFromCache(
+        page: event.page,
+        perPage: event.perPage,
+        collection: event.id,
+      );
+
+      if (cacheResult.artists.length > 0) {
+        yield CollectionLoaded(
+          id: event.id,
+          artists: cacheResult.artists,
+          page: cacheResult.page,
+          perPage: cacheResult.perPage,
+          hasMorePages: cacheResult.artists.length == event.perPage,
+          fetchingMore: false,
+        );
+      }
+
+      final result = await _artistRepository.fetchAndSync(
         page: event.page,
         perPage: event.perPage,
         collection: event.id,
@@ -68,7 +85,19 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     try {
       yield state.setFetchingMore();
 
-      final result = await _artistRepository.paginate(
+      final cacheResult = await _artistRepository.fetchFromCache(
+        page: state.page + 1,
+        perPage: state.perPage,
+        collection: state.id,
+      );
+
+      yield state.fetchedMore(
+        page: cacheResult.page,
+        newArtists: cacheResult.artists,
+        hasMorePages: cacheResult.artists.length == state.perPage,
+      );
+
+      final result = await _artistRepository.fetchAndSync(
         page: state.page + 1,
         perPage: state.perPage,
         collection: state.id,
