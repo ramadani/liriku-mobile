@@ -10,7 +10,7 @@
          FlutterApplication and put your custom class here. -->
     <application
             android:name="com.liriku.app.App"
-            android:label="liriku"
+            android:label="@string/app_name"
             android:icon="@mipmap/ic_launcher">
         <activity
                 android:name="com.liriku.app.MainActivity"
