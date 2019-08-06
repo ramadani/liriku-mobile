@@ -9,15 +9,27 @@ import 'package:liriku/data/repository/artist_repository.dart';
 
 class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   final SelectorBLoc _selectorBLoc;
+  final SearchBloc _searchBloc;
   final ArtistRepository _artistRepository;
 
   StreamSubscription _selectorSubscription;
+  StreamSubscription _searchSubscription;
 
-  CollectionBloc(this._selectorBLoc, this._artistRepository) {
+  CollectionBloc(this._selectorBLoc, this._searchBloc, this._artistRepository) {
     _selectorSubscription = _selectorBLoc.state.listen((SelectorState state) {
       if (state is SelectorLoaded) {
         if (state.selectedId != null) {
           dispatch(FetchCollection(id: state.selectedId));
+        }
+      }
+    });
+
+    _searchSubscription = _searchBloc.state.listen((SearchState state) {
+      if (state is SearchVisible) {
+        if (state.onSearch && currentState is CollectionLoaded) {
+          final collectionId = (currentState as CollectionLoaded).id;
+
+          dispatch(FetchCollection(id: collectionId, keyword: state.keyword));
         }
       }
     });
@@ -44,6 +56,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
         page: event.page,
         perPage: event.perPage,
         collection: event.id,
+        search: event.keyword,
       );
 
       if (cacheResult.artists.length > 0) {
@@ -52,6 +65,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
           artists: cacheResult.artists,
           page: cacheResult.page,
           perPage: cacheResult.perPage,
+          keyword: event.keyword,
           hasMorePages: cacheResult.artists.length == event.perPage,
           fetchingMore: false,
         );
@@ -61,6 +75,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
         page: event.page,
         perPage: event.perPage,
         collection: event.id,
+        search: event.keyword,
       );
 
       if (result.artists.length > 0) {
@@ -69,6 +84,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
           artists: result.artists,
           page: result.page,
           perPage: result.perPage,
+          keyword: event.keyword,
           hasMorePages: result.artists.length == event.perPage,
           fetchingMore: false,
         );
@@ -89,6 +105,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
         page: state.page + 1,
         perPage: state.perPage,
         collection: state.id,
+        search: state.keyword,
       );
 
       yield state.fetchedMore(
@@ -101,6 +118,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
         page: state.page + 1,
         perPage: state.perPage,
         collection: state.id,
+        search: state.keyword,
       );
 
       yield state.fetchedMore(
@@ -117,6 +135,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   @override
   void dispose() {
     _selectorSubscription.cancel();
+    _searchSubscription.cancel();
     super.dispose();
   }
 }

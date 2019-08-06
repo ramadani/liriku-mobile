@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:liriku/bloc/auth/auth_bloc.dart';
 import 'package:liriku/bloc/bookmark/bloc.dart';
 import 'package:liriku/bloc/bookmarks/bloc.dart';
-import 'package:liriku/bloc/collection/bloc.dart';
+import 'package:liriku/bloc/collection/bloc.dart' as col;
 import 'package:liriku/bloc/home/bloc.dart' as home;
 import 'package:liriku/bloc/lyric/bloc.dart';
 import 'package:liriku/bloc/playlist/playlist_bloc.dart';
@@ -50,8 +50,9 @@ class InjectorWidget extends InheritedWidget {
   SearchFormBloc _searchFormBloc;
   LyricListBloc _lyricListBloc;
   ArtistListBloc _artistListBloc;
-  SelectorBLoc _selectorBLoc;
-  CollectionBloc _collectionBloc;
+  col.SelectorBLoc _selectorBLoc;
+  col.CollectionBloc _collectionBloc;
+  col.SearchBloc _searchCollectionBloc;
   BookmarksBloc _bookmarksBloc;
   RecentlyReadBloc _recentlyReadBloc;
 
@@ -204,19 +205,31 @@ class InjectorWidget extends InheritedWidget {
     return _recentlyReadBloc;
   }
 
-  SelectorBLoc selectorBLoc({bool forceCreate = false}) {
+  col.SelectorBLoc selectorBLoc({bool forceCreate = false}) {
     if (_selectorBLoc == null || forceCreate) {
-      _selectorBLoc = SelectorBLoc(_collectionRepository);
+      _selectorBLoc = col.SelectorBLoc(_collectionRepository);
     }
 
     return _selectorBLoc;
   }
 
-  CollectionBloc collectionBloc({bool forceCreate = false}) {
+  col.CollectionBloc collectionBloc({bool forceCreate = false}) {
     if (_collectionBloc == null || forceCreate) {
-      _collectionBloc = CollectionBloc(selectorBLoc(), _artistRepository);
+      _collectionBloc = col.CollectionBloc(
+        selectorBLoc(),
+        searchCollectionBloc(),
+        _artistRepository,
+      );
     }
 
     return _collectionBloc;
+  }
+
+  col.SearchBloc searchCollectionBloc({bool forceCreate = false}) {
+    if (_searchCollectionBloc == null || forceCreate) {
+      _searchCollectionBloc = col.SearchBloc();
+    }
+
+    return _searchCollectionBloc;
   }
 }

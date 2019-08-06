@@ -8,13 +8,18 @@ class FetchCollection extends CollectionEvent {
   final String id;
   final int page;
   final int perPage;
+  final String keyword;
 
-  FetchCollection({this.id, this.page = 1, this.perPage = 7})
-      : super([id, page, perPage]);
+  FetchCollection({
+    this.id,
+    this.page = 1,
+    this.perPage = 50,
+    this.keyword = '',
+  }) : super([id, page, perPage, keyword]);
 
   @override
   String toString() =>
-      'FetchCollection { id: $id, page: $page, perPage: $perPage }';
+      'FetchCollection { id: $id, page: $page, perPage: $perPage, keyword: $keyword }';
 }
 
 class FetchMoreCollection extends CollectionEvent {

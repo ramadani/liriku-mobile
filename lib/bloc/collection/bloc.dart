@@ -1,7 +1,10 @@
 export 'collection_bloc.dart';
 export 'collection_event.dart';
 export 'collection_state.dart';
+export 'search_bloc.dart';
+export 'search_event.dart';
+export 'search_state.dart';
 export 'selector_bloc.dart';
 export 'selector_event.dart';
-export 'selector_state.dart';
 export 'selector_item.dart';
+export 'selector_state.dart';
