@@ -66,6 +66,10 @@ class AppLocalizations {
     return Intl.message('Search Song or Artist', name: 'search');
   }
 
+  String get searchArtist {
+    return Intl.message('Search Artist', name: 'searchArtist');
+  }
+
   String get searchEmptyResult {
     return Intl.message("Can't find any data that you're looking for",
         name: 'searchEmptyResult');

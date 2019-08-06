@@ -14,6 +14,8 @@
   "songsDescSection": "Top Ten New Lyrics",
   "playlist": "Playlist",
   "search": "Search Song or Artist",
+  "searchArtist": "Search Artist",
+  "searchSong": "Search Song",
   "searchEmptyResult": "Can't find any data that you're looking for",
   "exploreMore": "Explore More",
   "bookmark": "Bookmark",

@@ -116,7 +116,7 @@ class _SearchFormState extends State<_SearchForm> {
       child: TextField(
         decoration: InputDecoration(
           border: InputBorder.none,
-          hintText: AppLocalizations.of(context).search,
+          hintText: AppLocalizations.of(context).searchArtist,
           hintStyle: TextStyle(fontWeight: FontWeight.w500),
         ),
         textInputAction: TextInputAction.search,
