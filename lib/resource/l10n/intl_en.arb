@@ -1,0 +1,29 @@
+{
+  "title": "Liriku",
+  "@title": {
+    "description": "Title for the Demo application",
+    "type": "text"
+  },
+  "appDescription": "Get your favourite music lyrics",
+  "home": "Home",
+  "collection": "Collection",
+  "more": "More",
+  "artists": "Artists",
+  "artistsDescSection": "Top Ten New Artist's Lyrics",
+  "songs": "Songs",
+  "songsDescSection": "Top Ten New Lyrics",
+  "playlist": "Playlist",
+  "search": "Search Song or Artist",
+  "searchArtist": "Search Artist",
+  "searchSong": "Search Song",
+  "searchEmptyResult": "Can't find any data that you're looking for",
+  "exploreMore": "Explore More",
+  "bookmark": "Bookmark",
+  "bookmarkSubtitle": "Your bank lyrics",
+  "bookmarkEmpty": "Bookmark Empty",
+  "recentlyRead": "Recently Read",
+  "recentlyReadSubtitle": "The lyrics that you've read",
+  "recentlyReadEmpty": "No History Read",
+  "about": "About",
+  "aboutSubtitle": "About Liriku Application"
+}

@@ -1,0 +1,114 @@
+{
+  "@@last_modified": "2019-08-06T10:48:18.470301",
+  "title": "Liriku",
+  "@title": {
+    "description": "The application title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "appDescription": "Get your favourite music's lyrics",
+  "@appDescription": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "home": "Home",
+  "@home": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "collection": "Collection",
+  "@collection": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "more": "More",
+  "@more": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "artists": "Artists",
+  "@artists": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "artistsDescSection": "Top Ten New Artist's Lyrics",
+  "@artistsDescSection": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "songs": "Songs",
+  "@songs": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "songsDescSection": "Top Ten New Lyrics",
+  "@songsDescSection": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "playlist": "Playlist",
+  "@playlist": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "search": "Search Song or Artist",
+  "@search": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchArtist": "Search Artist",
+  "@searchArtist": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchEmptyResult": "Can't find any data that you're looking for",
+  "@searchEmptyResult": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "exploreMore": "Explore More",
+  "@exploreMore": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "bookmark": "Bookmark",
+  "@bookmark": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "bookmarkSubtitle": "Your bank lyrics",
+  "@bookmarkSubtitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "bookmarkEmpty": "Bookmark Empty",
+  "@bookmarkEmpty": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "recentlyRead": "Recently Read",
+  "@recentlyRead": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "recentlyReadEmpty": "No History Read",
+  "@recentlyReadEmpty": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "recentlyReadSubtitle": "The lyrics that you've read",
+  "@recentlyReadSubtitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "about": "About",
+  "@about": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutSubtitle": "About Liriku Application",
+  "@aboutSubtitle": {
+    "type": "text",
+    "placeholders": {}
+  }
+}
