@@ -27,7 +27,7 @@ class ArtistCacheProviderDb implements ArtistCacheProvider {
     final offset = (page - 1) * perPage;
     final sql =
         'SELECT id, name, cover_url, collection_id, created_at, updated_at '
-        'FROM artists $searchLike LIMIT ?,?';
+        'FROM artists $searchLike ORDER BY name LIMIT ?,?';
     final rows = await _db.rawQuery(sql, [offset, perPage]);
     final List<Artist> artists = List();
 
