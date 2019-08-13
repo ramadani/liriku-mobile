@@ -13,25 +13,63 @@ class ArtistRepositoryConcrete implements ArtistRepository {
   final LyricCacheProvider _lyricCacheProvider;
   final TopRatedProvider _topRatedProvider;
 
-  ArtistRepositoryConcrete(this._artistProvider,
-      this._artistCacheProvider,
-      this._lyricCacheProvider,
-      this._topRatedProvider,);
+  ArtistRepositoryConcrete(
+    this._artistProvider,
+    this._artistCacheProvider,
+    this._lyricCacheProvider,
+    this._topRatedProvider,
+  );
 
   @override
-  Future<ArtistCollection> paginate(
-      {int page = 1, int perPage = 10, String search = ''}) async {
-    final cacheResult =
-    await _artistCacheProvider.fetch(page, perPage, search: search);
+  Future<ArtistCollection> paginate({
+    int page = 1,
+    int perPage = 10,
+    String search = '',
+    String collection = '',
+  }) async {
+    final cacheResult = await _artistCacheProvider.fetch(page, perPage,
+        search: search, collection: collection);
 
     if (cacheResult.artists.length >= 3) {
       return cacheResult;
     }
 
-    final result = await _artistProvider.fetch(page, perPage, search: search);
+    final result = await _artistProvider.fetch(page, perPage,
+        search: search, collection: collection);
+
     await Future.forEach(result.artists, (Artist it) async {
       await _artistCacheProvider.save(it);
     });
+
+    return result;
+  }
+
+  @override
+  Future<ArtistCollection> fetchAndSync({
+    int page = 1,
+    int perPage = 10,
+    String search = '',
+    String collection = '',
+  }) async {
+    final result = await _artistProvider.fetch(page, perPage,
+        search: search, collection: collection);
+
+    await Future.forEach(result.artists, (Artist it) async {
+      await _artistCacheProvider.save(it);
+    });
+
+    return result;
+  }
+
+  @override
+  Future<ArtistCollection> fetchFromCache({
+    int page = 1,
+    int perPage = 10,
+    String search = '',
+    String collection = '',
+  }) async {
+    final result = await _artistCacheProvider.fetch(page, perPage,
+        search: search, collection: collection);
 
     return result;
   }
@@ -45,7 +83,7 @@ class ArtistRepositoryConcrete implements ArtistRepository {
   @override
   Future<List<Artist>> getTopArtist({int limit = 10}) async {
     final List<String> listOfId =
-    await _topRatedProvider.findAllByType('ARTIST');
+        await _topRatedProvider.findAllByType('ARTIST');
     final results = await _artistCacheProvider.findWhereInId(listOfId);
 
     return results;

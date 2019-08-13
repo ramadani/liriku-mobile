@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'package:liriku/bloc/bookmark/bloc.dart';
 import 'package:liriku/bloc/home/lyric_event.dart';
 import 'package:liriku/bloc/home/lyric_state.dart';
@@ -31,11 +32,18 @@ class LyricBloc extends Bloc<LyricEvent, LyricState> {
     try {
       if (event is FetchTopLyric) {
         final lyrics = await _lyricRepository.getTopLyric();
-        yield LyricLoaded(lyrics: lyrics);
+        if (lyrics.length > 0) {
+          yield LyricLoaded(lyrics: lyrics);
+        } else {
+          await _lyricRepository.syncTopLyric();
+
+          final lyrics = await _lyricRepository.getTopLyric();
+          yield LyricLoaded(lyrics: lyrics);
+        }
       } else if (event is ChangeBookmarkInLyrics) {
         if (currentState is LyricLoaded) {
           final List<Lyric> lyrics =
-          (currentState as LyricLoaded).lyrics.map((Lyric it) {
+              (currentState as LyricLoaded).lyrics.map((Lyric it) {
             return it.id == event.lyricId
                 ? it.copyWith(bookmarked: event.bookmarked)
                 : it.copyWith(bookmarked: it.bookmarked);
@@ -44,7 +52,8 @@ class LyricBloc extends Bloc<LyricEvent, LyricState> {
           yield LyricLoaded(lyrics: lyrics);
         }
       }
-    } on Exception catch (_) {
+    } on Exception catch (e, s) {
+      await FlutterCrashlytics().logException(e, s);
       yield LyricError();
     }
   }

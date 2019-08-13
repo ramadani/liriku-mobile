@@ -121,6 +121,7 @@ class _SearchFormState extends State<_SearchForm> {
       ),
       padding: EdgeInsets.symmetric(horizontal: 16.0),
       child: TextField(
+        autofocus: true,
         decoration: InputDecoration(
           border: InputBorder.none,
           hintText: AppLocalizations.of(context).search,

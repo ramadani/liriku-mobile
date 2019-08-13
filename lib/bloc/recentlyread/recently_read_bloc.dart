@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'package:liriku/bloc/bookmark/bloc.dart';
 import 'package:liriku/bloc/recentlyread/recently_read_event.dart';
 import 'package:liriku/bloc/recentlyread/recently_read_state.dart';
@@ -37,7 +38,8 @@ class RecentlyReadBloc extends Bloc<RecentlyReadEvent, RecentlyReadState> {
         yield* _mapChangeBookmarkToState(
             event, currentState as RecentlyReadLoaded);
       }
-    } catch (e) {
+    } on Exception catch (e, s) {
+      await FlutterCrashlytics().logException(e, s);
       yield RecentlyReadError();
     }
   }

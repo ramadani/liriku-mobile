@@ -51,6 +51,7 @@ class MoreScreen extends StatelessWidget {
         itemCount: menus.length,
         itemBuilder: (context, index) {
           final menu = menus[index];
+
           return InkWell(
             onTap: () => Navigator.pushNamed(context, menu.routeName),
             child: Column(

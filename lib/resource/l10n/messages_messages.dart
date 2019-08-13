@@ -39,6 +39,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "recentlyReadEmpty" : MessageLookupByLibrary.simpleMessage("No History Read"),
     "recentlyReadSubtitle" : MessageLookupByLibrary.simpleMessage("The lyrics that you\'ve read"),
     "search" : MessageLookupByLibrary.simpleMessage("Search Song or Artist"),
+    "searchArtist" : MessageLookupByLibrary.simpleMessage("Search Artist"),
     "searchEmptyResult" : MessageLookupByLibrary.simpleMessage("Can\'t find any data that you\'re looking for"),
     "songs" : MessageLookupByLibrary.simpleMessage("Songs"),
     "songsDescSection" : MessageLookupByLibrary.simpleMessage("Top Ten New Lyrics"),

@@ -12,20 +12,13 @@ ThemeData appTheme(BuildContext context) {
     appBarTheme: AppBarTheme(
       brightness: Brightness.light,
       color: Colors.white,
-      elevation: 2,
-      textTheme: Theme
-          .of(context)
-          .textTheme
-          .copyWith(
-        title: Theme
-            .of(context)
-            .textTheme
-            .title
-            .copyWith(
-          fontWeight: FontWeight.w600,
-          fontFamily: 'Montserrat',
-        ),
-      ),
+      elevation: 0,
+      textTheme: Theme.of(context).textTheme.copyWith(
+            title: Theme.of(context).textTheme.title.copyWith(
+                  fontWeight: FontWeight.w600,
+                  fontFamily: 'Montserrat',
+                ),
+          ),
       iconTheme: IconThemeData(color: color.primary),
     ),
     scaffoldBackgroundColor: Colors.white,

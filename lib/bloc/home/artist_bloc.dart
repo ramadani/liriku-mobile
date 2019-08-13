@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'package:liriku/bloc/home/artist_event.dart';
 import 'package:liriku/bloc/home/artist_state.dart';
 import 'package:liriku/data/repository/artist_repository.dart';
@@ -16,9 +17,17 @@ class ArtistBloc extends Bloc<ArtistEvent, ArtistState> {
     try {
       if (event is FetchTopArtist) {
         final artists = await _artistRepository.getTopArtist();
-        yield ArtistLoaded(artists: artists);
+        if (artists.length > 0) {
+          yield ArtistLoaded(artists: artists);
+        } else {
+          await _artistRepository.syncTopArtist();
+
+          final artists = await _artistRepository.getTopArtist();
+          yield ArtistLoaded(artists: artists);
+        }
       }
-    } catch (e) {
+    } on Exception catch (e, s) {
+      await FlutterCrashlytics().logException(e, s);
       yield ArtistError();
     }
   }

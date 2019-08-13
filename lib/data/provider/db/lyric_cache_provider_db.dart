@@ -19,7 +19,7 @@ class LyricCacheProviderDb implements LyricCacheProvider {
     final offset = (page - 1) * perPage;
     final sql = 'SELECT id, title, cover_url, content, bookmarked, read_count, '
         'artist_id, created_at, updated_at FROM lyrics '
-        '$searchLike LIMIT ?,?';
+        '$searchLike ORDER BY title LIMIT ?,?';
     final rows = await _db.rawQuery(sql, [offset, perPage]);
     final List<Lyric> lyrics = List();
 

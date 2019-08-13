@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'package:liriku/bloc/bookmark/bloc.dart';
 import 'package:liriku/bloc/bookmark/bookmark_bloc.dart';
 import 'package:liriku/bloc/search/bloc.dart';
@@ -16,9 +17,11 @@ class LyricListBloc extends Bloc<LyricListEvent, LyricListState> {
   StreamSubscription _searchSubscription;
   StreamSubscription _bookmarkSubscription;
 
-  LyricListBloc(this._searchFormBloc,
-      this._bookmarkBloc,
-      this._lyricRepository,) {
+  LyricListBloc(
+    this._searchFormBloc,
+    this._bookmarkBloc,
+    this._lyricRepository,
+  ) {
     _searchSubscription = _searchFormBloc.state.listen((SearchFormState state) {
       if (state is SearchFormChanged) {
         dispatch(FetchLyricList(keyword: state.keyword));
@@ -73,12 +76,13 @@ class LyricListBloc extends Bloc<LyricListEvent, LyricListState> {
           keyword: event.keyword,
           lyrics: result.lyrics,
           hasMorePages:
-          result.lyrics.length == event.perPage && event.keyword != '',
+              result.lyrics.length == event.perPage && event.keyword != '',
         );
       } else {
         yield LyricListEmpty();
       }
-    } catch (e) {
+    } on Exception catch (e, s) {
+      await FlutterCrashlytics().logException(e, s);
       yield LyricListError();
     }
   }
@@ -95,13 +99,14 @@ class LyricListBloc extends Bloc<LyricListEvent, LyricListState> {
         newLyrics: result.lyrics,
         hasMorePages: result.lyrics.length == state.perPage,
       );
-    } on Exception catch (_) {
+    } on Exception catch (e, s) {
+      await FlutterCrashlytics().logException(e, s);
       yield LyricListError();
     }
   }
 
-  Stream<LyricListState> _mapChangeBookmarkToState(ChangeBookmarkInList event,
-      LyricListLoaded state) async* {
+  Stream<LyricListState> _mapChangeBookmarkToState(
+      ChangeBookmarkInList event, LyricListLoaded state) async* {
     if (state.lyrics.length > 0) {
       final lyrics = state.lyrics.map((Lyric it) {
         return it.id == event.lyricId

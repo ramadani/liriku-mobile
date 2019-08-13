@@ -6,4 +6,8 @@ abstract class AppDataProvider {
   Future<bool> setLastSyncTopRated();
 
   Future<bool> shouldSyncTopRated();
+
+  Future<bool> setLastSyncCollection();
+
+  Future<bool> shouldSyncCollection();
 }

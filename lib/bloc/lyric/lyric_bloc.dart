@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'package:liriku/bloc/bookmark/bloc.dart';
 import 'package:liriku/bloc/lyric/lyric_event.dart';
 import 'package:liriku/bloc/lyric/lyric_state.dart';
@@ -26,7 +27,8 @@ class LyricBloc extends Bloc<LyricEvent, LyricState> {
 
         await _lyricRepository.read(event.id);
       }
-    } catch (e) {
+    } on Exception catch (e, s) {
+      await FlutterCrashlytics().logException(e, s);
       yield LyricError();
     }
   }

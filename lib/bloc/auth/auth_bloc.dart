@@ -1,11 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:device_info/device_info.dart';
+import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'package:liriku/bloc/auth/auth_events.dart';
 import 'package:liriku/bloc/auth/auth_states.dart';
 import 'package:liriku/bloc/auth/bloc.dart';
 import 'package:liriku/data/provider/app_data_provider.dart';
 import 'package:liriku/data/repository/artist_repository.dart';
 import 'package:liriku/data/repository/auth_repository.dart';
+import 'package:liriku/data/repository/collection_repository.dart';
 import 'package:liriku/data/repository/lyric_repository.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
@@ -13,11 +15,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository _authRepository;
   final ArtistRepository _artistRepository;
   final LyricRepository _lyricRepository;
+  final CollectionRepository _collectionRepository;
 
-  AuthBloc(this._appDataProvider,
-      this._authRepository,
-      this._artistRepository,
-      this._lyricRepository,);
+  AuthBloc(
+    this._appDataProvider,
+    this._authRepository,
+    this._artistRepository,
+    this._lyricRepository,
+    this._collectionRepository,
+  );
 
   @override
   AuthState get initialState => Checking();
@@ -29,6 +35,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final isAuth = await _authRepository.check();
         if (isAuth) {
           await _syncTopRated();
+          await _syncCollection();
           yield Authenticated();
         } else {
           dispatch(Login());
@@ -48,7 +55,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await _authRepository.login(deviceName);
         dispatch(Check());
       }
-    } on Exception catch (_) {
+    } on Exception catch (e, s) {
+      await FlutterCrashlytics().logException(e, s);
       yield AuthError();
     }
   }
@@ -60,6 +68,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await _artistRepository.syncTopArtist();
       await _lyricRepository.syncTopLyric();
       await _appDataProvider.setLastSyncTopRated();
+    }
+  }
+
+  Future<void> _syncCollection() async {
+    final shouldSync = await _appDataProvider.shouldSyncCollection();
+    final needSync = await _collectionRepository.needSync();
+
+    if (shouldSync || needSync) {
+      await _collectionRepository.sync();
+      await _appDataProvider.setLastSyncCollection();
     }
   }
 }
