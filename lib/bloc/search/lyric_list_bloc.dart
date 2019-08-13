@@ -17,9 +17,11 @@ class LyricListBloc extends Bloc<LyricListEvent, LyricListState> {
   StreamSubscription _searchSubscription;
   StreamSubscription _bookmarkSubscription;
 
-  LyricListBloc(this._searchFormBloc,
-      this._bookmarkBloc,
-      this._lyricRepository,) {
+  LyricListBloc(
+    this._searchFormBloc,
+    this._bookmarkBloc,
+    this._lyricRepository,
+  ) {
     _searchSubscription = _searchFormBloc.state.listen((SearchFormState state) {
       if (state is SearchFormChanged) {
         dispatch(FetchLyricList(keyword: state.keyword));
@@ -74,7 +76,7 @@ class LyricListBloc extends Bloc<LyricListEvent, LyricListState> {
           keyword: event.keyword,
           lyrics: result.lyrics,
           hasMorePages:
-          result.lyrics.length == event.perPage && event.keyword != '',
+              result.lyrics.length == event.perPage && event.keyword != '',
         );
       } else {
         yield LyricListEmpty();
@@ -103,8 +105,8 @@ class LyricListBloc extends Bloc<LyricListEvent, LyricListState> {
     }
   }
 
-  Stream<LyricListState> _mapChangeBookmarkToState(ChangeBookmarkInList event,
-      LyricListLoaded state) async* {
+  Stream<LyricListState> _mapChangeBookmarkToState(
+      ChangeBookmarkInList event, LyricListLoaded state) async* {
     if (state.lyrics.length > 0) {
       final lyrics = state.lyrics.map((Lyric it) {
         return it.id == event.lyricId

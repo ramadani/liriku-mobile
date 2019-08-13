@@ -23,7 +23,7 @@ class ArtistCacheProviderDb implements ArtistCacheProvider {
       wheres.add("collection_id = '$collection'");
     }
 
-    final searchLike = 'WHERE ' + wheres.join(" AND ");
+    final searchLike = wheres.length > 0 ? 'WHERE ' + wheres.join(" AND ") : '';
     final offset = (page - 1) * perPage;
     final sql =
         'SELECT id, name, cover_url, collection_id, created_at, updated_at '
