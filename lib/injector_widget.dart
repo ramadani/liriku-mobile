@@ -8,6 +8,7 @@ import 'package:liriku/bloc/lyric/bloc.dart';
 import 'package:liriku/bloc/playlist/playlist_bloc.dart';
 import 'package:liriku/bloc/recentlyread/bloc.dart';
 import 'package:liriku/bloc/search/bloc.dart';
+import 'package:liriku/config/config.dart';
 import 'package:liriku/config/json_config.dart';
 import 'package:liriku/data/provider/api/artist_provider_api.dart';
 import 'package:liriku/data/provider/api/auth_provider_api.dart';
@@ -34,6 +35,8 @@ import 'package:meta/meta.dart';
 
 class InjectorWidget extends InheritedWidget {
   String _envFilename;
+
+  Config _config;
 
   AppDataProvider _appDataProvider;
   AuthRepository _authRepository;
@@ -73,10 +76,10 @@ class InjectorWidget extends InheritedWidget {
   bool updateShouldNotify(InheritedWidget oldWidget) => false;
 
   Future<void> init() async {
-    final config = JsonConfig();
-    await config.loadFromAssets(_envFilename);
+    _config = JsonConfig();
+    await _config.loadFromAssets(_envFilename);
 
-    final configData = config.data();
+    final configData = _config.data();
     _appDataProvider = AppDataProviderPrefs();
 
     final db = await SQLiteProvider().open();
@@ -106,6 +109,8 @@ class InjectorWidget extends InheritedWidget {
       _artistRepository,
     );
   }
+
+  Config getConfig() => _config;
 
   AuthBloc authBloc({bool forceCreate = false}) {
     if (_authBloc == null || forceCreate) {
