@@ -6,6 +6,7 @@ import 'package:liriku/data/model/lyric.dart';
 import 'package:liriku/injector_widget.dart';
 import 'package:liriku/localizations.dart';
 import 'package:liriku/screen/lyric/lyric_screen.dart';
+import 'package:liriku/widget/ad_banner.dart';
 import 'package:liriku/widget/lyric_tile.dart';
 
 class RecentlyReadScreen extends StatelessWidget {
@@ -64,7 +65,7 @@ class _RecentlyReadListViewState extends State<_RecentlyReadListView> {
           return ListView.builder(
             itemCount: lyrics.length,
             itemBuilder: (context, index) {
-              return LyricTile(
+              final lyricItem = LyricTile(
                 lyric: lyrics[index],
                 onTap: (BuildContext context, Lyric lyric) {
                   Navigator.pushNamed(context, LyricScreen.routeName,
@@ -77,6 +78,23 @@ class _RecentlyReadListViewState extends State<_RecentlyReadListView> {
                   ));
                 },
               );
+
+              // Ad
+              if (state.adRepeatedly) {
+                if (index > 0 && index % state.adIndex == 0) {
+                  return Column(
+                    children: [lyricItem, AdBanner(isPadding: false)],
+                  );
+                }
+              } else {
+                if (index == state.adIndex) {
+                  return Column(
+                    children: [lyricItem, AdBanner(isPadding: false)],
+                  );
+                }
+              }
+
+              return lyricItem;
             },
           );
         } else if (state is RecentlyReadEmpty) {

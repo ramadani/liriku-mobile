@@ -17,8 +17,14 @@ class RecentlyReadLoading extends RecentlyReadState {
 
 class RecentlyReadLoaded extends RecentlyReadState {
   final List<Lyric> lyrics;
+  final bool adRepeatedly;
+  final int adIndex;
 
-  RecentlyReadLoaded({this.lyrics}) : super([lyrics]);
+  RecentlyReadLoaded({
+    this.lyrics,
+    this.adRepeatedly = false,
+    this.adIndex = 0,
+  }) : super([lyrics, adRepeatedly, adIndex]);
 
   @override
   String toString() => 'RecentlyReadLoaded { lyricSize: ${lyrics.length} }';
