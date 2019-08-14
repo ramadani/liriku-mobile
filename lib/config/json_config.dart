@@ -14,6 +14,7 @@ class JsonConfig extends Config {
     final data = jsonDecode(content);
 
     _data = ConfigData(
+      debug: data['debug'],
       baseApiUrl: data['base_api_url'],
       apiKey: data['api_key'],
       admobAppId: data['admob_app_id'],

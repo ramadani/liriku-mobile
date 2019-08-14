@@ -9,7 +9,10 @@ import 'package:liriku/injector_widget.dart';
 import 'app.dart';
 
 void main() async {
-  bool isInDebugMode = true;
+  final app = InjectorWidget(child: App(), envFilename: 'env.json');
+  await app.init();
+
+  bool isInDebugMode = app.getConfig().data().debug;
 
   FlutterError.onError = (FlutterErrorDetails details) {
     if (isInDebugMode) {
@@ -22,9 +25,6 @@ void main() async {
   await FlutterCrashlytics().initialize();
 
   runZoned<Future<Null>>(() async {
-    final app = InjectorWidget(child: App(), envFilename: 'env.json');
-    await app.init();
-
     BlocSupervisor.delegate = _SimpleBlocDelegate();
     Admob.initialize(app.getConfig().data().admobAppId);
     runApp(app);
