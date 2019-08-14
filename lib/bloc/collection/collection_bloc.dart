@@ -16,6 +16,8 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   StreamSubscription _selectorSubscription;
   StreamSubscription _searchSubscription;
 
+  int _adPerPage = 20;
+
   CollectionBloc(this._selectorBLoc, this._searchBloc, this._artistRepository) {
     _selectorSubscription = _selectorBLoc.state.listen((SelectorState state) {
       if (state is SelectorLoaded) {
@@ -61,8 +63,9 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
       );
 
       if (cacheResult.artists.length > 0) {
-        final adRepeatedly = cacheResult.artists.length == event.perPage;
-        final adIndex = _getAdIndex(cacheResult.artists.length);
+        final len = cacheResult.artists.length;
+        final adRepeatedly = len > _adPerPage;
+        final adIndex = _getAdIndex(len > _adPerPage ? _adPerPage : len);
 
         yield CollectionLoaded(
           id: event.id,
@@ -85,8 +88,9 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
       );
 
       if (result.artists.length > 0) {
-        final adRepeatedly = result.artists.length == event.perPage;
-        final adIndex = _getAdIndex(result.artists.length);
+        final len = result.artists.length;
+        final adRepeatedly = len > _adPerPage;
+        final adIndex = _getAdIndex(len > _adPerPage ? _adPerPage : len);
 
         yield CollectionLoaded(
           id: event.id,
@@ -151,7 +155,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   }
 
   int _getAdIndex(int size) {
-    final start = size - 3;
+    final start = size - 5;
     if (start > 0) {
       final random = Random();
       final num = start + random.nextInt(size - start);

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter_crashlytics/flutter_crashlytics.dart';
@@ -16,6 +17,8 @@ class LyricListBloc extends Bloc<LyricListEvent, LyricListState> {
 
   StreamSubscription _searchSubscription;
   StreamSubscription _bookmarkSubscription;
+
+  int _adPerPage = 20;
 
   LyricListBloc(
     this._searchFormBloc,
@@ -70,6 +73,10 @@ class LyricListBloc extends Bloc<LyricListEvent, LyricListState> {
           page: event.page, perPage: event.perPage, search: event.keyword);
 
       if (result.lyrics.length > 0) {
+        final len = result.lyrics.length;
+        final adRepeatedly = len > _adPerPage;
+        final adIndex = _getAdIndex(len > _adPerPage ? _adPerPage : len);
+
         yield LyricListLoaded(
           page: result.page,
           perPage: result.perPage,
@@ -77,6 +84,8 @@ class LyricListBloc extends Bloc<LyricListEvent, LyricListState> {
           lyrics: result.lyrics,
           hasMorePages:
               result.lyrics.length == event.perPage && event.keyword != '',
+          adRepeatedly: adRepeatedly,
+          adIndex: adIndex,
         );
       } else {
         yield LyricListEmpty();
@@ -114,7 +123,18 @@ class LyricListBloc extends Bloc<LyricListEvent, LyricListState> {
             : it.copyWith(bookmarked: it.bookmarked);
       }).toList();
 
-      yield LyricListLoaded(lyrics: lyrics);
+      yield state.updateLyrics(lyrics);
     }
+  }
+
+  int _getAdIndex(int size) {
+    final start = size - 5;
+    if (start > 0) {
+      final random = Random();
+      final num = start + random.nextInt(size - start);
+      return num - 1;
+    }
+
+    return size;
   }
 }

@@ -7,6 +7,7 @@ import 'package:liriku/injector_widget.dart';
 import 'package:liriku/screen/lyric/lyric_screen.dart';
 import 'package:liriku/screen/search/empty_result.dart';
 import 'package:liriku/screen/search/loading.dart';
+import 'package:liriku/widget/ad_banner.dart';
 import 'package:liriku/widget/lyric_tile.dart';
 import 'package:meta/meta.dart';
 
@@ -90,6 +91,20 @@ class _SongPageState extends State<SongPage>
                       LoadingSmall(),
                     ],
                   );
+                }
+
+                if (state.adRepeatedly) {
+                  if (index > 0 && index % state.adIndex == 0) {
+                    return Column(
+                      children: [lyricItem, AdBanner(isPadding: false)],
+                    );
+                  }
+                } else {
+                  if (index == state.adIndex) {
+                    return Column(
+                      children: [lyricItem, AdBanner(isPadding: false)],
+                    );
+                  }
                 }
 
                 return lyricItem;

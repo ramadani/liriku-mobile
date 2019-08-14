@@ -44,6 +44,8 @@ class CollectionLoaded extends CollectionState {
           keyword,
           hasMorePages,
           fetchingMore,
+          adRepeatedly,
+          adIndex,
         ]);
 
   @override
