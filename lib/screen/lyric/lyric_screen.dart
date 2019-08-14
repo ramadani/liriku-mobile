@@ -6,6 +6,7 @@ import 'package:liriku/bloc/bookmark/bloc.dart';
 import 'package:liriku/bloc/lyric/bloc.dart';
 import 'package:liriku/injector_widget.dart';
 import 'package:liriku/screen/playlist/playlist_screen.dart';
+import 'package:liriku/widget/ad_item_list.dart';
 import 'package:liriku/widget/bookmark_action.dart';
 
 class LyricScreenArgs {
@@ -49,8 +50,15 @@ class LyricScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: _LyricContent(id: args.id, bloc: lyricBloc),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: SingleChildScrollView(
+              child: _LyricContent(id: args.id, bloc: lyricBloc),
+            ),
+          ),
+          AdBanner(),
+        ],
       ),
     );
   }
@@ -96,14 +104,10 @@ class _LyricContentState extends State<_LyricContent> {
               children: <Widget>[
                 Text(
                   lyric.title,
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .title
-                      .copyWith(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: Theme.of(context).textTheme.title.copyWith(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 4.0),
@@ -127,11 +131,10 @@ class _LyricContentState extends State<_LyricContent> {
                     data: content,
                     styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context))
                         .copyWith(
-                        p: Theme
-                            .of(context)
-                            .textTheme
-                            .body1
-                            .copyWith(height: 1.2)),
+                            p: Theme.of(context)
+                                .textTheme
+                                .body1
+                                .copyWith(height: 1.2)),
                   ),
                 ),
               ],
