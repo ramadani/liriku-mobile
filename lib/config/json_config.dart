@@ -16,11 +16,20 @@ class JsonConfig extends Config {
     _data = ConfigData(
       baseApiUrl: data['base_api_url'],
       apiKey: data['api_key'],
+      admobAppId: data['admob_app_id'],
+      adUnitId: AdUnitId(
+        itemList: data['ad_unit_id']['item_list'],
+      ),
     );
   }
 
   @override
   ConfigData data() {
     return _data;
+  }
+
+  @override
+  AdUnitId adUnitId() {
+    return _data.adUnitId;
   }
 }

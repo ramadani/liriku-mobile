@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:admob_flutter/admob_flutter.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_crashlytics/flutter_crashlytics.dart';
@@ -25,6 +26,7 @@ void main() async {
     await app.init();
 
     BlocSupervisor.delegate = _SimpleBlocDelegate();
+    Admob.initialize(app.getConfig().data().admobAppId);
     runApp(app);
   }, onError: (error, stackTrace) async {
     await FlutterCrashlytics()
