@@ -77,7 +77,7 @@ class LyricBloc extends Bloc<LyricEvent, LyricState> {
       return num - 1;
     }
 
-    return size;
+    return size - 1;
   }
 
   @override

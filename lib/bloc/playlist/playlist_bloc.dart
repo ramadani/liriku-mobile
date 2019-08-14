@@ -14,6 +14,8 @@ class PlaylistBloc extends Bloc<PlaylistEvent, PlaylistState> {
   final ArtistRepository _artistRepository;
   final BookmarkBloc _bookmarkBloc;
 
+  int _adPerPage = 15;
+
   PlaylistBloc(this._artistRepository, this._bookmarkBloc) {
     _bookmarkSubscription = _bookmarkBloc.state.listen((BookmarkState state) {
       if (state is BookmarkChanged) {
@@ -51,8 +53,10 @@ class PlaylistBloc extends Bloc<PlaylistEvent, PlaylistState> {
     final artistLyrics =
         await _artistRepository.getArtistDetail(event.artistId);
 
-    final adRepeatedly = artistLyrics.lyrics.length > 15;
-    final adIndex = _getAdIndex(artistLyrics.lyrics.length);
+    final len = artistLyrics.lyrics.length;
+    final adRepeatedly = len > _adPerPage;
+    final adIndex =
+        _getAdIndex(len > _adPerPage ? _adPerPage : len, len > _adPerPage);
 
     yield PlaylistLoaded(
       artistLyrics: artistLyrics,
@@ -68,8 +72,10 @@ class PlaylistBloc extends Bloc<PlaylistEvent, PlaylistState> {
       final newArtistLyrics =
           await _artistRepository.getArtistDetail(event.artistId);
 
-      final newAdRepeatedly = newArtistLyrics.lyrics.length > 15;
-      final newAdIndex = _getAdIndex(newArtistLyrics.lyrics.length);
+      final newLen = newArtistLyrics.lyrics.length;
+      final newAdRepeatedly = newLen > 15;
+      final newAdIndex = _getAdIndex(
+          newLen > _adPerPage ? _adPerPage : newLen, newLen > _adPerPage);
 
       yield PlaylistLoaded(
         artistLyrics: newArtistLyrics,
@@ -97,20 +103,20 @@ class PlaylistBloc extends Bloc<PlaylistEvent, PlaylistState> {
     }
   }
 
-  int _getAdIndex(int size) {
+  @override
+  void dispose() {
+    _bookmarkSubscription.cancel();
+    super.dispose();
+  }
+
+  int _getAdIndex(int size, bool gtSize) {
     final start = size - 3;
-    if (start > 0) {
+    if (start > 0 && gtSize) {
       final random = Random();
       final num = start + random.nextInt(size - start);
       return num - 1;
     }
 
-    return size;
-  }
-
-  @override
-  void dispose() {
-    _bookmarkSubscription.cancel();
-    super.dispose();
+    return size - 1;
   }
 }

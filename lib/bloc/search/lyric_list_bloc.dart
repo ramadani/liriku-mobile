@@ -75,7 +75,8 @@ class LyricListBloc extends Bloc<LyricListEvent, LyricListState> {
       if (result.lyrics.length > 0) {
         final len = result.lyrics.length;
         final adRepeatedly = len > _adPerPage;
-        final adIndex = _getAdIndex(len > _adPerPage ? _adPerPage : len);
+        final adIndex =
+            _getAdIndex(len > _adPerPage ? _adPerPage : len, len > _adPerPage);
 
         yield LyricListLoaded(
           page: result.page,
@@ -127,14 +128,14 @@ class LyricListBloc extends Bloc<LyricListEvent, LyricListState> {
     }
   }
 
-  int _getAdIndex(int size) {
+  int _getAdIndex(int size, bool gtSize) {
     final start = size - 5;
-    if (start > 0) {
+    if (start > 0 && gtSize) {
       final random = Random();
       final num = start + random.nextInt(size - start);
       return num - 1;
     }
 
-    return size;
+    return size - 1;
   }
 }
