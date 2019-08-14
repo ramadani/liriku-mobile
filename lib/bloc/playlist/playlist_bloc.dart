@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter_crashlytics/flutter_crashlytics.dart';
@@ -48,8 +49,16 @@ class PlaylistBloc extends Bloc<PlaylistEvent, PlaylistState> {
 
   Stream<PlaylistState> _mapGetPlaylistToState(GetPlaylist event) async* {
     final artistLyrics =
-    await _artistRepository.getArtistDetail(event.artistId);
-    yield PlaylistLoaded(artistLyrics: artistLyrics);
+        await _artistRepository.getArtistDetail(event.artistId);
+
+    final adRepeatedly = artistLyrics.lyrics.length > 15;
+    final adIndex = _getAdIndex(artistLyrics.lyrics.length);
+
+    yield PlaylistLoaded(
+      artistLyrics: artistLyrics,
+      adRepeatedly: adRepeatedly,
+      adIndex: adIndex,
+    );
 
     final expiresAt = artistLyrics.updatedAt.add(Duration(days: 7));
     if (expiresAt.isBefore(DateTime.now()) || artistLyrics.lyrics.length <= 1) {
@@ -57,9 +66,16 @@ class PlaylistBloc extends Bloc<PlaylistEvent, PlaylistState> {
       await _artistRepository.syncLyrics(event.artistId);
 
       final newArtistLyrics =
-      await _artistRepository.getArtistDetail(event.artistId);
+          await _artistRepository.getArtistDetail(event.artistId);
 
-      yield PlaylistLoaded(artistLyrics: newArtistLyrics);
+      final newAdRepeatedly = newArtistLyrics.lyrics.length > 15;
+      final newAdIndex = _getAdIndex(newArtistLyrics.lyrics.length);
+
+      yield PlaylistLoaded(
+        artistLyrics: newArtistLyrics,
+        adRepeatedly: newAdRepeatedly,
+        adIndex: newAdIndex,
+      );
     }
   }
 
@@ -73,8 +89,23 @@ class PlaylistBloc extends Bloc<PlaylistEvent, PlaylistState> {
       }).toList();
 
       final artistLyrics = state.artistLyrics.copyWith(lyrics: lyrics);
-      yield PlaylistLoaded(artistLyrics: artistLyrics);
+      yield PlaylistLoaded(
+        artistLyrics: artistLyrics,
+        adRepeatedly: state.adRepeatedly,
+        adIndex: state.adIndex,
+      );
     }
+  }
+
+  int _getAdIndex(int size) {
+    final start = size - 3;
+    if (start > 0) {
+      final random = Random();
+      final num = start + random.nextInt(size - start);
+      return num - 1;
+    }
+
+    return size;
   }
 
   @override

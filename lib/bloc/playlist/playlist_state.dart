@@ -14,7 +14,14 @@ class PlaylistLoading extends PlaylistState {
 class PlaylistLoaded extends PlaylistState {
   final ArtistLyrics artistLyrics;
 
-  PlaylistLoaded({this.artistLyrics}) : super([artistLyrics]);
+  final bool adRepeatedly;
+  final int adIndex;
+
+  PlaylistLoaded({
+    this.artistLyrics,
+    this.adRepeatedly = false,
+    this.adIndex,
+  }) : super([artistLyrics]);
 
   Artist get artist {
     return Artist(
@@ -30,7 +37,7 @@ class PlaylistLoaded extends PlaylistState {
 
   @override
   String toString() =>
-      'PlaylistLoaded { artist: ${artist.name}, lyric_size: ${lyrics.length} }';
+      'PlaylistLoaded { artist: ${artist.name}, lyricSize: ${lyrics.length}, adRepeatedly: $adRepeatedly, adIndex: $adIndex }';
 }
 
 class PlaylistError extends PlaylistState {

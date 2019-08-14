@@ -6,7 +6,7 @@ import 'package:liriku/bloc/bookmark/bloc.dart';
 import 'package:liriku/bloc/lyric/bloc.dart';
 import 'package:liriku/injector_widget.dart';
 import 'package:liriku/screen/playlist/playlist_screen.dart';
-import 'package:liriku/widget/ad_item_list.dart';
+import 'package:liriku/widget/ad_banner.dart';
 import 'package:liriku/widget/bookmark_action.dart';
 
 class LyricScreenArgs {

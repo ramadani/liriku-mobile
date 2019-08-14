@@ -7,6 +7,7 @@ import 'package:liriku/data/model/lyric.dart';
 import 'package:liriku/injector_widget.dart';
 import 'package:liriku/localizations.dart';
 import 'package:liriku/screen/lyric/lyric_screen.dart';
+import 'package:liriku/widget/ad_banner.dart';
 import 'package:liriku/widget/artist_cover.dart';
 import 'package:liriku/widget/lyric_tile.dart';
 
@@ -68,6 +69,7 @@ class _PlaylistContentState extends State<_PlaylistContent> {
           return Center(child: CircularProgressIndicator());
         } else if (state is PlaylistLoaded) {
           final lyrics = state.lyrics;
+
           return Column(
             children: <Widget>[
               Padding(
@@ -76,7 +78,7 @@ class _PlaylistContentState extends State<_PlaylistContent> {
               ),
               Padding(
                 padding:
-                EdgeInsets.symmetric(horizontal: 16.0).copyWith(top: 10.0),
+                    EdgeInsets.symmetric(horizontal: 16.0).copyWith(top: 10.0),
                 child: Divider(
                   color: Colors.grey[400],
                   height: 10,
@@ -86,7 +88,7 @@ class _PlaylistContentState extends State<_PlaylistContent> {
                 shrinkWrap: true,
                 itemCount: lyrics.length,
                 itemBuilder: (context, index) {
-                  return LyricTile(
+                  final lyric = LyricTile(
                     lyric: lyrics[index],
                     onTap: (BuildContext context, Lyric lyric) {
                       Navigator.pushNamed(context, LyricScreen.routeName,
@@ -99,6 +101,22 @@ class _PlaylistContentState extends State<_PlaylistContent> {
                       ));
                     },
                   );
+
+                  if (state.adRepeatedly) {
+                    if (index > 0 && index % state.adIndex == 0) {
+                      return Column(
+                        children: [lyric, AdBanner(isPadding: false)],
+                      );
+                    }
+                  } else {
+                    if (index == state.adIndex) {
+                      return Column(
+                        children: [lyric, AdBanner(isPadding: false)],
+                      );
+                    }
+                  }
+
+                  return lyric;
                 },
                 physics: NeverScrollableScrollPhysics(),
               ),
@@ -132,7 +150,7 @@ class _PlaylistArtist extends StatelessWidget {
                   artist.name,
                   style: Theme.of(context).textTheme.title.copyWith(
                         fontSize: 22,
-                    fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.bold,
                       ),
                 ),
                 Padding(
