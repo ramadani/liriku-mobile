@@ -7,6 +7,7 @@ import 'package:liriku/injector_widget.dart';
 import 'package:liriku/localizations.dart';
 import 'package:liriku/screen/lyric/lyric_screen.dart';
 import 'package:liriku/screen/search/loading.dart';
+import 'package:liriku/widget/ad_banner.dart';
 import 'package:liriku/widget/lyric_tile.dart';
 
 class BookmarkListScreen extends StatelessWidget {
@@ -98,6 +99,21 @@ class _BookmarkListViewState extends State<_BookmarkListView> {
                       LoadingSmall(),
                     ],
                   );
+                }
+
+                // Ad
+                if (state.adRepeatedly) {
+                  if (index > 0 && index % state.adIndex == 0) {
+                    return Column(
+                      children: [lyricItem, AdBanner(isPadding: false)],
+                    );
+                  }
+                } else {
+                  if (index == state.adIndex) {
+                    return Column(
+                      children: [lyricItem, AdBanner(isPadding: false)],
+                    );
+                  }
                 }
 
                 return lyricItem;

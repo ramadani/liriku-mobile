@@ -3,6 +3,7 @@ import 'package:liriku/localizations.dart';
 import 'package:liriku/screen/main/more/about_screen.dart';
 import 'package:liriku/screen/main/more/bookmark_list_screen.dart';
 import 'package:liriku/screen/main/more/recently_read_screen.dart';
+import 'package:liriku/widget/ad_banner.dart';
 
 enum MenuType { Bookmark, RecentlyRead, About }
 
@@ -47,21 +48,28 @@ class MoreScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).exploreMore),
       ),
-      body: ListView.builder(
-        itemCount: menus.length,
-        itemBuilder: (context, index) {
-          final menu = menus[index];
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: ListView.builder(
+              itemCount: menus.length,
+              itemBuilder: (context, index) {
+                final menu = menus[index];
 
-          return InkWell(
-            onTap: () => Navigator.pushNamed(context, menu.routeName),
-            child: Column(
-              children: <Widget>[
-                _MenuItem(menu: menu),
-                Divider(height: 0),
-              ],
+                return InkWell(
+                  onTap: () => Navigator.pushNamed(context, menu.routeName),
+                  child: Column(
+                    children: <Widget>[
+                      _MenuItem(menu: menu),
+                      Divider(height: 0),
+                    ],
+                  ),
+                );
+              },
             ),
-          );
-        },
+          ),
+          AdBanner(),
+        ],
       ),
     );
   }

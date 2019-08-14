@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter_crashlytics/flutter_crashlytics.dart';
@@ -13,6 +14,8 @@ class BookmarksBloc extends Bloc<BookmarksEvent, BookmarksState> {
   final LyricRepository _lyricRepository;
 
   StreamSubscription _bookmarkSubscription;
+
+  int _adPerPage = 15;
 
   BookmarksBloc(this._bookmarkBloc, this._lyricRepository) {
     _bookmarkSubscription = _bookmarkBloc.state.listen((BookmarkState state) {
@@ -56,12 +59,19 @@ class BookmarksBloc extends Bloc<BookmarksEvent, BookmarksState> {
       );
 
       if (result.lyrics.length > 0) {
+        final len = result.lyrics.length;
+        final adRepeatedly = len > _adPerPage;
+        final adIndex =
+            _getAdIndex(len > _adPerPage ? _adPerPage : len, len > _adPerPage);
+
         yield BookmarksLoaded(
           page: result.page,
           perPage: result.perPage,
           keyword: event.keyword,
           lyrics: result.lyrics,
           hasMorePages: result.lyrics.length == event.perPage,
+          adRepeatedly: adRepeatedly,
+          adIndex: adIndex,
         );
       } else {
         yield BookmarksEmpty();
@@ -93,8 +103,8 @@ class BookmarksBloc extends Bloc<BookmarksEvent, BookmarksState> {
     }
   }
 
-  Stream<BookmarksState> _mapRemoveBookmarkToState(BookmarksLoaded state,
-      String lyricId) async* {
+  Stream<BookmarksState> _mapRemoveBookmarkToState(
+      BookmarksLoaded state, String lyricId) async* {
     final lyrics = state.lyrics.where((Lyric it) => it.id != lyricId).toList();
 
     if (lyrics.length > 0) {
@@ -105,6 +115,8 @@ class BookmarksBloc extends Bloc<BookmarksEvent, BookmarksState> {
         lyrics: lyrics,
         hasMorePages: state.hasMorePages,
         fetchingMore: state.fetchingMore,
+        adRepeatedly: lyrics.length > state.adIndex,
+        adIndex: state.adIndex - 1,
       );
     } else {
       yield BookmarksEmpty();
@@ -115,5 +127,16 @@ class BookmarksBloc extends Bloc<BookmarksEvent, BookmarksState> {
   void dispose() {
     _bookmarkSubscription.cancel();
     super.dispose();
+  }
+
+  int _getAdIndex(int size, bool gtSize) {
+    final start = size - 3;
+    if (start > 0 && gtSize) {
+      final random = Random();
+      final num = start + random.nextInt(size - start);
+      return num - 1;
+    }
+
+    return size - 1;
   }
 }

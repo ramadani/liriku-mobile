@@ -22,6 +22,8 @@ class BookmarksLoaded extends BookmarksState {
   final List<Lyric> lyrics;
   final bool hasMorePages;
   final bool fetchingMore;
+  final bool adRepeatedly;
+  final int adIndex;
 
   BookmarksLoaded({
     this.page,
@@ -30,7 +32,18 @@ class BookmarksLoaded extends BookmarksState {
     this.lyrics,
     this.hasMorePages = false,
     this.fetchingMore = false,
-  }) : super([page, perPage, keyword, lyrics, hasMorePages, fetchingMore]);
+    this.adRepeatedly = false,
+    this.adIndex = 0,
+  }) : super([
+          page,
+          perPage,
+          keyword,
+          lyrics,
+          hasMorePages,
+          fetchingMore,
+          adRepeatedly,
+          adIndex,
+        ]);
 
   @override
   String toString() =>
@@ -44,6 +57,8 @@ class BookmarksLoaded extends BookmarksState {
       lyrics: this.lyrics,
       hasMorePages: this.hasMorePages,
       fetchingMore: true,
+      adRepeatedly: this.adRepeatedly,
+      adIndex: this.adIndex,
     );
   }
 
@@ -56,6 +71,8 @@ class BookmarksLoaded extends BookmarksState {
       lyrics: newLyrics.length > 0 ? this.lyrics + newLyrics : this.lyrics,
       hasMorePages: hasMorePages,
       fetchingMore: false,
+      adRepeatedly: this.adRepeatedly,
+      adIndex: this.adIndex,
     );
   }
 }
