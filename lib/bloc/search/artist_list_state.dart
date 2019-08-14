@@ -22,6 +22,8 @@ class ArtistListLoaded extends ArtistListState {
   final List<Artist> artists;
   final bool hasMorePages;
   final bool fetchingMore;
+  final bool adRepeatedly;
+  final int adIndex;
 
   ArtistListLoaded({
     this.page,
@@ -30,12 +32,22 @@ class ArtistListLoaded extends ArtistListState {
     this.artists,
     this.hasMorePages = false,
     this.fetchingMore = false,
-  }) : super([page, perPage, keyword, artists, hasMorePages, fetchingMore]);
+    this.adRepeatedly = false,
+    this.adIndex = 0,
+  }) : super([
+          page,
+          perPage,
+          keyword,
+          artists,
+          hasMorePages,
+          fetchingMore,
+          adRepeatedly,
+          adIndex,
+        ]);
 
   @override
   String toString() =>
-      'ArtistListLoaded { page: $page, perPage: $perPage, keyword: $keyword, artistSize: ${artists
-          .length}, hasMorePage: $hasMorePages, fetchingMore: $fetchingMore }';
+      'ArtistListLoaded { page: $page, perPage: $perPage, keyword: $keyword, artistSize: ${artists.length}, hasMorePage: $hasMorePages, fetchingMore: $fetchingMore }';
 
   ArtistListLoaded setFetchingMore() {
     return ArtistListLoaded(
@@ -45,6 +57,8 @@ class ArtistListLoaded extends ArtistListState {
       artists: this.artists,
       hasMorePages: this.hasMorePages,
       fetchingMore: true,
+      adRepeatedly: this.adRepeatedly,
+      adIndex: this.adIndex,
     );
   }
 
@@ -57,6 +71,8 @@ class ArtistListLoaded extends ArtistListState {
       artists: newArtists.length > 0 ? this.artists + newArtists : this.artists,
       hasMorePages: hasMorePages,
       fetchingMore: false,
+      adRepeatedly: this.adRepeatedly,
+      adIndex: this.adIndex,
     );
   }
 }

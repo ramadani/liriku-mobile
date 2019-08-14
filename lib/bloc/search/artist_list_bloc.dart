@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter_crashlytics/flutter_crashlytics.dart';
@@ -11,10 +12,11 @@ import 'search_form_bloc.dart';
 
 class ArtistListBloc extends Bloc<ArtistListEvent, ArtistListState> {
   final SearchFormBloc _searchFormBloc;
-
   final ArtistRepository _artistRepository;
 
   StreamSubscription _searchSubscription;
+
+  int _adPerPage = 20;
 
   ArtistListBloc(this._searchFormBloc, this._artistRepository) {
     _searchSubscription = _searchFormBloc.state.listen((SearchFormState state) {
@@ -54,6 +56,10 @@ class ArtistListBloc extends Bloc<ArtistListEvent, ArtistListState> {
       );
 
       if (result.artists.length > 0) {
+        final len = result.artists.length;
+        final adRepeatedly = len > _adPerPage;
+        final adIndex = _getAdIndex(len > _adPerPage ? _adPerPage : len);
+
         yield ArtistListLoaded(
           page: result.page,
           perPage: result.perPage,
@@ -61,6 +67,8 @@ class ArtistListBloc extends Bloc<ArtistListEvent, ArtistListState> {
           artists: result.artists,
           hasMorePages:
               result.artists.length == event.perPage && event.keyword != '',
+          adRepeatedly: adRepeatedly,
+          adIndex: adIndex,
         );
       } else {
         yield ArtistListEmpty();
@@ -87,5 +95,16 @@ class ArtistListBloc extends Bloc<ArtistListEvent, ArtistListState> {
       await FlutterCrashlytics().logException(e, s);
       yield ArtistListError();
     }
+  }
+
+  int _getAdIndex(int size) {
+    final start = size - 5;
+    if (start > 0) {
+      final random = Random();
+      final num = start + random.nextInt(size - start);
+      return num - 1;
+    }
+
+    return size;
   }
 }

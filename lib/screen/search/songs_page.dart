@@ -93,6 +93,7 @@ class _SongPageState extends State<SongPage>
                   );
                 }
 
+                // Ad
                 if (state.adRepeatedly) {
                   if (index > 0 && index % state.adIndex == 0) {
                     return Column(

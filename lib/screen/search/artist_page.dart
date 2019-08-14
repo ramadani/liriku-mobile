@@ -5,6 +5,7 @@ import 'package:liriku/bloc/search/artist_list_event.dart';
 import 'package:liriku/bloc/search/bloc.dart';
 import 'package:liriku/data/model/artist.dart';
 import 'package:liriku/screen/playlist/playlist_screen.dart';
+import 'package:liriku/widget/ad_banner.dart';
 import 'package:liriku/widget/artist_tile.dart';
 import 'package:meta/meta.dart';
 
@@ -87,6 +88,21 @@ class _ArtistPageState extends State<ArtistPage>
                       LoadingSmall(),
                     ],
                   );
+                }
+
+                // Ad
+                if (state.adRepeatedly) {
+                  if (index > 0 && index % state.adIndex == 0) {
+                    return Column(
+                      children: [artistItem, AdBanner(isPadding: false)],
+                    );
+                  }
+                } else {
+                  if (index == state.adIndex) {
+                    return Column(
+                      children: [artistItem, AdBanner(isPadding: false)],
+                    );
+                  }
                 }
 
                 return artistItem;
