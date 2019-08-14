@@ -23,6 +23,8 @@ class CollectionLoaded extends CollectionState {
   final String keyword;
   final bool hasMorePages;
   final bool fetchingMore;
+  final bool adRepeatedly;
+  final int adIndex;
 
   CollectionLoaded({
     this.id,
@@ -32,6 +34,8 @@ class CollectionLoaded extends CollectionState {
     this.keyword = '',
     this.hasMorePages = false,
     this.fetchingMore = false,
+    this.adRepeatedly = false,
+    this.adIndex = 0,
   }) : super([
           id,
           artists,
@@ -55,6 +59,8 @@ class CollectionLoaded extends CollectionState {
       artists: this.artists,
       hasMorePages: this.hasMorePages,
       fetchingMore: true,
+      adRepeatedly: this.adRepeatedly,
+      adIndex: this.adIndex,
     );
   }
 
@@ -68,6 +74,8 @@ class CollectionLoaded extends CollectionState {
       artists: newArtists.length > 0 ? this.artists + newArtists : this.artists,
       hasMorePages: hasMorePages,
       fetchingMore: false,
+      adRepeatedly: this.adRepeatedly,
+      adIndex: this.adIndex,
     );
   }
 }

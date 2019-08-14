@@ -13,7 +13,6 @@ class PlaylistLoading extends PlaylistState {
 
 class PlaylistLoaded extends PlaylistState {
   final ArtistLyrics artistLyrics;
-
   final bool adRepeatedly;
   final int adIndex;
 

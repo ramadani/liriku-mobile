@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter_crashlytics/flutter_crashlytics.dart';
@@ -60,6 +61,9 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
       );
 
       if (cacheResult.artists.length > 0) {
+        final adRepeatedly = cacheResult.artists.length == event.perPage;
+        final adIndex = _getAdIndex(cacheResult.artists.length);
+
         yield CollectionLoaded(
           id: event.id,
           artists: cacheResult.artists,
@@ -68,6 +72,8 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
           keyword: event.keyword,
           hasMorePages: cacheResult.artists.length == event.perPage,
           fetchingMore: false,
+          adRepeatedly: adRepeatedly,
+          adIndex: adIndex,
         );
       }
 
@@ -79,6 +85,9 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
       );
 
       if (result.artists.length > 0) {
+        final adRepeatedly = result.artists.length == event.perPage;
+        final adIndex = _getAdIndex(result.artists.length);
+
         yield CollectionLoaded(
           id: event.id,
           artists: result.artists,
@@ -87,6 +96,8 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
           keyword: event.keyword,
           hasMorePages: result.artists.length == event.perPage,
           fetchingMore: false,
+          adRepeatedly: adRepeatedly,
+          adIndex: adIndex,
         );
       } else {
         yield CollectionEmpty();
@@ -137,5 +148,16 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     _selectorSubscription.cancel();
     _searchSubscription.cancel();
     super.dispose();
+  }
+
+  int _getAdIndex(int size) {
+    final start = size - 3;
+    if (start > 0) {
+      final random = Random();
+      final num = start + random.nextInt(size - start);
+      return num - 1;
+    }
+
+    return size;
   }
 }

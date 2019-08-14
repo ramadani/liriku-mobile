@@ -5,6 +5,7 @@ import 'package:liriku/data/model/artist.dart';
 import 'package:liriku/screen/playlist/playlist_screen.dart';
 import 'package:liriku/screen/search/empty_result.dart';
 import 'package:liriku/screen/search/loading.dart';
+import 'package:liriku/widget/ad_banner.dart';
 import 'package:liriku/widget/artist_tile.dart';
 
 class CollectionList extends StatefulWidget {
@@ -75,6 +76,20 @@ class _CollectionListState extends State<CollectionList> {
                       LoadingSmall(),
                     ],
                   );
+                }
+
+                if (state.adRepeatedly) {
+                  if (index > 0 && index % state.adIndex == 0) {
+                    return Column(
+                      children: [artistItem, AdBanner(isPadding: false)],
+                    );
+                  }
+                } else {
+                  if (index == state.adIndex) {
+                    return Column(
+                      children: [artistItem, AdBanner(isPadding: false)],
+                    );
+                  }
                 }
 
                 return artistItem;
