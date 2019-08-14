@@ -1,4 +1,3 @@
-import 'package:admob_flutter/admob_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:liriku/bloc/bookmark/bloc.dart';
@@ -6,7 +5,7 @@ import 'package:liriku/bloc/home/bloc.dart';
 import 'package:liriku/data/model/lyric.dart';
 import 'package:liriku/injector_widget.dart';
 import 'package:liriku/screen/lyric/lyric_screen.dart';
-import 'package:liriku/widget/ad_item_list.dart';
+import 'package:liriku/widget/ad_banner.dart';
 import 'package:liriku/widget/lyric_tile.dart';
 
 class LyricList extends StatefulWidget {
@@ -65,10 +64,7 @@ class _LyricListState extends State<LyricList> {
 
               if (index == state.adIndex) {
                 return Column(
-                  children: <Widget>[
-                    itemLyric,
-                    AdBanner(),
-                  ],
+                  children: <Widget>[itemLyric, AdBanner()],
                 );
               }
 

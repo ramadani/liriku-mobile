@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter_crashlytics/flutter_crashlytics.dart';
@@ -31,31 +32,52 @@ class LyricBloc extends Bloc<LyricEvent, LyricState> {
   Stream<LyricState> mapEventToState(LyricEvent event) async* {
     try {
       if (event is FetchTopLyric) {
-        final lyrics = await _lyricRepository.getTopLyric();
-        if (lyrics.length > 0) {
-          yield LyricLoaded(lyrics: lyrics);
-        } else {
-          await _lyricRepository.syncTopLyric();
-
-          final lyrics = await _lyricRepository.getTopLyric();
-          yield LyricLoaded(lyrics: lyrics);
-        }
+        yield* _mapFetchToState();
       } else if (event is ChangeBookmarkInLyrics) {
-        if (currentState is LyricLoaded) {
-          final List<Lyric> lyrics =
-              (currentState as LyricLoaded).lyrics.map((Lyric it) {
-            return it.id == event.lyricId
-                ? it.copyWith(bookmarked: event.bookmarked)
-                : it.copyWith(bookmarked: it.bookmarked);
-          }).toList();
-
-          yield LyricLoaded(lyrics: lyrics);
-        }
+        yield* _mapBookmarkToState(event);
       }
     } on Exception catch (e, s) {
       await FlutterCrashlytics().logException(e, s);
       yield LyricError();
     }
+  }
+
+  Stream<LyricState> _mapFetchToState() async* {
+    final lyrics = await _lyricRepository.getTopLyric();
+    if (lyrics.length > 0) {
+      final adIndex = _getAdIndex(lyrics.length);
+      yield LyricLoaded(lyrics: lyrics, adIndex: adIndex);
+    } else {
+      await _lyricRepository.syncTopLyric();
+
+      final lyrics = await _lyricRepository.getTopLyric();
+      final adIndex = _getAdIndex(lyrics.length);
+      yield LyricLoaded(lyrics: lyrics, adIndex: adIndex);
+    }
+  }
+
+  Stream<LyricState> _mapBookmarkToState(ChangeBookmarkInLyrics event) async* {
+    if (currentState is LyricLoaded) {
+      final state = currentState as LyricLoaded;
+      final List<Lyric> lyrics = state.lyrics.map((Lyric it) {
+        return it.id == event.lyricId
+            ? it.copyWith(bookmarked: event.bookmarked)
+            : it.copyWith(bookmarked: it.bookmarked);
+      }).toList();
+
+      yield LyricLoaded(lyrics: lyrics, adIndex: state.adIndex);
+    }
+  }
+
+  int _getAdIndex(int size) {
+    final start = size - 3;
+    if (start > 0) {
+      final random = Random();
+      final num = start + random.nextInt(size - start);
+      return num - 1;
+    }
+
+    return size;
   }
 
   @override
